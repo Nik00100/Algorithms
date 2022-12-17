@@ -1,10 +1,7 @@
 package task2Currency;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import java.util.*;
 public class Main {
 
     public static void main(String[] args) throws IOException {
@@ -39,10 +36,6 @@ public class Main {
 
             int balance = getBalance(lcm, currency, worth);
 
-            out.println(balance);
-            out.println(lcm);
-
-            out.println(threeSumm(balance, worth, lcm));
             out.println(threeSumm(balance, worth, lcm).size());
 
             in.close();
@@ -94,39 +87,6 @@ public class Main {
             }
             return res;
         }
-
-
-
-
-
-
-
-        int maxSize;
-        List<List<Integer>> res = new ArrayList<>();
-
-        public List<List<Integer>> allPathsSourceTarget(int[][] g) {
-            List<Integer> path = new ArrayList<>();
-            path.add(0);
-            dfs(g, path, 0);
-            maxSize = res != null ? res.stream().mapToInt(List::size).max().getAsInt() : -1;
-            return res;
-        }
-
-        private void dfs(int[][] g, List<Integer> path, int node) {
-            if (node == g.length - 1) res.add(new ArrayList<Integer>(path));
-            for (int i : g[node]) {
-                path.add(i);
-                dfs(g, path, i);
-                path.remove(path.size() - 1);
-            }
-        }
-
-
-
-
-
-
-
     }
 
     static class InputReader {
