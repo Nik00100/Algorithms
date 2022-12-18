@@ -30,8 +30,22 @@ class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
         int n = Integer.parseInt(reader.readLine());
         List<String> list = generateParenthesis(n);
-        list.stream().forEach(System.out::println);
+        if (list != null)
+            list.stream().forEach(str -> {
+                try {
+                    writer.write(str);
+                    writer.newLine();
+                } catch (IOException e) {}
+            });
+        else
+            try {
+                writer.newLine();
+            } catch (IOException e) {}
+
+        reader.close();
+        writer.close();
     }
 }
