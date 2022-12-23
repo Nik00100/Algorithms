@@ -15,6 +15,7 @@ public class Main {
             k -= nums[i++] == 1 ? 0 : 1;
             if (k < 0)
                 k += nums[j++] == 1 ? 0 : 1;
+            System.out.println(i+" "+j);
         }
         return i - j;
     }
