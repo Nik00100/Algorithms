@@ -1,4 +1,4 @@
-package leetcode1.rotateArray;
+package leetcode1.reverseBits;
 
 /*Reverse bits of a given 32 bits unsigned integer.
 Note that in some languages, such as Java, there is no unsigned integer type. In this case,

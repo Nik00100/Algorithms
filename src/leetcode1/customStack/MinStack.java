@@ -1,4 +1,4 @@
-package leetcode.stack;
+package leetcode1.customStack;
 
 public class MinStack {
     private Node head;
