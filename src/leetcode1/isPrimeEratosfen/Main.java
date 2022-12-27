@@ -1,4 +1,4 @@
-package leetcode1.isPrime;
+package leetcode1.isPrimeEratosfen;
 
 /*Given an integer n, return the number of prime numbers that are strictly less than n.
 Example 1:
@@ -11,8 +11,6 @@ Output: 0
 Example 3:
 Input: n = 1
 Output: 0*/
-
-import java.util.Arrays;
 
 
 public class Main {

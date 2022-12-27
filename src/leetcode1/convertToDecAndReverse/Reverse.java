@@ -1,4 +1,4 @@
-package leetcode1.convertToEachSystem;
+package leetcode1.convertToDecAndReverse;
 
 /*Given a string columnTitle that represents the column title as appears in an Excel sheet,
 return its corresponding column number. For example:
