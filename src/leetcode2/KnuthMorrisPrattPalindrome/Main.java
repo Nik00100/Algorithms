@@ -14,11 +14,24 @@ Output: "dcbabcd"
 */
 
 public class Main {
-    static String shortestPalindrome(String s) {
+    static String shortestPalindromeKMP(String s) { // O(n) complexity
+        String t;
+        s.substring(1);
         return null;
     }
 
+    static String shortestPalindromeBruteForce(String s) { // O(n*n) complexity
+        final String t = new StringBuilder(s).reverse().toString();
+
+        for (int i = 0; i < t.length(); ++i)
+            if (s.startsWith(t.substring(i)))
+                return t.substring(0, i) + s;
+
+        return t + s;
+    }
+
     public static void main(String[] args) {
-        System.out.println(shortestPalindrome("abcd"));
+        System.out.println(shortestPalindromeKMP("abcd"));
+        System.out.println(shortestPalindromeBruteForce("abcd"));
     }
 }
