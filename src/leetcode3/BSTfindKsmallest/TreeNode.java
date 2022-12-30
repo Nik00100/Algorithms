@@ -1,4 +1,4 @@
-package leetcode2.BSTfindKsmallest;
+package leetcode3.BSTfindKsmallest;
 
 public class TreeNode {
       int val;

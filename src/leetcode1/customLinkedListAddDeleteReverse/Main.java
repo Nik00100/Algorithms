@@ -1,4 +1,4 @@
-package leetcode1.customLinkedList;
+package leetcode1.customLinkedListAddDeleteReverse;
 
 /*Given the head of a singly linked list, reverse the list, and return the reversed list.
 Example 1:
@@ -39,6 +39,17 @@ public class Main {
             ListNode<E> temp = new ListNode<>(val);
             tail.next = temp;
             tail = temp;
+        }
+
+        // удалить узел
+        public void deleteNode(ListNode node) {
+            // Since we know input node is not last node, so nextNode will not be null
+            ListNode nextNode = node.next;
+            // Step 2
+            node.val = nextNode.val;
+            // Step 3
+            node.next = nextNode.next;
+            nextNode.next = null;
         }
 
         // развернуть в обратную сторону

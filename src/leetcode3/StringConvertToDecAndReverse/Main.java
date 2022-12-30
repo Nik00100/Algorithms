@@ -1,4 +1,4 @@
-package leetcode1.convertToDecAndReverse;
+package leetcode3.StringConvertToDecAndReverse;
 
 /*Given an integer columnNumber, return its corresponding column title as it appears in an Excel sheet.
 For example:

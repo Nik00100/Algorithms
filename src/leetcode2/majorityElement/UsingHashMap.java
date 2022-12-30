@@ -1,4 +1,4 @@
-package leetcode1.majorityElementHashMap;
+package leetcode2.majorityElement;
 
 /*Given an array nums of size n, return the majority element.
 The majority element is the element that appears more than ⌊n / 2⌋ times.
@@ -14,7 +14,7 @@ Output: 2*/
 import java.util.HashMap;
 import java.util.Map;
 
-public class Main {
+public class UsingHashMap {
     static int majorityElement(int[] nums) {
         if (nums.length == 1) return nums[0];
         int n = nums.length/2;

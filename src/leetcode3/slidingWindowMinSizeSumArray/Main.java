@@ -1,4 +1,4 @@
-package leetcode1.slidingWindowMinSizeSumArray;
+package leetcode3.slidingWindowMinSizeSumArray;
 
 /*Given an array of positive integers nums and a positive integer target, return the minimal
 length of a subarray whose sum is greater than or equal to target.

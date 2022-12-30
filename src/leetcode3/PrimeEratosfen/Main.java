@@ -1,4 +1,4 @@
-package leetcode1.isPrimeEratosfen;
+package leetcode3.PrimeEratosfen;
 
 /*Given an integer n, return the number of prime numbers that are strictly less than n.
 Example 1:
