@@ -1,4 +1,4 @@
-package yandex.oneswap;
+package yandex.oneSwap;
 
 import java.util.Arrays;
 

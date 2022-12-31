@@ -1,4 +1,4 @@
-package yandex.rle;
+package leetcode1.RLE.rle;
 
 public class Main {
     public static String getRLE(String input) {

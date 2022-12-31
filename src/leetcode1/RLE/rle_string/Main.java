@@ -1,4 +1,4 @@
-package yandex.rle_string;
+package leetcode1.RLE.rle_string;
 
 import java.util.ArrayList;
 import java.util.Collections;
