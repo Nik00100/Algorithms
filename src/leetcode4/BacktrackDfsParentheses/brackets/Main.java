@@ -1,4 +1,4 @@
-package yandex.brackets;
+package leetcode4.BacktrackDfsParentheses.brackets;
 
 import java.io.*;
 import java.util.*;
@@ -6,11 +6,11 @@ import java.util.*;
 class Main {
     public static List<String> generateParenthesis(int n) {
         List<String> ans = new ArrayList();
-        backtrack(ans, new StringBuilder(), 0, 0, n);
+        generate(ans, new StringBuilder(), 0, 0, n);
         return ans;
     }
 
-    public static void backtrack(List<String> ans, StringBuilder cur, int open, int close, int max){
+    public static void generate(List<String> ans, StringBuilder cur, int open, int close, int max){
         if (cur.length() == max * 2) {
             ans.add(cur.toString());
             return;
@@ -18,12 +18,12 @@ class Main {
 
         if (open < max) {
             cur.append("(");
-            backtrack(ans, cur, open+1, close, max);
+            generate(ans, cur, open+1, close, max);
             cur.deleteCharAt(cur.length() - 1);
         }
         if (close < open) {
             cur.append(")");
-            backtrack(ans, cur, open, close+1, max);
+            generate(ans, cur, open, close+1, max);
             cur.deleteCharAt(cur.length() - 1);
         }
     }

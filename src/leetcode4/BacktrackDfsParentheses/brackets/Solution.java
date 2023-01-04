@@ -1,4 +1,4 @@
-package yandex.brackets;
+package leetcode4.BacktrackDfsParentheses.brackets;
 
 import java.io.*;
 import java.util.*;
