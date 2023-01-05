@@ -1,4 +1,4 @@
-package leetcode4.BacktrackDfsParentheses.brackets;
+package leetcode4.BacktrackParenGenerate;
 
 import java.io.*;
 import java.util.*;

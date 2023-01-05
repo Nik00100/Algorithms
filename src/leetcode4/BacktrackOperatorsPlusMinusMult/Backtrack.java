@@ -1,4 +1,4 @@
-package leetcode4.BacktrackAddOperators;
+package leetcode4.BacktrackOperatorsPlusMinusMult;
 
 /*Algorithm:
     - We use backtracking to generate all possible expressions by adding +, -, * to between

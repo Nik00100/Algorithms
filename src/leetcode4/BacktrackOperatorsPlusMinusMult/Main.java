@@ -1,4 +1,4 @@
-package leetcode4.BacktrackAddOperators;
+package leetcode4.BacktrackOperatorsPlusMinusMult;
 
 /*Given a string num that contains only digits and an integer target, return all possibilities
 to insert the binary operators '+', '-', and/or '*' between the digits of num so that the resultant
@@ -29,8 +29,6 @@ Explanation: There are no expressions that can be created from "3456237490" to e
         * operator: We need to keep the prevNum so that to calculate newResult we need
         to minus prevNum then plus with prevNum * num.
         So newResult = resSoFar - prevNum + prevNum * num.*/
-
-import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
