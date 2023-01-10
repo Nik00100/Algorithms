@@ -1,0 +1,19 @@
+    int[] ans = new int[nums.size()]; // array to store answer
+    Stack<Integer> stack = new Stack<>();
+    for (int i = nums.size() - 1; i >= 0; i--) { // put it into the stack back to front
+        while (!stack.empty() && stack.top() {operator in while loop} nums[i]) { // determine by height
+            stack.pop(); // short one go away while blocked
+        }
+        // operations bellow
+        ans[i] = stack.empty() ? -1 : s.top(); // the first tall behind this element
+        stack.push(nums[i]); // get into the queue and wait for later height determination
+    }
+    return ans;
+
+
+|  Problem           |  Stack Type                  |  Operator in while loop |  Assignment Position  |
+|--------------------|------------------------------|-------------------------|-----------------------|
+|  next greater      |  decreasing (equal allowed)  |  stackTop < current     |  inside while loop    |
+|  previous greater  |  decreasing (strict)         |  stackTop <= current    |  outside while loop   |
+|  next smaller      |  increasing (equal allowed)  |  stackTop > current     |  inside while loop    |
+|  previous smaller  |  increasing (strict)         |  stackTop >= current    |  outside while loop   |
