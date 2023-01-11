@@ -15,6 +15,7 @@ Output: [6,7,6,0,4]
 
 */
 
+import java.util.Arrays;
 import java.util.Stack;
 
 public class CreateMaxNumbersArray {
@@ -58,5 +59,10 @@ public class CreateMaxNumbersArray {
             result[i] = stack.pop();
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        int[] nums1 = {3,4,6,5}, nums2 = {9,1,2,5,8,3};
+        System.out.println(Arrays.toString(maxNumber(nums1,nums2,5)));
     }
 }

@@ -29,11 +29,6 @@ We can increment by 1, the answer result count for 5
 
 If we repeat this process, we will have answer result counts for all elements, which is the answer the coding problem is asking for
 
-For the rest of the explanation, I will use this notation to describe the answer result count:
-5(3) 2(0) 6(1) 1(0)
-
-In this example for notation only, for the original input element 5, there are 3 elements to the right side of 5, 
-that are smaller than 5.
 
 Let's continue on our original example, from the problem description:
 
@@ -96,7 +91,8 @@ result count:
 Merge sort is done now.
 The final answer result count is [2,1,1,0], same as in the problem description
 
-Since we just did a normal merge sort, and added some checking logic along the way, the runtime is same as normal merge sort, O(n log n)
+Since we just did a normal merge sort, and added some checking logic along the way, the runtime is same as normal merge sort,
+O(n log n)
 
 additional issue
 take this example:
