@@ -1,4 +1,4 @@
-package String.StringRLE.rle_num_ranges;
+package String.StringRLE.RLE_RangesOfNumbers;
 
 /*You are given a sorted unique integer array nums.
 A range [a,b] is the set of all integers from a to b (inclusive).
@@ -20,7 +20,7 @@ Explanation: The ranges are:
 
 import java.util.*;
 
-public class Simple {
+public class Main {
     static List<String> summaryRanges(int[] nums) {
         List<String> ans = new ArrayList<>();
         for (int i=0; i< nums.length; i++) {

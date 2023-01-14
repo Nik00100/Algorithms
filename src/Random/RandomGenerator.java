@@ -1,3 +1,5 @@
+package Random;
+
 public class RandomGenerator {
 
     static class Random {

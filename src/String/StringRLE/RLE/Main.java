@@ -1,4 +1,6 @@
-package String.StringRLE.rle;
+package String.StringRLE.RLE;
+
+/**/
 
 public class Main {
     public static String getRLE(String input) {
