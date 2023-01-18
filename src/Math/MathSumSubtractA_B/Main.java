@@ -24,6 +24,7 @@ Iterate until there is no carry (or b == 0)*/
 public class Main {
     static class MathOperations {
         // Iterative
+        // sum
         public int getSum(int a, int b) {
             if (a == 0) return b;
             if (b == 0) return a;
@@ -36,8 +37,10 @@ public class Main {
             return a;
         }
 
-        // Iterative
+        // subtract
         public int getSubtract(int a, int b) {
+            if (a == 0) return negate(b);
+            if (b == 0) return a;
             while (b != 0) {
                 int borrow = (~a) & b;
                 a = a ^ b;
@@ -49,11 +52,11 @@ public class Main {
 
         // Get negative number
         public int negate(int x) {
-            return ~x + 1;
+            return getSum(~x,1);
         }
     }
 
     public static void main(String[] args) {
-        System.out.println(new MathOperations().getSubtract(5,6));
+        System.out.println(new MathOperations().getSubtract(0,6));
     }
 }
