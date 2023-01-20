@@ -1,4 +1,4 @@
-package Search_SlidingWindow_QuickSelect_TwoPointer.SlidingWindowSlidingMedianValue;
+package Queue_TreeMap_Stack.QueueFindMedianDataStream;
 
 /*295. Find Median from Data Stream  https://leetcode.com/problems/find-median-from-data-stream/description/
 

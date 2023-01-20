@@ -27,7 +27,7 @@ Window position                Median
  1  3  -1  -3 [5  3  6] 7        5
  1  3  -1  -3  5 [3  6  7]       6
 
-Inspired by this solution. to the problem: 295.Find Median from Data Stream
+Inspired by this solution. to the problem: 295.Find Median from Data Stream (Queue_TreeMap_Stack -> FindMedianFromDataStream)
 
 However instead of using two priority queue's we use two Tree Sets as we want O(logk) for remove(element).
 Priority Queue would have been O(k) for remove(element) giving us an overall time complexity of O(nk) instead of O(nlogk).

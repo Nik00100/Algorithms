@@ -1,4 +1,4 @@
-package Queue_TreeMap_Stack.TreeMapMeetingRooms;
+package Queue_TreeMap_Stack.TreeMapQueueMeetingRooms;
 
 import java.util.*;
 
