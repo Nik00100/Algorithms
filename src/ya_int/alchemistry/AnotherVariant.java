@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 
 public class AnotherVariant {
     static Map<Integer,int[]> recipes = new HashMap<>();
-    static List<Recipe> recipeList = new ArrayList<>();
-
     static Queue<Recipe> q = new LinkedList<>();
 
     static class Recipe {
@@ -27,35 +25,49 @@ public class AnotherVariant {
             ing = ingredients.keySet().stream().mapToInt(Integer::intValue).toArray();
         }
 
-        @Override
+       /* @Override
         public String toString() {
-            return "Recipe{number=" + number +
-                    ", ingredients=" + ingredients.entrySet().stream()
+            return "r {n=" + number +
+                    ", i=" + ingredients.entrySet().stream()
                     .map(e->"["+e.getKey()+","+e.getValue()+"]").collect(Collectors.toList()) + '}';
-        }
-    }
-
-    public AnotherVariant() {
-        recipes.put(1,new int[] {1,0});
-        recipes.put(2,new int[] {0,1});
-    }
-
-    public static void createRecipeMap (Recipe recipe, int num) {
-        if (num == recipeList.size()) return;
-        if (recipes.containsKey(recipe.number)) return;
-        for (Recipe r : recipeList) {
-
-        }
-
-        /*for (int ing : recipe) {
-            if (!recipes.containsKey(ing)) return;
-            int[] ingredients = recipes.get(ing);
-            int[] r = recipes.getOrDefault(number,new int[] {0,0});
-            r[0] += ingredients[0];
-            r[1] += ingredients[1];
-            recipes.put(number,r);
         }*/
     }
+
+    public static void createRecipeMap (int k) {
+        recipes.put(1,new int[] {1,0});
+        recipes.put(2,new int[] {0,1});
+        while (!q.isEmpty() && k>0) {
+            Recipe r = q.poll();
+            // if couldn't add to map now try again until k attempts
+            if (!canAdd(r)) {
+                q.offer(r);
+                k--;
+                continue;
+            }
+
+            // if we can add to map - then do it
+            int[] ing = r.ing;
+            int number = r.number;
+            for (int i : ing) {
+                int j = r.ingredients.get(i); // quantity of this ingredient
+                int[] ingrid = recipes.getOrDefault(number,new int[2]);
+                ingrid = new int[] {recipes.get(i)[0]*j + ingrid[0], recipes.get(i)[1]*j + ingrid[1]};
+                recipes.put(number,ingrid);
+            }
+        }
+    }
+
+    public static boolean canAdd (Recipe r) {
+        int[] ing = r.ing;
+        for (int i : ing) {
+            if (!recipes.containsKey(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
     public static int responseForRequest (int aVal, int bVal, int number) {
         if (!recipes.containsKey(number)) return 0;
@@ -66,7 +78,6 @@ public class AnotherVariant {
 
 
     public static void main(String[] args) throws IOException {
-        AnotherVariant main = new AnotherVariant();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(reader.readLine());
@@ -77,13 +88,19 @@ public class AnotherVariant {
             for (int j=0; j<ingSize; j++) {
                 recipe[j] = Integer.parseInt(s[j+1]);
             }
-            recipeList.add(new Recipe(i,recipe));
+            Recipe r = new Recipe(i,recipe);
+            q.offer(r);
         }
 
-        System.out.println(recipeList);
+       //System.out.println(q);
+        createRecipeMap(2*n);
+        /*System.out.println(recipes.entrySet().stream()
+                .map(e->"["+e.getKey()+","+ Arrays.stream(e.getValue()).boxed().collect(Collectors.toList())+"]")
+                .collect(Collectors.toList()));*/
 
         StringBuilder sb = new StringBuilder();
         int m = Integer.parseInt(reader.readLine());
+        System.out.println(m);
         for (int i=0; i<m; i++) {
             String[] s = reader.readLine().split(" ");
             int aVal = Integer.parseInt(s[0]);
