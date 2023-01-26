@@ -1,10 +1,7 @@
 package ya_int.alchemistry;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class AnotherVariant {
     static Map<Integer,int[]> recipes = new HashMap<>();
