@@ -3,7 +3,7 @@ package BFS_DFS_UnionFind.BacktrackParenGenerate;
 import java.io.*;
 import java.util.*;
 
-class Main {
+class Variant_2 {
     public static List<String> generateParenthesis(int n) {
         List<String> ans = new ArrayList();
         generate(ans, new StringBuilder(), 0, 0, n);

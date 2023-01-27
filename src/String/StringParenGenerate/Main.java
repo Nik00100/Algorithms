@@ -1,16 +1,21 @@
-package BFS_DFS_UnionFind.BacktrackParenGenerate;
+package String.StringParenGenerate;
 
- /*     Approach: Initially, add () to the result set.
+/*See also BacktrackParenGenerate in BFS_DFS_UnionFind another variant
+
+
+        Approach: Initially, add () to the result set.
         Then for each item in result set, add the following 4 combos:
         1. () + item
         2. item + ()
         3. () inside each () in item
-        4. )( inside each () in item */
+        4. )( inside each () in item*/
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
-class Iterative {
+public class Main {
     public static List<String> generateParenthesis(int n) {
         HashSet<String> allCombos = new HashSet<>();
         for(int i=0;i<n;i++){
@@ -39,23 +44,6 @@ class Iterative {
     }
 
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
-        int m = Integer.parseInt(reader.readLine());
-        List<String> list = generateParenthesis(m);
-        if (list != null)
-            list.stream().forEach(str -> {
-                try {
-                    writer.write(str);
-                    writer.newLine();
-                } catch (IOException e) {}
-            });
-        else
-            try {
-                writer.newLine();
-            } catch (IOException e) {}
-
-        reader.close();
-        writer.close();
+        System.out.println(generateParenthesis(4));
     }
 }

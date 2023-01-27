@@ -15,7 +15,7 @@ a valid sequence.*/
 
 import java.util.*;
 
-public class ClosureNumber {
+public class Variant_1 {
     static List<String> generateParenthesis(int n) {
         List<String> ans = new ArrayList();
         if (n == 0) {

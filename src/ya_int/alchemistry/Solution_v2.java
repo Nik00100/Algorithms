@@ -3,7 +3,7 @@ package ya_int.alchemistry;
 import java.io.*;
 import java.util.*;
 
-public class AnotherVariant {
+public class Solution_v2 {
     static Map<Integer,int[]> recipes = new HashMap<>();
     static Queue<Recipe> q = new LinkedList<>();
 
@@ -89,7 +89,7 @@ public class AnotherVariant {
             q.offer(r);
         }
 
-       //System.out.println(q);
+
         createRecipeMap(2*n);
         /*System.out.println(recipes.entrySet().stream()
                 .map(e->"["+e.getKey()+","+ Arrays.stream(e.getValue()).boxed().collect(Collectors.toList())+"]")
@@ -97,7 +97,7 @@ public class AnotherVariant {
 
         StringBuilder sb = new StringBuilder();
         int m = Integer.parseInt(reader.readLine());
-        System.out.println(m);
+
         for (int i=0; i<m; i++) {
             String[] s = reader.readLine().split(" ");
             int aVal = Integer.parseInt(s[0]);
