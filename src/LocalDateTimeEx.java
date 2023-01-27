@@ -1,12 +1,10 @@
-package ya_int.taxi;
-
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 
 
 
-public class test {
+public class LocalDateTimeEx {
     private static Period getPeriod(LocalDateTime dob, LocalDateTime now) {
         return Period.between(dob.toLocalDate(), now.toLocalDate());
     }
