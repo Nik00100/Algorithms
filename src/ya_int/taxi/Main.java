@@ -54,6 +54,7 @@ public class Main {
             LocalDateTime start = list.get(0).time;
             LocalDateTime end;
             long total = 0;
+
             for (int i=1; i<list.size(); i++) {
                 if (list.get(i).status.equals("C") || list.get(i).status.equals("S")) {
                     end = list.get(i).time;
