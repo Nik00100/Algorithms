@@ -60,7 +60,7 @@ public class Main {
             String[] s = reader.readLine().split(" ");
             int a = Integer.parseInt(s[0]);
             int b = Integer.parseInt(s[1]);
-            if (a>=0 && b >=0 && (a + b) == n-1 && !usedBefore.contains(a))
+            if (a>=0 && b >=0 && (a + b) == n-1 && !usedBefore.contains(a)) // признаки, что черепаха говорит правду
                 usedBefore.add(a);
         }
 

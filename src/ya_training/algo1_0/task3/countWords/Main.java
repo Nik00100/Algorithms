@@ -23,29 +23,20 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static Set<String> set = new HashSet<>();
-
-    public static void addWords (String s) {
-        String[] str = s.split(" ");
-        for (String ss : str) {
-            String sss = ss.trim().replaceAll("\\W","");
-            if (!set.contains(sss))
-                set.add(sss);
-        }
-    }
 
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-
-       while (true) {
-            String str = reader.readLine();
-            if (str == null) {
-                break;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("input7.txt")));
+        Set<String> set = new HashSet<>();
+        String s;
+        while ((s = reader.readLine()) != null) {
+            String[] str = s.split(" ");
+            for (String S : str) {
+                if (!set.contains(S.trim()))
+                    set.add(S.trim());
             }
-            addWords(str);
         }
 
+        System.out.println(set.size());
 
         reader.close();
     }
