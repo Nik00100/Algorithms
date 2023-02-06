@@ -5,7 +5,7 @@ package ya_training.algo1_0.task6.binSearch;
 Формат ввода
 В первой строке входных данных содержатся натуральные числа N и K (). Во второй строке задаются N элементов первого массива,
 а в третьей строке – K элементов второго массива. Элементы обоих массивов - целые числа, каждое из которых по модулю не
-превосходит 109
+превосходит 10^9
 
 Формат вывода
 Требуется для каждого из K чисел вывести в отдельную строку "YES", если это число встречается в первом массиве, и "NO" в
@@ -53,24 +53,21 @@ YES
 NO*/
 
 import java.io.*;
-import java.util.*;
 
 public class Main {
 
-    static int bSearch (int number, int[] arr) {
-            int l = 0;
-            var r = arr.length - 1;
-            while (r > l) {
-                int middle = (l + r) / 2;
-                if (number == arr[middle]) {
-                    return middle;
-                } else if (number < arr[middle]) {
-                    r = middle;
-                } else {
-                    l = middle + 1;
-                }
+    static int bSearch(int number, int[] arr) {
+        int l = 0;
+        var r = arr.length - 1;
+        while (r > l) {
+            int middle = (l + r) / 2;
+            if (number <= arr[middle]) {
+                r = middle;
+            } else {
+                l = middle + 1;
             }
-            return arr[r] == number ? r : -1;
+        }
+        return r;
     }
 
     public static void main(String[] args) throws IOException {
@@ -91,24 +88,16 @@ public class Main {
             K[i] = Integer.parseInt(sK[i]);
         }
 
-        Map<Integer,String> map = new HashMap<>();
-        for (int i=0; i<k; i++) {
-            if (!map.containsKey(i)) {
-                if (bSearch(K[i],N) != -1) {
-                    map.put(i,"YES");
-                } else {
-                    map.put(i,"NO");
-                }
+        for (int i = 0; i < k; i++) {
+            int index = bSearch(K[i], N);
+            if (K[i] == N[index]) {
+                System.out.println("YES");
+            } else {
+                System.out.println("NO");
             }
-        }
 
-        for (String str : map.values()) {
-            System.out.println(str);
         }
-
-        //System.out.println(bSearch(11,N));
 
         reader.close();
-
     }
 }

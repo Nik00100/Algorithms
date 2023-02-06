@@ -23,10 +23,8 @@ package ya_training.algo1_0.task6.easy;
 */
 
 import java.io.*;
-import java.util.*;
 
-public class Main {
-
+public class Solution {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -35,32 +33,16 @@ public class Main {
         int x = Integer.parseInt(s[1]);
         int y = Integer.parseInt(s[2]);
 
-        int t1 = Math.min(x, y);
-        int t2 = Math.max(x, y);
-        y = t2;
-        x = t1;
+        int l= 0, r = (n - 1) * Math.max(x, y);
 
-        if (x * (n - 1) > y) {
-            // возможно использовать два
-            if (x != y) {
-                int l = 0;
-                int r = x * (n - 1);
-                while (r > l ) {
-                    int middle = (l + r) / 2;
-                    if  (n - 1 <= (middle / x) + (middle / y)) {
-                        r = middle;
-                    } else {
-                        l = middle+1;
-                    }
-                }
-                System.out.println(r + x);
-            } else {
-                System.out.println((n - 1) / 2 * x + (n - 1) % 2 * x + x);
-            }
-
-        } else {
-            System.out.println(x * n);
+        while (r > l) {
+            int m = (r + l) / 2;
+            if (n - 1 <= (m / x + m / y))
+                r = m;
+            else
+                l = m + 1;
         }
+        System.out.println(r + Math.min(x, y));
         reader.close();
     }
 }

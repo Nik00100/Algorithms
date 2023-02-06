@@ -15,26 +15,48 @@ package ya_training.algo1_0.task6.area;
 
 Формат вывода
 Программа должна вывести единственное число — максимальную ширину дорожки, которую можно выложить из имеющихся плиток.
-
-Пример
-Ввод	Вывод
-6
-7
-38
+                         __ __ __ __ __ __ __
+Пример                  |                    |
+Ввод	Вывод           |      __ __ __      |
+6                       |     |        |     |
+7                       |     |__ __ __|     |
+38                      |                    |
+                        |__ __ __ __ __ __ __|
 2*/
 
 import java.io.*;
-import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        long n = Integer.parseInt(reader.readLine());
-        long m = Integer.parseInt(reader.readLine());
-        long t = Integer.parseInt(reader.readLine());
+        long n = Long.parseLong(reader.readLine());
+        long m = Long.parseLong(reader.readLine());
+        long t = Long.parseLong(reader.readLine());
+
+        long l = 0;
+        long r = Math.min(n / 2, m / 2);
 
 
+        // сначала все хорошо, потом плохо - последнее подходящее
+        while (l < r) {
+            // middle - это ширина дорожки
+            // округление вверх
+            long middle = (r + l + 1) / 2;
+            // Площадь клумбы
+            long sFlowerbed = (n - middle * 2) * (m - middle * 2);
+            // Количество использованной плитки (Sобщая - Sклумбы)
+            long q = n * m - sFlowerbed;
+            if (q > t) {
+                r = middle - 1;
+            } else {
+                l = middle;
+            }
+        }
+
+        System.out.println(l);
+
+        reader.close();
     }
 }

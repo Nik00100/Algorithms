@@ -53,6 +53,7 @@ public class Main {
             while (r < s.length() && s.charAt(r) == s.charAt(r - k)) {
                 r += 1;
             }
+            System.out.println(l +" "+r +" : "+(r - l - k));
             ans += r - l - k;
         }
 
