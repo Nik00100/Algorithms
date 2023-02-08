@@ -23,9 +23,93 @@ min(a, b) ≤ x ≤ max(a, b).
 Вывод
 2 0 */
 
-public class Main {
+import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
-    public static void main(String[] args) {
-        
+public class Main {
+    enum Status {
+        START(-1),
+        END(2000_000_000);
+
+        private int num;
+
+        Status(int num) {
+            this.num = num;
+        }
+
+        public int getNum() {
+            return num;
+        }
+    }
+
+    static class Point {
+        int number;
+        int status;
+
+        long count;
+
+        public Point(int number, int status) {
+            this.number = number;
+            this.status = status;
+        }
+
+        @Override
+        public String toString() {
+            return "{" + number + ", " + status + "}";
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("input7.txt")));
+        String[] nk = reader.readLine().split(" ");
+        int n = Integer.parseInt(nk[0]);
+        int m = Integer.parseInt(nk[1]);
+
+        Point[] points = new Point[2 * n + m];
+        for (int i = 0; i < n; i++) {
+            String[] interval = reader.readLine().split(" ");
+            int a = Integer.parseInt(interval[0]);
+            int b = Integer.parseInt(interval[1]);
+            points[2 * i] = new Point(Math.min(a,b), Status.START.getNum());
+            points[2 * i + 1] = new Point(Math.max(a,b), Status.END.getNum());
+        }
+
+        String[] p = reader.readLine().split(" ");
+
+        Point[] pointsAns = new Point[m];
+        for (int i = 0; i < m; i++) {
+            Point point = new Point(Integer.parseInt(p[i]), i);
+            points[2 * n + i] = point;
+            pointsAns[i] = point;
+        }
+
+        Arrays.sort(points, (a, b) -> a.number == b.number ? a.status - b.status : a.number - b.number);
+
+        long count = 0; // количество открытых отрезков
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < 2 * n + m; i++) {
+            Point point = points[i];
+
+            if (point.status == Status.START.getNum()) {
+                count++;
+            } else if (point.status == Status.END.getNum()) {
+                count--;
+            } else {
+                point.count = count;
+            }
+        }
+
+
+        for (int i = 0; i < m; i++) {
+            sb.append(pointsAns[i].count).append(" ");
+        }
+
+        sb.deleteCharAt(sb.length() - 1);
+        System.out.println(sb.toString());
+
+        reader.close();
     }
 }
