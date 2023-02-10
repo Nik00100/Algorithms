@@ -112,8 +112,6 @@ public class Main {
         }
 
         Collections.sort(times, (a, b) -> a.time == b.time ? a.type - b.type : a.time - b.time);
-        //System.out.println(times);
-
 
         int ans = 0;
         int count = 0;
