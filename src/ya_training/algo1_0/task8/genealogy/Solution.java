@@ -39,9 +39,9 @@ import java.util.*;
 
 public class Solution {
     static class Tree {
-        Map<String,String> dic = new HashMap<>(); // потомок - предок
-        Map<String, List<String>> parentChildren = new HashMap<>();
-        Map<String, Integer> ans = new HashMap<>();
+        Map<String,String> dic = new HashMap<>(); // потомок - родитель
+        Map<String, List<String>> parentChildren = new HashMap<>(); // родитель - список потомков
+        Map<String, Integer> ans = new HashMap<>(); // предок - кол-во потомков
 
         void findAnswer() {
             traversal(findRoot());

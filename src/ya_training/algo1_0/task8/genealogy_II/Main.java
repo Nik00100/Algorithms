@@ -1,17 +1,18 @@
 package ya_training.algo1_0.task8.genealogy_II;
 
-/*В генеалогическом древе у каждого человека, кроме родоначальника, есть ровно один родитель.
-
-Для каждого элемента дерева определите число всех его потомков (не считая его самого).
+/*В генеалогическом древе у каждого человека, кроме родоначальника, есть ровно один родитель. Каждом элементу дерева
+сопоставляется целое неотрицательное число, называемое высотой. У родоначальника высота равна 0, у любого другого элемента
+высота на 1 больше, чем у его родителя. Вам дано генеалогическое древо, определите высоту всех его элементов.
 
 Формат ввода
-Программа получает на вход число элементов в генеалогическом древе N. Далее следует N−1 строка, задающие родителя для
-каждого элемента древа, кроме родоначальника. Каждая строка имеет вид имя_потомка имя_родителя.
+Программа получает на вход число элементов в генеалогическом древе N. Далее следует N-1 строка, задающие родителя для каждого
+элемента древа, кроме родоначальника. Каждая строка имеет вид имя_потомка имя_родителя.
 
 Формат вывода
-Выведите список всех элементов в лексикографическом порядке, для каждого элемента выводите количество всех его потомков.
+Программа должна вывести список всех элементов древа в лексикографическом порядке. После вывода имени каждого элемента необходимо
+вывести его высоту.
 
-Пример
+Пример 1
 Ввод
 9
 Alexei Peter_I
@@ -22,54 +23,89 @@ Peter_III Anna
 Paul_I Peter_III
 Alexander_I Paul_I
 Nicholaus_I Paul_I
+Вывод
+Alexander_I 4
+Alexei 1
+Anna 1
+Elizabeth 1
+Nicholaus_I 4
+Paul_I 3
+Peter_I 0
+Peter_II 2
+Peter_III 2
+
+Пример 2
+Ввод
+10
+AQHFYP MKFXCLZBT
+AYKOTYQ QIUKGHWCDC
+IWCGKHMFM WPLHJL
+MJVAURUDN QIUKGHWCDC
+MKFXCLZBT IWCGKHMFM
+PUTRIPYHNQ UQNGAXNP
+QIUKGHWCDC WPLHJL
+UQNGAXNP WPLHJL
+YURTPJNR QIUKGHWCDC
 
 Вывод
-Alexander_I 0
-Alexei 1
-Anna 4
-Elizabeth 0
-Nicholaus_I 0
-Paul_I 2
-Peter_I 8
-Peter_II 0
-Peter_III 3*/
+AQHFYP 3
+AYKOTYQ 2
+IWCGKHMFM 1
+MJVAURUDN 2
+MKFXCLZBT 2
+PUTRIPYHNQ 2
+QIUKGHWCDC 1
+UQNGAXNP 1
+WPLHJL 0
+YURTPJNR 2
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+Пример 3
+Ввод
+10
+BFNRMLH CSZMPFXBZ
+CSZMPFXBZ IHWBQDJ
+FMVQTU FUXATQUGIG
+FUXATQUGIG IRVAVMQKN
+GNVIZ IQGIGUJZ
+IHWBQDJ LACXYFQHSQ
+IQGIGUJZ JMUPNYRQD
+IRVAVMQKN GNVIZ
+JMUPNYRQD BFNRMLH
+
+Вывод
+BFNRMLH 3
+CSZMPFXBZ 2
+FMVQTU 9
+FUXATQUGIG 8
+GNVIZ 6
+IHWBQDJ 1
+IQGIGUJZ 5
+IRVAVMQKN 7
+JMUPNYRQD 4
+LACXYFQHSQ 0
+
+Примечания
+Эта задача имеет решение сложности O(n), но вам достаточно написать решение сложности O(n2) (не считая сложности обращения к
+элементам словаря). Пример ниже соответствует приведенному древу рода Романовых.
+*/
+
+import java.io.*;
 import java.util.*;
 
 public class Main {
     static class Tree {
-        Node root;
-        Map<String,String> dic = new HashMap<>(); // потомок - предок
-        Map<String, List<String>> parentChildren = new HashMap<>();
-        Map<String, Integer> ans = new HashMap<>();
+        Map<String,String> dic = new HashMap<>(); // потомок - родитель
+        Map<String, List<String>> parentChildren = new HashMap<>(); // родитель - список потомков
+        Map<String, Integer> ans = new HashMap<>(); // имя узла - высота для каждого узла
 
         void findAnswer() {
-            traversal(findRoot());
+            dfs(findRoot(), 0);
         }
-        int traversal(String parent) {
-            int count = 0;
+        void dfs(String parent, int level) {
+            ans.put(parent, level);
             if (parentChildren.containsKey(parent)) {
-                count += parentChildren.get(parent).size();
                 for (String child : parentChildren.get(parent))
-                    count += traversal(child);
-            }
-            ans.put(parent,count);
-            return count;
-        }
-
-
-        void addNodes (Node node) {
-            String parent = node.name;
-            if (parentChildren.containsKey(parent)) {
-                for (String childName : parentChildren.get(parent)) {
-                    Node child = new Node(childName);
-                    node.children.add(child);
-                    child.parent = node;
-                    addNodes(child);
-                }
+                    dfs(child, level + 1);
             }
         }
 
@@ -89,20 +125,6 @@ public class Main {
             List<String> children = parentChildren.getOrDefault(parentName, new ArrayList<>());
             children.add(childName);
             parentChildren.put(parentName, children);
-        }
-
-
-        class Node {
-            String name;
-            Node parent;
-            List<Node> children;
-            int descendants;
-
-            public Node(String name) {
-                this.name = name;
-                this.parent = null;
-                this.children = new ArrayList<>();
-            }
         }
     }
 
