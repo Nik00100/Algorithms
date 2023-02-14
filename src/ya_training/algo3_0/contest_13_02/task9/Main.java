@@ -27,33 +27,57 @@ package ya_training.algo3_0.contest_13_02.task9;
 21*/
 
 import java.io.*;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
+    static int[][] summedAreaTable;
+    static void fillSAT(int i, int j, int value) {
+        if (j > 0)
+            value += summedAreaTable[i][j - 1];
+        if (i > 0)
+            value += summedAreaTable[i - 1][j];
+        if (i > 0 && j > 0)
+            value -= summedAreaTable[i - 1][j - 1];
+        summedAreaTable[i][j] = value;
+    }
 
-    static void printMatrix(int[][] matrix) {
-        Arrays.stream(matrix)
-                .forEach(array-> System.out.println(Arrays.stream(array).boxed().collect(Collectors.toList())));
+    static int findSum(int x1, int y1, int x2, int y2) {
+        int A = 0, B = 0, C = 0, D = 0;
+        if (x1 > 0 && y1 > 0)
+            A = summedAreaTable[x1 - 1][y1 - 1];
+        if (y1 > 0)
+            B = summedAreaTable[x2][y1 - 1];
+        if (x1 > 0)
+            C = summedAreaTable[x1 - 1][y2];
+        D = summedAreaTable[x2][y2];
+
+        return A - B - C + D;
     }
 
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("input8.txt")));
 
         String[] nmk = reader.readLine().split(" ");
         int n = Integer.parseInt(nmk[0]);
         int m = Integer.parseInt(nmk[1]);
         int k = Integer.parseInt(nmk[2]);
 
-        int[][] matrix = new int[m][n];
-        for (int i=0; i<m; i++) {
+        summedAreaTable = new int[n][m];
+        for (int i = 0; i < n; i++) {
             String[] s = reader.readLine().split(" ");
-            for (int j=0; j<n; j++) {
-                matrix[i][j] = Integer.parseInt(s[j]);
+            for (int j = 0; j < m; j++) {
+                int value = Integer.parseInt(s[j]);
+                fillSAT(i, j, value);
             }
         }
 
-        printMatrix(matrix);
+        for (int i = 0; i < k; i++) {
+            String[] s = reader.readLine().split(" ");
+            int x1 = Integer.parseInt(s[0]) - 1;
+            int y1 = Integer.parseInt(s[1]) - 1;
+            int x2 = Integer.parseInt(s[2]) - 1;
+            int y2 = Integer.parseInt(s[3]) - 1;
+            System.out.println(findSum(x1, y1, x2, y2));
+        }
 
         reader.close();
     }

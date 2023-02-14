@@ -44,16 +44,27 @@ package ya_training.algo3_0.contest_13_02.task5;
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class Solution {
+    public static long calculate(int[] c) {
+        long answer = 0;
+        for (int i = 1; i < c.length; i++) {
+            if (c[i] <= c[i - 1]) {
+                answer += c[i];
+            } else {
+                answer += c[i - 1];
+            }
+        }
+        return answer;
+    }
 
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("input8.txt")));
 
-        String[] s = reader.readLine().split(" ");
-        int n = s.length;
-
-
-
-        reader.close();
+        int n = Integer.parseInt(reader.readLine());
+        int[] c = new int[n];
+        for (int i = 0; i < n; i++) {
+            c[i] = Integer.parseInt(reader.readLine());
+        }
+        System.out.println(calculate(c));
     }
 }

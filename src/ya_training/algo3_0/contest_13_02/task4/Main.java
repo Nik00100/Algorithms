@@ -55,9 +55,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        String[] s = reader.readLine().split(" ");
-        int n = s.length;
-
+        int n = Integer.parseInt(reader.readLine());
+        int k = Integer.parseInt(reader.readLine());
+        int r = Integer.parseInt(reader.readLine());
+        int c = Integer.parseInt(reader.readLine());
 
 
         reader.close();

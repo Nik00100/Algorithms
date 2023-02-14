@@ -27,11 +27,32 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(reader.readLine());
 
-        String[] s = reader.readLine().split(" ");
-        int n = s.length;
+        int[] X = new int[n];
+        int[] Y = new int[n];
+        for (int i=0; i<n; i++) {
+            String[] xy = reader.readLine().split(" ");
+            int x = Integer.parseInt(xy[0]);
+            int y = Integer.parseInt(xy[1]);
+            X[i] = x;
+            Y[i] = y;
+        }
 
+        Arrays.sort(X);
+        Arrays.sort(Y);
 
+        int[] answer = new int[4];
+        answer[0] = X[0];
+        answer[1] = Y[0];
+        answer[2] = X[n - 1];
+        answer[3] = Y[n - 1];
+
+        StringBuilder sb = new StringBuilder();
+        for (int num : answer)
+            sb.append(num).append(" ");
+        sb.deleteCharAt(sb.length() - 1);
+        System.out.println(sb.toString());
 
         reader.close();
     }
