@@ -49,17 +49,89 @@ package ya_training.algo3_0.contest_13_02.task4;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
+    static void printMatrix(int[][] matrix) {
+        Arrays.stream(matrix)
+                .forEach(array-> System.out.println(Arrays.stream(array).boxed().collect(Collectors.toList())));
+    }
+
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("input8.txt")));
 
         int n = Integer.parseInt(reader.readLine());
         int k = Integer.parseInt(reader.readLine());
         int r = Integer.parseInt(reader.readLine());
         int c = Integer.parseInt(reader.readLine());
 
+        boolean odd = n % 2 != 0;
+        int rows = (int) Math.round((double) n / 2);
+
+        //System.out.println(rows);
+
+        //int[][] tables = new int[493827161][2];
+        int[][] tables = new int[rows][2]; // matrix for all 493827161
+        // fill tables with pupils and give them variants
+        int variant = 1;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < 2; j++) {
+                tables[i][j] = variant;
+                variant++;
+                if (variant > k) {
+                    variant = 1;
+                }
+            }
+            if (variant > k) {
+                variant = 1;
+            }
+            if (i == (rows - 1) && odd) {
+                tables[i][1] = 0;
+            }
+        }
+
+        printMatrix(tables);
+
+        // Petya's variant
+        int variantPetya = tables[r - 1][c - 1];
+
+        // find all places with Petya's variant
+        List<Integer> schoolDesks = new ArrayList<>(); // find row
+        List<Integer> places = new ArrayList<>(); // find column
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (tables[i][j] == variantPetya) {
+                    schoolDesks.add(i + 1);
+                    places.add(j + 1);
+                }
+            }
+        }
+
+        //System.out.println(schoolDesks);
+        //System.out.println(places);
+
+        StringBuilder sb = new StringBuilder();
+        if (k == n || (schoolDesks.size() == 1 && schoolDesks.get(0) == r)) { // bad variant
+            System.out.println(-1);
+        } else {
+            for (int i = 0; i < schoolDesks.size(); i++) {
+                if (schoolDesks.get(i) == r) { // row, where Petya sitting
+                    if (schoolDesks.get(i) == schoolDesks.get(schoolDesks.size() - 1)) { // if he sit on last possible row
+                        sb.append(schoolDesks.get(i - 1)).append(" ").append(places.get(i - 1));
+                        System.out.println(sb.toString());
+                    } else {
+                        if (i > 0 && r - schoolDesks.get(i - 1) < schoolDesks.get(i + 1) - r) {
+                            sb.append(schoolDesks.get(i - 1)).append(" ").append(places.get(i - 1));
+                            System.out.println(sb.toString());
+                        } else {
+                            sb.append(schoolDesks.get(i + 1)).append(" ").append(places.get(i + 1));
+                            System.out.println(sb.toString());
+                        }
+                    }
+                }
+            }
+        }
 
         reader.close();
     }

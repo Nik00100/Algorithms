@@ -78,6 +78,7 @@ c: 16
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -87,7 +88,22 @@ public class Main {
         String s = reader.readLine();
         int n = s.length();
 
+        Set<Character> set = new HashSet<>();
+        Map<Character, Long> map = new HashMap<>();
+        for (int i=0; i<n; i++) {
+            char ch = s.charAt(i);
+            set.add(ch);
+            long repetitions = (long )(n - i) * (i + 1); // repetition quantity of current char in ith position
+            map.put(ch, map.getOrDefault(ch, 0L) + repetitions);
+        }
 
+        StringBuilder sb = new StringBuilder();
+        for (char ch : set.stream().sorted(Character::compareTo).collect(Collectors.toList())) {
+            long quant = map.get(ch);
+            sb.append(ch).append(": ").append(quant);
+            System.out.println(sb.toString());
+            sb.delete(0, sb.length());
+        }
 
         reader.close();
     }
