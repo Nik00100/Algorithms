@@ -158,43 +158,50 @@ public class Main {
             managers[queueNumber].tasksQueue.offer(task);
         }
 
-        Set<QueueManager> managerSet = Arrays.stream(managers).collect(Collectors.toSet());
-        for (int i = 0; i < n; i++){
-            Worker worker = workersQueue.poll();
-            long timeWhenReady = worker.getTimeWhenReady();
 
-            PriorityQueue<QueueManager> managerQueue = new PriorityQueue<>((a,b) -> {
-                if (a.usage != b.usage) {
-                    return a.usage - b.usage;
-                } else {
-                    if (timeWhenReady < a.getNextQueuingTime() && timeWhenReady >= b.getNextQueuingTime()) {
-                        return a.getNextQueuingTime() - b.getNextQueuingTime();
+        if (m >= n) {
+            for (int i = 0; i < n; i++) {
+                System.out.println(String.format("%d %d", i + 1, tasksList.get(i).queuingTime));
+            }
+        } else {
+            Set<QueueManager> managerSet = Arrays.stream(managers).collect(Collectors.toSet());
+            for (int i = 0; i < n; i++){
+                Worker worker = workersQueue.poll();
+                long timeWhenReady = worker.getTimeWhenReady();
+
+                PriorityQueue<QueueManager> managerQueue = new PriorityQueue<>((a,b) -> {
+                    if (a.usage != b.usage) {
+                        return a.usage - b.usage;
                     } else {
-                        return a.queueNumber - b.queueNumber;
+                        if (timeWhenReady < a.getNextQueuingTime() && timeWhenReady >= b.getNextQueuingTime()) {
+                            return a.getNextQueuingTime() - b.getNextQueuingTime();
+                        } else {
+                            return a.queueNumber - b.queueNumber;
+                        }
                     }
-                }
-            });
+                });
 
-            for (QueueManager manager : managerSet) {
-                managerQueue.offer(manager);
+                for (QueueManager manager : managerSet) {
+                    managerQueue.offer(manager);
+                }
+
+                QueueManager qm = managerQueue.poll();
+                managerSet.remove(qm);
+
+                Task task = qm.tasksQueue.poll();
+
+                task.assignWorker(worker);
+                worker.updateTimeWhenReady(task);
+                qm.updateManager();
+
+                workersQueue.offer(worker);
+
+                if (!qm.tasksQueue.isEmpty()) managerSet.add(qm);
             }
 
-            QueueManager qm = managerQueue.poll();
-            managerSet.remove(qm);
-
-            Task task = qm.tasksQueue.poll();
-
-            task.assignWorker(worker);
-            worker.updateTimeWhenReady(task);
-            qm.updateManager();
-
-            workersQueue.offer(worker);
-
-            if (!qm.tasksQueue.isEmpty()) managerSet.add(qm);
-        }
-
-        for (Task t : tasksList) {
-            System.out.println(t.worker.id + " " + t.startExecuted);
+            for (Task t : tasksList) {
+                System.out.println(t.worker.id + " " + t.startExecuted);
+            }
         }
 
         reader.close();

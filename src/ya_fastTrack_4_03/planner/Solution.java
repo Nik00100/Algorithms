@@ -37,7 +37,7 @@ public class Solution {
         }
 
 
-        Map<Integer, Integer> idle = new HashMap<>(); // для учета времени простоя очередей
+        Map<Integer, Integer> idle = new HashMap<>(); // для учета простоя очередей
         for (int i = 1; i <= k; i++) {
             idle.put(i, 0);
         }
