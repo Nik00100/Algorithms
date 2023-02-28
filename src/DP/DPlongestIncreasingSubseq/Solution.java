@@ -1,4 +1,4 @@
-package Search_SlidingWindow_QuickSelect_TwoPointer.BinarySearchLongestIncreasingSubsequence;
+package DP.DPlongestIncreasingSubseq;
 
 /*Given an integer array nums, return the length of the longest strictly increasing subsequence
 Example 1:
@@ -19,9 +19,14 @@ Finally, length of longest increase subsequence = len(sub) = 4.
 
 (1) if x is larger than all subs, append it
 (2) if subs[i-1] < x <= subs[i], update subs[i]
+*/
 
-                binary search another variant
-     int lengthOfLIS(int[] nums) {
+import java.util.Arrays;
+import java.util.List;
+
+public class Solution {
+    // based on binary search dp variant
+    int lengthOfLIS(int[] nums) {
         int[] dp = new int[nums.length];
         int size = 0;
 
@@ -39,31 +44,24 @@ Finally, length of longest increase subsequence = len(sub) = 4.
             if(left == size) size++;
         }
         return size;
-     }*/
+    }
 
-
-import java.util.*;
-
-public class Main {
-    static int lengthOfLIS(int[] nums) {
-        List<Integer> subs = new ArrayList<>();
-        for (int x : nums) {
-            int index = Collections.binarySearch(subs,x);
-            if (index < 0) {
-                index = ~index;
-            }
-            if (index == subs.size()) {
-                subs.add(x);
-            } else {
-                subs.set(index,x);
-            }
-        }
-        System.out.println(subs);
-        return subs.size();
+    // classic dp
+    static int lengthOfLIS_varII(int[] nums) {
+        int ans = 1, n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < i; j++)
+                if(nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                    ans = Math.max(ans, dp[i]);
+                }
+        return ans;
     }
 
     public static void main(String[] args) {
         int[] nums = {10,9,2,5,3,7,101,18};
-        System.out.println(lengthOfLIS(nums));
+        System.out.println(lengthOfLIS_varII(nums));
     }
 }
