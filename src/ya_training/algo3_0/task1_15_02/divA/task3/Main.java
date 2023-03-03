@@ -1,108 +1,92 @@
 package ya_training.algo3_0.task1_15_02.divA.task3;
 
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String expr = sc.nextLine();
-        boolean result = eval(expr);
-        System.out.println(result ? "1" : "0");
+
+    static final Map<Character, Integer> PRIORITY = new HashMap<>();
+
+    static {
+        PRIORITY.put('!', 3);
+        PRIORITY.put('&', 2);
+        PRIORITY.put('|', 1);
+        PRIORITY.put('^', 1);
     }
 
-    private static boolean eval(String expr) {
-        Stack<Boolean> operands = new Stack<>();
-        Stack<Character> operators = new Stack<>();
+    public static List<Character> infixToPostfix(String infix) {
+        List<Character> postfix = new ArrayList<>();
+        Deque<Character> stack = new ArrayDeque<>();
 
-        for (int i = 0; i < expr.length(); i++) {
-            char ch = expr.charAt(i);
-            switch (ch) {
-                case '0':
-                case '1':
-                    boolean operand = ch == '1';
-                    if (!operators.isEmpty() && operators.peek() == '!') {
-                        operators.pop();
-                        operand = !operand;
-                    }
-                    operands.push(operand);
-                    break;
-                case '!':
-                    operators.push('!');
-                    break;
-                case '&':
-                case '|':
-                case '^':
-                    operators.push(ch);
-                    break;
-                case '(':
-                    int j = findClosingBracket(expr, i);
-                    boolean subExpr = eval(expr.substring(i+1, j));
-                    if (!operators.isEmpty() && operators.peek() == '!') {
-                        operators.pop();
-                        subExpr = !subExpr;
-                    }
-                    operands.push(subExpr);
-                    i = j;
-                    break;
-                default:
-                    break;
-            }
-            while (!operators.isEmpty() && !operands.isEmpty() && precedence(operators.peek()) >= precedence(ch)) {
-                char op = operators.pop();
-                boolean op2 = operands.pop();
-                boolean op1 = operands.pop();
-                operands.push(evaluate(op1, op2, op));
-            }
-        }
-
-        while (!operators.isEmpty() && !operands.isEmpty()) {
-            char op = operators.pop();
-            boolean op2 = operands.pop();
-            boolean op1 = operands.pop();
-            operands.push(evaluate(op1, op2, op));
-        }
-
-        return operands.pop();
-    }
-
-    private static int precedence(char op) {
-        switch (op) {
-            case '!':
-                return 3;
-            case '&':
-                return 2;
-            case '|':
-            case '^':
-                return 1;
-            default:
-                return 0;
-        }
-    }
-
-    private static boolean evaluate(boolean op1, boolean op2, char op) {
-        switch (op) {
-            case '&':
-                return op1 && op2;
-            case '|':
-                return op1 || op2;
-            case '^':
-                return op1 ^ op2;
-            default:
-                return false;
-        }
-    }
-
-    private static int findClosingBracket(String expr, int i) {
-        int level = 1;
-        while (level > 0 && i < expr.length()-1) {
-            i++;
-            char ch = expr.charAt(i);
-            if (ch == '(') {
-                level++;
+        for (char ch : infix.toCharArray()) {
+            if (Character.isDigit(ch)) {
+                postfix.add(ch);
+            } else if (ch == '(') {
+                stack.push(ch);
             } else if (ch == ')') {
-                level--;
+                while (!stack.isEmpty() && stack.peek() != '(') {
+                    postfix.add(stack.pop());
+                }
+                stack.pop();
+            } else {
+                while (!stack.isEmpty() && PRIORITY.getOrDefault(stack.peek(), 0)
+                        >= PRIORITY.getOrDefault(ch, 0)) {
+                    postfix.add(stack.pop());
+                }
+                stack.push(ch);
             }
         }
-        return i;
+
+        while (!stack.isEmpty()) {
+            postfix.add(stack.pop());
+        }
+
+        return postfix;
+    }
+
+    static int calculate(List<Character> postfix) {
+        Stack<Integer> stack = new Stack<>();
+        int n = postfix.size();
+
+        for (int i = 0; i < n; i++) {
+            if (Character.isDigit(postfix.get(i))) {
+                int num = postfix.get(i) - '0';
+                stack.push(num);
+            } else {
+                if (postfix.get(i) == '!') {
+                    int argument = stack.pop() == 1 ? 0 : 1;
+                    stack.push(argument);
+                } else if (stack.size() >= 2) {
+                    int secondArgument = stack.pop();
+                    int firstArgument = stack.pop();
+                    int res;
+                    if (postfix.get(i) == '&') {
+                        res = firstArgument & secondArgument;
+                        stack.push(res);
+                    } else if (postfix.get(i) == '^') {
+                        res = firstArgument ^ secondArgument;
+                        stack.push(res);
+                    } else if (postfix.get(i) == '|') {
+                        res = firstArgument | secondArgument;
+                        stack.push(res);
+                    }
+                }
+            }
+        }
+        return stack.pop();
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        String infix = reader.readLine().trim();
+        int n = infix.length();
+
+        List<Character> postfix = infixToPostfix(infix);
+
+        System.out.println(postfix);
+        System.out.println(calculate(postfix));
+
+        reader.close();
     }
 }

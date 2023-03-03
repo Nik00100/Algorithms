@@ -31,7 +31,7 @@ public class Main {
         int n = s.length();
 
         Stack<Integer> stack = new Stack<>();
-        int[] array = new int[n];
+        //int[] array = new int[n];
 
         for (int i = 0; i < n; i++) {
             if (Character.isDigit(s.charAt(i))) {
