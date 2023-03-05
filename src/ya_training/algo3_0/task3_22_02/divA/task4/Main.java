@@ -4,9 +4,11 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-
     static final int BEGIN = getSecond("09:00:00");
-    static final int WORK_TIME = 32400;
+    static final int FINISH = getSecond("18:00:00");
+    static final int START_DINNER = getSecond("13:00:00");
+    static final int END_DINNER = getSecond("14:00:00");
+
 
     static int getSecond(String time) {
         String[] s = time.split(":");
@@ -16,34 +18,45 @@ public class Main {
         return hour*3600 + minute*60 + second;
     }
 
-    static int[] fillTime(int[] begin, int[] time) {
-        int[] answer = new int[WORK_TIME];
+    static void fillTime(int begin, int workSpeed, int[] timeBeforeLunch, int[] timeAfterLunch) {
+        if (begin < START_DINNER) {
+            Arrays.fill(timeBeforeLunch, begin - BEGIN, timeBeforeLunch.length, workSpeed);
+            Arrays.fill(timeAfterLunch, 0, timeAfterLunch.length, workSpeed);
+        } else if (begin>= START_DINNER && begin <= END_DINNER) {
+            Arrays.fill(timeAfterLunch, 0, timeAfterLunch.length, workSpeed);
+        } else {
+            Arrays.fill(timeAfterLunch, begin - END_DINNER, timeAfterLunch.length, workSpeed);
+        }
+    }
 
-        return answer;
+    static int count(int[] dp, int[] time) {
+        Arrays.fill(dp, 0);
+        int n = time.length;
+        for (int i = 0; i < n; i++) {
+            if (i > 0) dp[i] = Math.max(dp[i - 1], dp[i]);
+            if (i + time[i] <= n) dp[i+time[i]] = Math.max(dp[i + time[i]], dp[i] + 1);
+        }
+        return Math.max(dp[n], dp[n - 1]);
     }
 
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("input.txt")));
 
         int n = Integer.parseInt(reader.readLine());
-        int[] time = new int[WORK_TIME];
-        int[] dp = new int[WORK_TIME + 1];
-        Arrays.fill(dp, 0);
-        Arrays.fill(time, 0);
+
+        int N1 = START_DINNER - BEGIN;
+        int N2 = FINISH - END_DINNER;
+        int[] timeBeforeLunch = new int[N1];
+        int[] timeAfterLunch = new int[N2];
 
         for (int i = 0; i < n; i++) {
             String[] s = reader.readLine().split(" ");
             int begin = getSecond(s[0].trim());
-            time[begin - BEGIN] = Integer.parseInt(s[1].trim());
+            int workSpeed = Integer.parseInt(s[1].trim());
+            fillTime(begin, workSpeed, timeBeforeLunch, timeAfterLunch);
         }
 
-
-        for (int i = 0; i < 32400; i++) {
-            if (i+1 < 32400) dp[i+1] = Math.max(dp[i+1], dp[i]);
-            if (i+time[i] < 32400) dp[i+time[i]] = Math.max(dp[i+time[i]], dp[i]+1);
-        }
-
-        System.out.println(dp[32399]);
+        System.out.println(count(new int[N1 + 1], timeBeforeLunch) + count(new int[N2 + 1], timeAfterLunch));
 
         reader.close();
     }

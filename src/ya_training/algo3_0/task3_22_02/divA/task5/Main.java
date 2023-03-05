@@ -8,38 +8,22 @@ public class Main {
         int n = scanner.nextInt();
         int a = scanner.nextInt();
         int b = scanner.nextInt();
-        int[] minCandies = new int[n + 1];
-        boolean[] known = new boolean[n + 1];
 
-        minCandies[1] = 0;
-        known[1] = true;
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 0;
 
         for (int i = 2; i <= n; i++) {
-            minCandies[i] = Integer.MAX_VALUE;
-
-            for (int j = 1; j < i; j++) {
-                if (i % j == 0) {
-                    minCandies[i] = Math.min(minCandies[i], minCandies[j] + a);
-                } else {
-                    minCandies[i] = Math.min(minCandies[i], minCandies[j] + b);
+            int min = Integer.MAX_VALUE;
+            for (int k = 1; k < i; k++) {
+                int currMax = Math.max(dp[k] + a, dp[i - k] + b);
+                if (currMax < min) {
+                    min = currMax;
                 }
             }
-
-            for (int j = i + i; j <= n; j += i) {
-                minCandies[j] = Math.min(minCandies[j], minCandies[i] + b);
-            }
-
-            known[minCandies[i]] = true;
+            dp[i] = min;
         }
 
-        int result = Integer.MAX_VALUE;
-
-        for (int i = 2; i <= n; i++) {
-            if (!known[i]) {
-                result = Math.min(result, minCandies[i]);
-            }
-        }
-
-        System.out.println(result);
+        System.out.println(dp[n]);
     }
 }
