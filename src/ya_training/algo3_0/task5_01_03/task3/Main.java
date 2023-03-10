@@ -15,7 +15,7 @@ public class Main {
                 dfs(neighbor, 3 - color); // идем в другую вершину
             }
             else if (colors[neighbor] == color) { // ребро соединяет вершины одинакового цвета,граф не двудолен
-                possible = false; // не двудолен - значит не двудолен
+                possible = false; // значит не двудолен
                 return;
             }
         }
