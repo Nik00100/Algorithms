@@ -102,4 +102,16 @@ class Deque<T> {
         }
         return array[rear];
     }
+
+    public static void main(String[] args) {
+        Deque<Integer> deq = new Deque<>(10);
+        deq.addFirst(2);
+        deq.addLast(3);
+        System.out.println(deq.peekFirst());
+        System.out.println(deq.peekLast());
+        deq.removeFirst();
+        System.out.println(deq.size);
+        System.out.println(deq.peekLast());
+        System.out.println(deq.peekFirst());
+    }
 }
