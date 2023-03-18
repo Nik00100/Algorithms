@@ -76,7 +76,7 @@ package ya_int_0322.perfect;
 
 import java.util.*;
 
-public class  Main {
+public class Backtracking {
     static class Sculpture implements  Comparable<Sculpture>{
         int timeToBecomePerfect;
         int index;

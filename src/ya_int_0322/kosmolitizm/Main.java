@@ -18,11 +18,12 @@ package ya_int_0322.kosmolitizm;
 непришедших на выпускной одноклассников.
 
 Формат ввода
-Первая строка содержит одно целое числоN(1≤N≤2⋅10^5) — количество стран, рассматриваемых для переезда.
-Вторая строка содержитN целых чисел через пробел ai(0≤ai≤10^9) — минимальный доход, необходимый для переезда в i-ю страну.
+Первая строка содержит одно целое число N(1≤N≤2⋅10^5) — количество стран, рассматриваемых для переезда.
+Вторая строка содержит N целых чисел через пробел ai(0≤ai≤10^9) — минимальный доход, необходимый для переезда в i-ю страну.
 Третья строка содержит N целых чисел через пробел bi(0≤bi≤1) — bi равно 1, если для переезда в i-ю страну обязательно
 наличие высшего образования.
-Четвертая строка содержит N целых чисел через пробелmci(0≤ci≤1) — ci равно 1, если непосредственные дети граждан i-й страны могут переехать в i-ю страну,
+Четвертая строка содержит N целых чисел через пробел ci(0≤ci≤1) — ci равно 1, если непосредственные дети граждан i-й страны
+могут переехать в i-ю страну,
 не удовлетворяя условиям на доход и высшее образование. Страны нумеруются с 1 по N в порядке ввода.
 Пятая строка содержит одно целое число Q(1≤Q≤2⋅10^5) — количество одноклассников, не пришедших на выпускной.
 Шестая строка содержит Q целых чисел через пробел xj(0≤xj≤10^9) — доход j-го одноклассника.
@@ -73,38 +74,100 @@ package ya_int_0322.kosmolitizm;
 import java.util.*;
 
 public class Main {
+
+    static class Country implements Comparable<Country> {
+        int id, income, education, children;
+
+        public Country(int id, int income, int education, int children) {
+            this.id = id;
+            this.income = income;
+            this.education = education;
+            this.children = children;
+        }
+
+        @Override
+        public int compareTo(Country other) {
+            if (this.income != other.income) {
+                return Integer.compare(this.income, other.income);
+            } else if (this.education != other.education) {
+                return Integer.compare(this.education, other.education);
+            } else if (this.children != other.children) {
+                return Integer.compare(other.children, this.children);
+            } else {
+                return Integer.compare(this.id, other.id);
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[] minIncome = new int[n];
-        boolean[] higherEducationRequired = new boolean[n];
-        boolean[] childrenAllowed = new boolean[n];
+        Scanner scanner = new Scanner(System.in);
+
+        int n = scanner.nextInt();
+        int[] income = new int[n];
+        int[] education = new int[n];
+        int[] children = new int[n];
         for (int i = 0; i < n; i++) {
-            minIncome[i] = sc.nextInt();
+            income[i] = scanner.nextInt();
         }
         for (int i = 0; i < n; i++) {
-            higherEducationRequired[i] = sc.nextInt() == 1;
+            education[i] = scanner.nextInt();
         }
         for (int i = 0; i < n; i++) {
-            childrenAllowed[i] = sc.nextInt() == 1;
+            children[i] = scanner.nextInt();
         }
-        int q = sc.nextInt();
+
+        Country[] countries = new Country[n];
+        for (int i = 0; i < n; i++) {
+            countries[i] = new Country(i + 1, income[i], education[i], children[i]);
+        }
+
+        Arrays.sort(countries);
+
+        int q = scanner.nextInt();
+        int[] x = new int[q];
+        int[] y = new int[q];
+        int[] z = new int[q];
+        int[] result = new int[q];
+
         for (int i = 0; i < q; i++) {
-            int income = sc.nextInt();
-            boolean hasHigherEducation = sc.nextInt() == 1;
-            int parentCitizenship = sc.nextInt();
-            int chosenCountry = 0;
-            int maxCountry = n;
-            for (int j = 0; j < n; j++) {
-                if (income >= minIncome[j] && (!higherEducationRequired[j] || hasHigherEducation) &&
-                        (parentCitizenship == 0 || parentCitizenship == j + 1 || childrenAllowed[j])) {
-                    if (chosenCountry == 0 || j < maxCountry) {
-                        chosenCountry = j + 1;
-                        maxCountry = j;
+            x[i] = scanner.nextInt();
+        }
+        for (int i = 0; i < q; i++) {
+            y[i] = scanner.nextInt();
+        }
+        for (int i = 0; i < q; i++) {
+            z[i] = scanner.nextInt();
+        }
+
+        for (int i = 0; i < q; i++) {
+            int xIncome = x[i];
+            int yEducation = scanner.nextInt();
+
+            int maxCountry = 0;
+            int maxIncome = -1;
+
+            int left = 0, right = n - 1;
+            while (left <= right) {
+                int mid = (left + right) / 2;
+
+                if (countries[mid].education >= yEducation && countries[mid].income >= xIncome) {
+                    if (countries[mid].income > maxIncome) {
+                        maxIncome = countries[mid].income;
+                        maxCountry = countries[mid].id;
                     }
+                    left = mid + 1;
+                } else if (countries[mid].children == 1) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
                 }
             }
-            System.out.print(chosenCountry + " ");
+
+            result[i] = maxCountry;
+        }
+
+        for (int i = 0; i < q; i++) {
+            System.out.println(result[i]);
         }
     }
 }
