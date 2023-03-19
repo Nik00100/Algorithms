@@ -71,7 +71,7 @@ package ya_int_0322.buy;
 
 import java.util.*;
 
-public class TwoTraversal {
+public class TwoTraversal_standardProfitCount {
     static int maxProfitForTwoTransactionPartitionDay(int[] prices) {
         int n = prices.length;
         if (n < 2) {

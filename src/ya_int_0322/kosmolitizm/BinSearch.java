@@ -73,7 +73,7 @@ package ya_int_0322.kosmolitizm;
 
 import java.util.*;
 
-public class Main {
+public class BinSearch {
 
     static class Country implements Comparable<Country> {
         int id, income, education, children;
