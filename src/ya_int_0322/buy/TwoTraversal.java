@@ -71,7 +71,74 @@ package ya_int_0322.buy;
 
 import java.util.*;
 
-public class Main {
+public class TwoTraversal {
+    static int maxProfitForTwoTransactionPartitionDay(int[] prices) {
+        int n = prices.length;
+        if (n < 2) {
+            return 0;
+        }
+        // forward traversal: find the maximum profit for one transaction ending at each day
+        int[] maxProfits1 = new int[n];
+        int minPrice1 = prices[0];
+        for (int i = 1; i < n; i++) {
+            maxProfits1[i] = Math.max(maxProfits1[i-1], prices[i] - minPrice1);
+            minPrice1 = Math.min(minPrice1, prices[i]);
+        }
+        // backward traversal: find the maximum profit for one transaction starting at each day
+        int[] maxProfits2 = new int[n];
+        int maxPrice2 = prices[n-1];
+        for (int i = n-2; i >= 0; i--) {
+            maxProfits2[i] = Math.max(maxProfits2[i+1], maxPrice2 - prices[i]);
+            maxPrice2 = Math.max(maxPrice2, prices[i]);
+        }
+        // find the maximum profit for two transactions
+        int maxProfit = 0;
+        int maxProfitDay = -1;
+        for (int i = 0; i < n; i++) {
+            if (maxProfit < maxProfits1[i] + maxProfits2[i]) {
+                maxProfit = maxProfits1[i] + maxProfits2[i];
+                maxProfitDay = i;
+            }
+        }
+
+        return maxProfitDay;
+    }
+
+    // find days for one transaction
+    static int[] findBuySellDates(int[] prices, int startSearchDay, int endSearchDay) {
+        if (startSearchDay == endSearchDay) {
+            return new int[] {}; // no profit can be obtained
+        }
+
+        int maxProfit = 0;
+        int buyDate = 0;
+        int sellDate = 0;
+
+        int i = startSearchDay;
+        while (i < endSearchDay) {
+            while (i < endSearchDay && prices[i + 1] <= prices[i]) i++;
+            int curBuyDate = i;
+
+            while (i < endSearchDay && prices[i + 1] >= prices[i]) i++;
+            int curSellDate = i;
+
+            if (prices[curSellDate] - prices[curBuyDate] > maxProfit) {
+                maxProfit = prices[curSellDate] - prices[curBuyDate];
+                buyDate = curBuyDate; // update buy date
+                sellDate = curSellDate; // update sell date
+            }
+        }
+
+        System.out.println(maxProfit);
+
+        if (maxProfit == 0) {
+            return new int[] {}; // no profit can be obtained
+        } else {
+            return new int[] {buyDate, sellDate}; // return buy and sell dates
+        }
+    }
+
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
@@ -79,36 +146,16 @@ public class Main {
         for (int i = 0; i < n; i++) {
             prices[i] = sc.nextInt();
         }
-        List<int[]> buys = new ArrayList<>(); // список покупок
-        List<int[]> sells = new ArrayList<>(); // список продаж
-        int buy = -1; // индекс дня покупки
-        int sell = -1; // индекс дня продажи
-        for (int i = 0; i < n - 1; i++) {
-            if (prices[i] < prices[i + 1]) { // цена растет
-                if (buy == -1) { // если еще не было покупок
-                    buy = i; // покупаем в i-й день
-                }
-            } else if (prices[i] > prices[i + 1]) { // цена падает
-                if (buy != -1) { // если была покупка
-                    sell = i; // продаем в i-й день
-                    buys.add(new int[]{buy, prices[buy]}); // добавляем покупку в список
-                    sells.add(new int[]{sell, prices[sell]}); // добавляем продажу в список
-                    buy = -1; // сбрасываем покупку
-                    sell = -1; // сбрасываем продажу
-                }
-            }
+
+        int partitionDay = maxProfitForTwoTransactionPartitionDay(prices);
+        System.out.println(partitionDay);
+
+        if (partitionDay >=0) {
+            System.out.println(Arrays.stream(findBuySellDates(prices, 0, partitionDay)).boxed().toList());
+            System.out.println(Arrays.stream(findBuySellDates(prices, partitionDay, prices.length - 1)).boxed().toList());
         }
-        if (buy != -1) { // если была последняя покупка
-            sells.add(new int[]{n - 1, prices[n - 1]}); // продаем в последний день
-            buys.add(new int[]{buy, prices[buy]}); // добавляем покупку в список
-        }
-        int k = buys.size(); // количество пар сделок
-        System.out.println(k);
-        for (int i = 0; i < k; i++) {
-            int[] b = buys.get(i);
-            int[] s = sells.get(i);
-            System.out.println((b[0] + 1) + " " + (s[0] + 1)); // выводим индексы дней покупки и продажи
-        }
+
+        sc.close();
     }
 }
 
