@@ -142,7 +142,7 @@ public class TwoTraversal_stockProfitCount {
         if (maxProfit == currentStartBudget) {
             return null; // no profit can be obtained
         } else {
-            return new Transaction(buyDate, sellDate, maxProfit); // return buy, sell dates and profit
+            return new Transaction(buyDate + 1, sellDate + 1, maxProfit); // return buy, sell dates and profit
         }
     }
 
@@ -160,13 +160,22 @@ public class TwoTraversal_stockProfitCount {
         //System.out.println(partitionDay);
 
         Transaction transaction1 = findBuySellDates(prices, 0, partitionDay, START_BUDGET);
+        Transaction transaction2 = null;
+        int total = 0;
+
         if (partitionDay >=0 && transaction1 != null) {
-            System.out.println(transaction1);
-            Transaction transaction2 = findBuySellDates(prices, partitionDay, prices.length - 1, transaction1.profit);
+            total++;
+            transaction2 = findBuySellDates(prices, partitionDay, prices.length - 1, transaction1.profit);
             if (transaction2 != null)
-                System.out.println(transaction2);
-        } else {
-            System.out.println("0");
+                total++;
+        }
+
+        System.out.println(total);
+        if (total == 2) {
+            System.out.println(String.format("%d %d", transaction1.buyDate, transaction1.sellDate));
+            System.out.println(String.format("%d %d", transaction2.buyDate, transaction2.sellDate));
+        } else if (total == 1) {
+            System.out.println(String.format("%d %d", transaction1.buyDate, transaction1.sellDate));
         }
 
         sc.close();

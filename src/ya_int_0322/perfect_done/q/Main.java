@@ -1,17 +1,26 @@
-package ya_int_0322.perfect;
+package ya_int_0322.perfect_done.q;
 
 import java.util.*;
 
-public class GreedyKnapsak {
-    static List<Integer> findMaxSubsequence(int[] arr, long target) {
+public class Main {
+    static class C {
+        int time;
+        int index;
+
+        public C(int time, int index) {
+            this.time = time;
+            this.index = index;
+        }
+    }
+    static List<Integer> findMaxSubsequence(C[] arr, long target) {
         int n = arr.length;
-        Arrays.sort(arr);
+        Arrays.sort(arr, (o1, o2) -> o1.time == o2.time ? o1.index - o2.index : o1.time - o2.time);
         long currSum = 0;
         List<Integer> currSubsequence = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            if (currSum + arr[i] <= target) {
-                currSum += arr[i];
-                currSubsequence.add(arr[i]);
+            if (currSum + arr[i].time <= target) {
+                currSum += arr[i].time;
+                currSubsequence.add(arr[i].index);
             } else {
                 break;
             }
@@ -24,13 +33,12 @@ public class GreedyKnapsak {
         int n = scanner.nextInt();
         int x = scanner.nextInt();
         long t = scanner.nextLong();
-        int[] a = new int[n];
+        C[] a = new C[n];
         for (int i = 0; i < n; i++) {
             int num = scanner.nextInt();
-            a[i] = Math.abs(num - x);
+            int time = Math.abs(num - x);
+            a[i] = new C(time, i + 1);
         }
-
-        System.out.println(Arrays.stream(a).boxed().toList());
 
         List<Integer> answer = findMaxSubsequence(a, t);
         System.out.println(answer.size());
@@ -39,7 +47,6 @@ public class GreedyKnapsak {
             sb.append(num).append(" ");
         }
         System.out.println(sb.toString().trim());
-
 
         scanner.close();
     }

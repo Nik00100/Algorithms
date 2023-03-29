@@ -1,4 +1,4 @@
-package ya_fastTrack_4_03.optimal_load;
+package ya_fastTrack.optimal_load;
 
 /*Ящики нужно доставить.
 

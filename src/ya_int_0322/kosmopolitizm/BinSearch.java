@@ -1,4 +1,4 @@
-package ya_int_0322.kosmolitizm;
+package ya_int_0322.kosmopolitizm;
 
 /*Кузя был очень удивлён, когда на десятилетие выпуска не приехала большая часть его одноклассников.
 «Чему тут удивляться, разъехались по миру», — сказал ему один из пришедших одноклассников.
@@ -72,10 +72,12 @@ package ya_int_0322.kosmolitizm;
 */
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BinSearch {
+    private static int MAX_REQUIRED_INCOME = 1000_000_000;
 
-    static class Country implements Comparable<Country> {
+    static class Country {
         int id, income, education, children;
 
         public Country(int id, int income, int education, int children) {
@@ -85,17 +87,20 @@ public class BinSearch {
             this.children = children;
         }
 
-        @Override
-        public int compareTo(Country other) {
-            if (this.income != other.income) {
-                return Integer.compare(this.income, other.income);
-            } else if (this.education != other.education) {
-                return Integer.compare(this.education, other.education);
-            } else if (this.children != other.children) {
-                return Integer.compare(other.children, this.children);
-            } else {
-                return Integer.compare(this.id, other.id);
-            }
+        public int getId() {
+            return id;
+        }
+
+        public int getIncome() {
+            return income;
+        }
+
+        public int getEducation() {
+            return education;
+        }
+
+        public int getChildren() {
+            return children;
         }
     }
 
@@ -121,7 +126,18 @@ public class BinSearch {
             countries[i] = new Country(i + 1, income[i], education[i], children[i]);
         }
 
-        Arrays.sort(countries);
+        Map<Integer, Integer> mapIncomeIdNotNeedHigherEd = new HashMap<>();
+        List<Country> countriesSortedByIncomeIdNotNeedHigherEd = Arrays.stream(countries)
+                .filter(country -> country.getEducation() == 0)
+                .sorted(Comparator.comparing(Country::getIncome).thenComparing(Country::getId))
+                .collect(Collectors.toList());
+        fillMinIdForEachIncome(countriesSortedByIncomeIdNotNeedHigherEd, mapIncomeIdNotNeedHigherEd);
+
+        Map<Integer, Integer> mapIncomeId = new HashMap<>();
+        List<Country> countriesSortedByIncomeId = Arrays.stream(countries)
+                .sorted(Comparator.comparing(Country::getIncome).thenComparing(Country::getId))
+                .collect(Collectors.toList());
+        fillMinIdForEachIncome(countriesSortedByIncomeId, mapIncomeId);
 
         int q = scanner.nextInt();
         int[] x = new int[q];
@@ -141,33 +157,57 @@ public class BinSearch {
 
         for (int i = 0; i < q; i++) {
             int xIncome = x[i];
-            int yEducation = scanner.nextInt();
+            int yEducation = y[i];
+            int zParentCountry = z[i] - 1;
 
-            int maxCountry = 0;
-            int maxIncome = -1;
-
-            int left = 0, right = n - 1;
-            while (left <= right) {
-                int mid = (left + right) / 2;
-
-                if (countries[mid].education >= yEducation && countries[mid].income >= xIncome) {
-                    if (countries[mid].income > maxIncome) {
-                        maxIncome = countries[mid].income;
-                        maxCountry = countries[mid].id;
-                    }
-                    left = mid + 1;
-                } else if (countries[mid].children == 1) {
-                    right = mid - 1;
-                } else {
-                    left = mid + 1;
-                }
+            int parentCountryId = Integer.MAX_VALUE;
+            if (zParentCountry >= 0 && countries[zParentCountry].children == 1) {
+                parentCountryId= countries[zParentCountry].id;
             }
 
-            result[i] = maxCountry;
+            int countryId = Integer.MAX_VALUE;
+            if (yEducation == 0) {
+                int rightBorder = binSearch(countriesSortedByIncomeIdNotNeedHigherEd, xIncome) - 1;
+                int countryIncome = countriesSortedByIncomeIdNotNeedHigherEd.get(rightBorder).getIncome();
+                countryId = mapIncomeIdNotNeedHigherEd.get(countryIncome);
+            } else {
+                int rightBorder = binSearch(countriesSortedByIncomeId, xIncome) - 1;
+                int countryIncome = countriesSortedByIncomeId.get(rightBorder).getIncome();
+                countryId = mapIncomeId.get(countryIncome);
+            }
+
+            countryId = Math.min(countryId, parentCountryId);
+
+            result[i] = countryId == Integer.MAX_VALUE ? 0 : countryId;
         }
 
         for (int i = 0; i < q; i++) {
             System.out.println(result[i]);
+        }
+    }
+
+    static int binSearch (List<Country> countriesSortedByIncomeId, int xIncome) {
+        int l = 0;
+        int r = countriesSortedByIncomeId.size();
+        while (l < r - 1) {
+           int m = (r - l) / 2;
+           if (countriesSortedByIncomeId.get(m).getIncome() >= xIncome) {
+               r = m;
+           } else {
+               l = m;
+           }
+        }
+        return r;
+    }
+
+    static void fillMinIdForEachIncome(List<Country> countriesSortedByIncomeId, Map<Integer, Integer> mapForIncomeId) {
+        int prevCountryIncome = Integer.MAX_VALUE;
+        for (Country country : countriesSortedByIncomeId) {
+            if (prevCountryIncome != country.getIncome()) {
+                int prevCountryId = mapForIncomeId.getOrDefault(prevCountryIncome, Integer.MAX_VALUE);
+                int id = Math.min(prevCountryId, country.getId());
+                mapForIncomeId.put(country.getIncome(), id);
+            }
         }
     }
 }

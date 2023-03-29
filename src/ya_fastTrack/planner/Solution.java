@@ -1,4 +1,4 @@
-package ya_fastTrack_4_03.planner;
+package ya_fastTrack.planner;
 
 import java.util.*;
 import java.util.stream.Collectors;
