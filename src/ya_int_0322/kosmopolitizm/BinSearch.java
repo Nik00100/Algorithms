@@ -161,20 +161,21 @@ public class BinSearch {
             int zParentCountry = z[i] - 1;
 
             int parentCountryId = Integer.MAX_VALUE;
-            if (zParentCountry >= 0 && countries[zParentCountry].children == 1) {
+            if (zParentCountry > 0 && countries[zParentCountry].children == 1) {
                 parentCountryId= countries[zParentCountry].id;
             }
 
             int countryId = Integer.MAX_VALUE;
+            int countryIncome;
             if (yEducation == 0) {
-                int rightBorder = binSearch(countriesSortedByIncomeIdNotNeedHigherEd, xIncome) - 1;
-                int countryIncome = countriesSortedByIncomeIdNotNeedHigherEd.get(rightBorder).getIncome();
-                countryId = mapIncomeIdNotNeedHigherEd.get(countryIncome);
+                countryIncome = binSearch(countriesSortedByIncomeIdNotNeedHigherEd, xIncome);
+                countryId = mapIncomeIdNotNeedHigherEd.getOrDefault(countryIncome, Integer.MAX_VALUE);
             } else {
-                int rightBorder = binSearch(countriesSortedByIncomeId, xIncome) - 1;
-                int countryIncome = countriesSortedByIncomeId.get(rightBorder).getIncome();
-                countryId = mapIncomeId.get(countryIncome);
+                countryIncome = binSearch(countriesSortedByIncomeId, xIncome);
+                countryId = mapIncomeId.getOrDefault(countryIncome, Integer.MAX_VALUE);
             }
+
+            //System.out.println(rightBorder);
 
             countryId = Math.min(countryId, parentCountryId);
 
@@ -188,16 +189,18 @@ public class BinSearch {
 
     static int binSearch (List<Country> countriesSortedByIncomeId, int xIncome) {
         int l = 0;
-        int r = countriesSortedByIncomeId.size();
-        while (l < r - 1) {
-           int m = (r - l) / 2;
-           if (countriesSortedByIncomeId.get(m).getIncome() >= xIncome) {
+        int r = countriesSortedByIncomeId.size() - 1;
+        while (l < r) {
+           int m = (r + l) / 2;
+           if (xIncome <= countriesSortedByIncomeId.get(m).getIncome()) {
                r = m;
            } else {
-               l = m;
+               l = m + 1;
            }
         }
-        return r;
+        return countriesSortedByIncomeId.get(l).getIncome() <= xIncome
+                ? countriesSortedByIncomeId.get(l).getIncome()
+                : Integer.MAX_VALUE;
     }
 
     static void fillMinIdForEachIncome(List<Country> countriesSortedByIncomeId, Map<Integer, Integer> mapForIncomeId) {

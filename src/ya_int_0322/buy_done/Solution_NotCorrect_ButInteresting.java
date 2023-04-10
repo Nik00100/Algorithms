@@ -1,6 +1,7 @@
-package ya_int_0322.buy;
+package ya_int_0322.buy_done;
 
-/*Кузя изучает биографии самых известных трейдеров на бирже. Недавно Кузя прочитал историю о том, как, совершив всего четыре
+/*
+Кузя изучает биографии самых известных трейдеров на бирже. Недавно Кузя прочитал историю о том, как, совершив всего четыре
 сделки (две покупки и две продажи) акций на бирже, трейдер смог превратить один рубль в целое состояние.
 Кузя лучше всех знает, что такой удачи не бывает, а значит у трейдера была инсайдерская информация о ценах на ближайшие дни.
 «Да если бы у меня была инсайдерская информация, я бы еще больше денег за четыре сделки получил!» — заявил Кузя перед
@@ -69,137 +70,112 @@ package ya_int_0322.buy;
 Обратите внимание, что если вывести одну сделку «2 3» вместо нуля сделок, то ответ будет засчитан как верный
 (так как итоговое количество денег будет одинаково оптимальным).*/
 
-import java.util.Scanner;
+import java.util.*;
 
-public class TwoTraversal_stockProfitCount {
+public class Solution_NotCorrect_ButInteresting {
+    static class Transaction {
+        int buyDay;
+        int sellDay;
+        double profit;
+
+        public Transaction(int buyDay, int sellDay, double profit) {
+            this.buyDay = buyDay;
+            this.sellDay = sellDay;
+            this.profit = profit;
+        }
+    }
     private static final double START_BUDGET = 1.0;
+    static void getTransactions (int[] prices, List<int[]> transactionDays) {
+        int n = prices.length;
+        int i = 0;
+        while (i < n - 1) {
+            while (i < n - 1 && prices[i] >= prices[i + 1]) {
+                i++;
+            }
+            if (i == n - 1) {
+                break;
+            }
+            int buyDay = i;
+            i++;
+
+
+            while (i < n && prices[i] >= prices[i - 1]) {
+                i++;
+            }
+            int sellDay = i - 1;
+
+            transactionDays.add(new int[] {buyDay, sellDay});
+        }
+    }
 
     static double calcProfit(int buyPrice, int sellPrice, double currentStartBudget) {
         return (currentStartBudget / buyPrice) * sellPrice;
     }
-    static int maxProfitForTwoTransactionPartitionDay(int[] prices) {
-        int n = prices.length;
-        if (n < 2) {
-            return 0;
+
+    static void solve (int[] prices, List<int[]> transactionDays) {
+        if (prices == null || transactionDays.size() == 0) {
+            System.out.println(0);
+            return;
         }
-        // forward traversal: find the maximum profit for one transaction ending at each day
-        double[] maxProfits1 = new double[n];
-        int minBuyPrice = prices[0];
-        for (int i = 1; i < n; i++) {
-            maxProfits1[i] = Math.max(maxProfits1[i-1], calcProfit(minBuyPrice, prices[i], START_BUDGET));
-            minBuyPrice = Math.min(minBuyPrice, prices[i]);
-        }
-        // backward traversal: find the maximum profit for one transaction starting at each day
-        double[] maxProfits2 = new double[n];
-        int maxSellPrice = prices[n-1];
-        for (int i = n-2; i >= 0; i--) {
-            maxProfits2[i] = Math.max(maxProfits2[i+1], calcProfit(prices[i], maxSellPrice, maxProfits1[i]));
-            maxSellPrice = Math.max(maxSellPrice, prices[i]);
-        }
-        // find the maximum profit for two transactions
-        double maxProfit = 0;
-        int maxProfitPartitionDay = -1;
-        for (int i = 0; i < n; i++) {
-            if (maxProfit < maxProfits1[i] + maxProfits2[i]) {
-                maxProfit = maxProfits1[i] + maxProfits2[i];
-                maxProfitPartitionDay = i;
-            }
-        }
-
-        //System.out.println(Arrays.stream(maxProfits1).boxed().toList());
-        //System.out.println(Arrays.stream(maxProfits2).boxed().toList());
-
-        return maxProfitPartitionDay;
-    }
-
-    // find days for one transaction
-    static Transaction findBuySellDates(int[] prices, int startSearchDay, int endSearchDay, double currentStartBudget) {
-        if (startSearchDay == endSearchDay) {
-            return null; // no profit can be obtained
-        }
-
-        double maxProfit = 0;
-        int buyDate = 0;
-        int sellDate = 0;
-
-        int i = startSearchDay;
-        while (i < endSearchDay) {
-            while (i < endSearchDay && prices[i + 1] <= prices[i]) i++;
-            int curBuyDate = i;
-
-            while (i < endSearchDay && prices[i + 1] >= prices[i]) i++;
-            int curSellDate = i;
-
-            if (calcProfit(prices[curBuyDate], prices[curSellDate], currentStartBudget) > maxProfit) {
-                maxProfit = calcProfit(prices[curBuyDate], prices[curSellDate], currentStartBudget);
-                buyDate = curBuyDate; // update buy date
-                sellDate = curSellDate; // update sell date
-            }
-        }
-
-        //System.out.println(maxProfit);
-
-        if (maxProfit == currentStartBudget) {
-            return null; // no profit can be obtained
+        if (transactionDays.size() == 1) {
+            System.out.println(1);
+            int buyDay1 = transactionDays.get(0)[0] + 1;
+            int sellDay1 = transactionDays.get(0)[1] + 1;
+            System.out.println(buyDay1 + " " + sellDay1);
         } else {
-            return new Transaction(buyDate + 1, sellDate + 1, maxProfit); // return buy, sell dates and profit
+            System.out.println(2);
+
+            int length = transactionDays.size();
+            double maxProfit = START_BUDGET;
+            Transaction[] transactions = new Transaction[length];
+            for (int i = 0; i < length ; i++) {
+                int buyDay1 = transactionDays.get(i)[0] + 1;
+                int sellDay1 = transactionDays.get(i)[1] + 1;
+                double curProfit = calcProfit(prices[buyDay1 - 1], prices[sellDay1 - 1], START_BUDGET);
+                if (maxProfit < curProfit) {
+                    transactions[i] = new Transaction(buyDay1, sellDay1, curProfit);
+                    maxProfit = curProfit;
+                } else if (transactions[i - 1] != null) {
+                    transactions[i] = transactions[i - 1];
+                }
+            }
+
+            maxProfit = START_BUDGET;
+            int buyDay1 = -1;
+            int sellDay1 = -1;
+            int buyDay2 = -1;
+            int sellDay2 = -1;
+            for (int i = length - 1; i > 0; i--) {
+                int buyPrice = prices[transactionDays.get(i)[0]];
+                int sellPrice = prices[transactionDays.get(i)[1]];
+                double startBudget = transactions[i - 1].profit;
+                if (calcProfit(buyPrice, sellPrice, startBudget) > maxProfit) {
+                    maxProfit = calcProfit(buyPrice, sellPrice, startBudget);
+                    buyDay1 = transactions[i - 1].buyDay;
+                    sellDay1 = transactions[i - 1].sellDay;
+                    buyDay2 = transactionDays.get(i)[0] + 1;
+                    sellDay2 = transactionDays.get(i)[1] + 1;
+                }
+            }
+            System.out.println(buyDay1 + " " + sellDay1);
+            System.out.println(buyDay2 + " " + sellDay2);
         }
     }
-
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
         int[] prices = new int[n];
         for (int i = 0; i < n; i++) {
-            prices[i] = sc.nextInt();
+            prices[i] = scanner.nextInt();
         }
 
-        int partitionDay = maxProfitForTwoTransactionPartitionDay(prices);
+        List<int[]> transactionDays = new ArrayList<>();
 
-        //System.out.println(partitionDay);
+        getTransactions(prices, transactionDays);
 
-        Transaction transaction1 = findBuySellDates(prices, 0, partitionDay, START_BUDGET);
-        Transaction transaction2 = null;
-        int total = 0;
+        solve(prices, transactionDays);
 
-        if (partitionDay >=0 && transaction1 != null) {
-            total++;
-            transaction2 = findBuySellDates(prices, partitionDay, prices.length - 1, transaction1.profit);
-            if (transaction2 != null)
-                total++;
-        }
-
-        System.out.println(total);
-        if (total == 2) {
-            System.out.println(String.format("%d %d", transaction1.buyDate, transaction1.sellDate));
-            System.out.println(String.format("%d %d", transaction2.buyDate, transaction2.sellDate));
-        } else if (total == 1) {
-            System.out.println(String.format("%d %d", transaction1.buyDate, transaction1.sellDate));
-        }
-
-        sc.close();
-    }
-
-    static class Transaction {
-        int buyDate;
-        int sellDate;
-        double profit;
-
-        public Transaction(int buyDate, int sellDate, double profit) {
-            this.buyDate = buyDate;
-            this.sellDate = sellDate;
-            this.profit = profit;
-        }
-
-        @Override
-        public String toString() {
-            return "Transaction{" +
-                    "buyDate=" + buyDate +
-                    ", sellDate=" + sellDate +
-                    ", profit=" + profit +
-                    '}';
-        }
+        scanner.close();
     }
 }
-
