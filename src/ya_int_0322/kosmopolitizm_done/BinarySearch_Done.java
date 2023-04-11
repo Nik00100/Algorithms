@@ -74,7 +74,7 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Main {
+public class BinarySearch_Done {
     private final static int MAX_VALUE = 2_000_000_000;
     static class Country {
         int minIncome, id;
