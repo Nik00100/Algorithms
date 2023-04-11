@@ -1,4 +1,4 @@
-package ya_int_0322.kosmopolitizm;
+package ya_int_0322.kosmopolitizm_done;
 
 /*Кузя был очень удивлён, когда на десятилетие выпуска не приехала большая часть его одноклассников.
 «Чему тут удивляться, разъехались по миру», — сказал ему один из пришедших одноклассников.
@@ -68,149 +68,143 @@ package ya_int_0322.kosmopolitizm;
 Четвертый одноклассник удовлетворяет условиям для обеих стран (достаточная зарплата 10≥10 и 10≥9, а также высшее образование).
 Из двух стран он выбрал первую, как более привлекательную (то есть имеющую меньший номер во вводе).
 Пятый одноклассник имеет высшее образование, но его зарплаты не хватает на переезд в первую страну (9<10),
-поэтому он переезжает во вторую страну, в которую его зарплаты достаточно (9≥9).
-*/
+поэтому он переезжает во вторую страну, в которую его зарплаты достаточно (9≥9).*/
 
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BinSearch {
-    private static int MAX_REQUIRED_INCOME = 1000_000_000;
-
+public class Main {
+    private final static int MAX_VALUE = 2_000_000_000;
     static class Country {
-        int id, income, education, children;
-
-        public Country(int id, int income, int education, int children) {
+        int minIncome, id;
+        boolean  edRequired, childrenAllowed;
+        public Country(int id, int minIncome, boolean edRequired, boolean childrenAllowed) {
             this.id = id;
-            this.income = income;
-            this.education = education;
-            this.children = children;
+            this.minIncome = minIncome;
+            this.edRequired = edRequired;
+            this.childrenAllowed = childrenAllowed;
         }
+        public int getMinIncome() {return minIncome;}
+        public int getId() {return id;}
+    }
 
-        public int getId() {
-            return id;
+    static int binSearch (List<Country> countriesSortedByIncomeId, int xIncome) {
+        if (countriesSortedByIncomeId.size() == 0) {return MAX_VALUE;}
+        int l = 0;
+        int r = countriesSortedByIncomeId.size() - 1;
+        while (l < r) {
+            int m = (r + l) / 2;
+            if (xIncome <= countriesSortedByIncomeId.get(m).getMinIncome()) {
+                r = m;
+            } else {
+                l = m + 1;
+            }
         }
+        return getIncome(countriesSortedByIncomeId, xIncome, r);
+    }
 
-        public int getIncome() {
-            return income;
-        }
-
-        public int getEducation() {
-            return education;
-        }
-
-        public int getChildren() {
-            return children;
+    static int getIncome(List<Country> countriesSortedByIncomeId, int xIncome, int index) {
+        if (index == 0) {
+            if (countriesSortedByIncomeId.get(0).getMinIncome() <= xIncome) {
+                return countriesSortedByIncomeId.get(0).getMinIncome();
+            } else {
+                return MAX_VALUE;
+            }
+        } else if (countriesSortedByIncomeId.get(index).getMinIncome() <= xIncome) {
+            return countriesSortedByIncomeId.get(index).getMinIncome();
+        } else {
+            return countriesSortedByIncomeId.get(index - 1).getMinIncome();
         }
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    static void fillMinIdForEachIncome(List<Country> countriesSortedByIncomeId, Map<Integer, Integer> mapForIncomeId) {
+        int prevCountryIncome = MAX_VALUE;
+        for (Country country : countriesSortedByIncomeId) {
+            if (!mapForIncomeId.containsKey(country.getMinIncome())) {
+                int prevCountryId = mapForIncomeId.getOrDefault(prevCountryIncome, MAX_VALUE);
+                int id = Math.min(prevCountryId, country.getId());
+                mapForIncomeId.put(country.getMinIncome(), id);
+                prevCountryIncome = country.getMinIncome();
+            }
+        }
+    }
 
+
+    public static void main(String[] args) throws FileNotFoundException {
+        Scanner scanner = new Scanner(new FileInputStream(new File("input.txt")));
         int n = scanner.nextInt();
-        int[] income = new int[n];
-        int[] education = new int[n];
-        int[] children = new int[n];
+        int[] minIncome = new int[n];
         for (int i = 0; i < n; i++) {
-            income[i] = scanner.nextInt();
+            minIncome[i] = scanner.nextInt();
         }
+        boolean[] higherEducationRequired = new boolean[n];
         for (int i = 0; i < n; i++) {
-            education[i] = scanner.nextInt();
+            higherEducationRequired[i] = scanner.nextInt() == 1;
         }
+        boolean[] childrenOfCitizensAllowed = new boolean[n];
         for (int i = 0; i < n; i++) {
-            children[i] = scanner.nextInt();
+            childrenOfCitizensAllowed[i] = scanner.nextInt() == 1;
         }
 
         Country[] countries = new Country[n];
         for (int i = 0; i < n; i++) {
-            countries[i] = new Country(i + 1, income[i], education[i], children[i]);
+            countries[i] = new Country(i + 1, minIncome[i], higherEducationRequired[i], childrenOfCitizensAllowed[i]);
         }
 
         Map<Integer, Integer> mapIncomeIdNotNeedHigherEd = new HashMap<>();
         List<Country> countriesSortedByIncomeIdNotNeedHigherEd = Arrays.stream(countries)
-                .filter(country -> country.getEducation() == 0)
-                .sorted(Comparator.comparing(Country::getIncome).thenComparing(Country::getId))
+                .filter(country -> !country.edRequired)
+                .sorted(Comparator.comparing(Country::getMinIncome).thenComparing(Country::getId))
                 .collect(Collectors.toList());
         fillMinIdForEachIncome(countriesSortedByIncomeIdNotNeedHigherEd, mapIncomeIdNotNeedHigherEd);
 
         Map<Integer, Integer> mapIncomeId = new HashMap<>();
         List<Country> countriesSortedByIncomeId = Arrays.stream(countries)
-                .sorted(Comparator.comparing(Country::getIncome).thenComparing(Country::getId))
+                .sorted(Comparator.comparing(Country::getMinIncome).thenComparing(Country::getId))
                 .collect(Collectors.toList());
         fillMinIdForEachIncome(countriesSortedByIncomeId, mapIncomeId);
 
         int q = scanner.nextInt();
-        int[] x = new int[q];
-        int[] y = new int[q];
-        int[] z = new int[q];
-        int[] result = new int[q];
-
+        int[] income = new int[q];
         for (int i = 0; i < q; i++) {
-            x[i] = scanner.nextInt();
+            income[i] = scanner.nextInt();
         }
+        boolean[] hasHigherEducation = new boolean[q];
         for (int i = 0; i < q; i++) {
-            y[i] = scanner.nextInt();
+            hasHigherEducation[i] = scanner.nextInt() == 1;
         }
+        int[] parentCitizenship = new int[q];
         for (int i = 0; i < q; i++) {
-            z[i] = scanner.nextInt();
+            parentCitizenship[i] = scanner.nextInt();
         }
 
         for (int i = 0; i < q; i++) {
-            int xIncome = x[i];
-            int yEducation = y[i];
-            int zParentCountry = z[i] - 1;
+            int xIncome = income[i];
+            boolean yEducation = hasHigherEducation[i];
+            int zParentCountry = parentCitizenship[i] - 1;
 
-            int parentCountryId = Integer.MAX_VALUE;
-            if (zParentCountry > 0 && countries[zParentCountry].children == 1) {
+            int parentCountryId = MAX_VALUE;
+            if (zParentCountry >= 0 && countries[zParentCountry].childrenAllowed) {
                 parentCountryId= countries[zParentCountry].id;
             }
 
-            int countryId = Integer.MAX_VALUE;
+            int countryId = MAX_VALUE;
             int countryIncome;
-            if (yEducation == 0) {
+            if (!yEducation) {
                 countryIncome = binSearch(countriesSortedByIncomeIdNotNeedHigherEd, xIncome);
-                countryId = mapIncomeIdNotNeedHigherEd.getOrDefault(countryIncome, Integer.MAX_VALUE);
+                countryId = mapIncomeIdNotNeedHigherEd.getOrDefault(countryIncome, MAX_VALUE);
             } else {
                 countryIncome = binSearch(countriesSortedByIncomeId, xIncome);
-                countryId = mapIncomeId.getOrDefault(countryIncome, Integer.MAX_VALUE);
+                countryId = mapIncomeId.getOrDefault(countryIncome, MAX_VALUE);
             }
-
-            //System.out.println(rightBorder);
 
             countryId = Math.min(countryId, parentCountryId);
 
-            result[i] = countryId == Integer.MAX_VALUE ? 0 : countryId;
+            int result = countryId == MAX_VALUE ? 0 : countryId;
+            System.out.print(result + " ");
         }
 
-        for (int i = 0; i < q; i++) {
-            System.out.println(result[i]);
-        }
-    }
-
-    static int binSearch (List<Country> countriesSortedByIncomeId, int xIncome) {
-        int l = 0;
-        int r = countriesSortedByIncomeId.size() - 1;
-        while (l < r) {
-           int m = (r + l) / 2;
-           if (xIncome <= countriesSortedByIncomeId.get(m).getIncome()) {
-               r = m;
-           } else {
-               l = m + 1;
-           }
-        }
-        return countriesSortedByIncomeId.get(l).getIncome() <= xIncome
-                ? countriesSortedByIncomeId.get(l).getIncome()
-                : Integer.MAX_VALUE;
-    }
-
-    static void fillMinIdForEachIncome(List<Country> countriesSortedByIncomeId, Map<Integer, Integer> mapForIncomeId) {
-        int prevCountryIncome = Integer.MAX_VALUE;
-        for (Country country : countriesSortedByIncomeId) {
-            if (prevCountryIncome != country.getIncome()) {
-                int prevCountryId = mapForIncomeId.getOrDefault(prevCountryIncome, Integer.MAX_VALUE);
-                int id = Math.min(prevCountryId, country.getId());
-                mapForIncomeId.put(country.getIncome(), id);
-            }
-        }
+        scanner.close();
     }
 }
