@@ -74,7 +74,13 @@ package ya_int_0322.perfect_done;
 |9−25|=14>10
 .*/
 
+
+import java.io.*;
 import java.util.*;
+
+/**
+ * Полный перебор всех возможных вариантов (поиск с возвратом)
+ * */
 
 public class Backtracking {
     static class Sculpture implements  Comparable<Sculpture>{
@@ -93,13 +99,14 @@ public class Backtracking {
         }
     }
     public static List<List<Integer>> findSubsets(Sculpture[] sculptures, long target) {
-        Arrays.sort(sculptures); // Sort the array in ascending order
+        Arrays.sort(sculptures);
         List<List<Integer>> subsets = new ArrayList<>();
         backtrack(sculptures, target, 0, new ArrayList<>(), 0, subsets);
         return subsets;
     }
 
-    private static void backtrack(Sculpture[] sculptures, long target, int index, List<Integer> subset, long sum, List<List<Integer>> subsets) {
+    private static void backtrack(Sculpture[] sculptures, long target, int index, List<Integer> subset,
+                                  long sum, List<List<Integer>> subsets) {
         if (sum > target || index == sculptures.length) {
             return;
         }
@@ -113,23 +120,27 @@ public class Backtracking {
         }
 
         if (sum <= target) {
-            subsets.add(new ArrayList<>(subset)); // Add the current subset to the list of valid subsets
+            subsets.add(new ArrayList<>(subset));
         }
     }
 
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int n = scanner.nextInt();
-        int x = scanner.nextInt();
-        long t = scanner.nextLong();
-        Sculpture[] a = new Sculpture[n];
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String[] s1 = reader.readLine().split(" ");
+        int n = Integer.parseInt(s1[0]);
+        int x = Integer.parseInt(s1[1]); // масса в килограммах идеальной скульптуры
+        long t = Integer.parseInt(s1[2]);
+
+        Sculpture[] sculptures = new Sculpture[n];
+        String[] s2 = reader.readLine().split(" ");
         for (int i = 0; i < n; i++) {
-            int num = scanner.nextInt();
-            a[i] = new Sculpture(Math.abs(num - x), i + 1);
+            int mass = Integer.parseInt(s2[i]); // масса в килограммах k-ой скульптуры
+            int timeToBecamePerfect = Math.abs(mass - x); // время для того, чтобы сделать k-ую скульптуру идеальной
+            sculptures[i] = new Sculpture(timeToBecamePerfect, i + 1);
         }
 
-        List<List<Integer>> answer = findSubsets(a, t);
+        List<List<Integer>> answer = findSubsets(sculptures, t);
         int maxNumbers = answer.stream().mapToInt(List::size).max().getAsInt();
         for (List<Integer> list : answer) {
             if (list.size() == maxNumbers) {
@@ -143,6 +154,6 @@ public class Backtracking {
             }
         }
 
-        scanner.close();
+        reader.close();
     }
 }

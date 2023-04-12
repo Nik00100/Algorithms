@@ -21,13 +21,17 @@ package ya_int_0322.perfect_done;
 Вывод
 0*/
 
+import java.io.*;
 import java.util.*;
 
+/**
+ * Решение на основе классической задачи о рюкзаке
+ * */
 public class ClassicKnapsak {
     public static int knapsack(int maxWeight, int[] weights,  Set<List<Integer>> items) {
         int n = weights.length;
         int[][] dp = new int[n + 1][maxWeight + 1];
-        int val = 1; // assuming all items have the same value of 1
+        int val = 1; // все скульптуры имеют одинаковую ценность 1
         for (int i = 1; i <= n; i++) {
             for (int w = 1; w <= maxWeight; w++) {
                 if (weights[i - 1] <= w) {
@@ -38,7 +42,7 @@ public class ClassicKnapsak {
             }
         }
 
-        // retrieve items
+        // восстановление содержимого рюкзака
         for (int i = 1; i <= n; i++) {
             if (dp[i][maxWeight] == dp[n][maxWeight]) {
                 int weight = maxWeight;
@@ -60,22 +64,23 @@ public class ClassicKnapsak {
         return dp[n][maxWeight];
     }
 
+    /**
+     * Дополнительный метод восстановления содержимого (в данной задаче не использую, но пригодится в будущем)
+     * */
     private static void printItems (int[][] dp, int[] weights, int maxWeight, int val) {
         int weight = maxWeight;
         int n = dp.length - 1;
         int res = dp[n][maxWeight];
 
         for (int i = n; i > 0 && res > 0; i--) {
-            // either the result comes from the top
-            // (dp[i-1][w]) or from (val + dp[i-1][weight-weights[i-1]]) as in Knapsack table.
-            // If it comes from the latter one it means the item is included.
-            if (res == dp[i - 1][weight]) continue;
-            else {
-
-                // This item is included.
+            // Результат берем в массиве dp[][] из (dp[i-1][w]) или (val + dp[i-1][weight-weights[i-1]]).
+            // Если res == dp[i-1][w], то пропускаем цикл.
+            if (res == dp[i - 1][weight]) {
+                continue;
+            } else {
+                // Данный предмет добавлен в рюкзак.
                 System.out.print(i + " ");
-
-                // Since this weight is included its value is deducted
+                // Т.к. предмет добавлен - необходимо вычесть его ценность
                 res = res - val;
                 weight = weight - weights[i - 1];
             }
@@ -83,23 +88,23 @@ public class ClassicKnapsak {
         System.out.println();
     }
 
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String[] s1 = reader.readLine().split(" ");
+        int n = Integer.parseInt(s1[0]);
+        int x = Integer.parseInt(s1[1]); // масса в килограммах идеальной скульптуры
+        long t = Integer.parseInt(s1[2]);
 
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int n = scanner.nextInt();
-        int x = scanner.nextInt();
-        long t = scanner.nextLong();
-        int[] a = new int[n];
+        int[] sculptures = new int[n]; // массив времени преобразования i-ой скульптуры в идеальную
+        String[] s2 = reader.readLine().split(" ");
         for (int i = 0; i < n; i++) {
-            int num = scanner.nextInt();
-            a[i] = Math.abs(num - x);
+            int mass = Integer.parseInt(s2[i]); // масса в килограммах k-ой скульптуры
+            int timeToBecamePerfect = Math.abs(mass - x); // время для того, чтобы сделать k-ую скульптуру идеальной
+            sculptures[i] = timeToBecamePerfect;
         }
 
-        //System.out.println(Arrays.stream(a).boxed().toList() + " - difference a[i] - x, started from index 1");
-
         Set<List<Integer>> items = new HashSet<>();
-        int answer = knapsack((int)t, a, items);
+        int answer = knapsack((int)t, sculptures, items);
         System.out.println(answer);
 
         List<Integer> resultItems = new ArrayList<>(items).get(0);
@@ -107,6 +112,6 @@ public class ClassicKnapsak {
         for (int num : resultItems)
             System.out.print(num + " ");
 
-        scanner.close();
+        reader.close();
     }
 }

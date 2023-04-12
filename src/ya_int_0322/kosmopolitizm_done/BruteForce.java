@@ -1,35 +1,51 @@
 package ya_int_0322.kosmopolitizm_done;
 
-import java.util.Scanner;
+import java.io.*;
+
+/**
+ * Полный перебор всех возможных вариантов
+ * */
 
 public class BruteForce {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int n = scanner.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(reader.readLine());
+
         int[] minIncome = new int[n];
+        String[] s = reader.readLine().split(" ");
         for (int i = 0; i < n; i++) {
-            minIncome[i] = scanner.nextInt();
+            minIncome[i] = Integer.parseInt(s[i]);
         }
+
         boolean[] higherEducationRequired = new boolean[n];
+        s = reader.readLine().split(" ");
         for (int i = 0; i < n; i++) {
-            higherEducationRequired[i] = scanner.nextInt() == 1;
+            higherEducationRequired[i] = Integer.parseInt(s[i]) == 1;
         }
+
         boolean[] childrenOfCitizensAllowed = new boolean[n];
+        s = reader.readLine().split(" ");
         for (int i = 0; i < n; i++) {
-            childrenOfCitizensAllowed[i] = scanner.nextInt() == 1;
+            childrenOfCitizensAllowed[i] = Integer.parseInt(s[i]) == 1;
         }
-        int q = scanner.nextInt();
+
+        int q = Integer.parseInt(reader.readLine());
+        s = reader.readLine().split(" ");
         int[] income = new int[q];
         for (int i = 0; i < q; i++) {
-            income[i] = scanner.nextInt();
+            income[i] = Integer.parseInt(s[i]);
         }
+
         boolean[] hasHigherEducation = new boolean[q];
+        s = reader.readLine().split(" ");
         for (int i = 0; i < q; i++) {
-            hasHigherEducation[i] = scanner.nextInt() == 1;
+            hasHigherEducation[i] = Integer.parseInt(s[i]) == 1;
         }
+
         int[] parentCitizenship = new int[q];
+        s = reader.readLine().split(" ");
         for (int i = 0; i < q; i++) {
-            parentCitizenship[i] = scanner.nextInt();
+            parentCitizenship[i] = Integer.parseInt(s[i]);
         }
 
         for (int i = 0; i < q; i++) {
@@ -43,5 +59,7 @@ public class BruteForce {
             }
             System.out.print(countryChosen + " ");
         }
+
+        reader.close();
     }
 }
