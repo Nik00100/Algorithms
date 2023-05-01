@@ -1,6 +1,7 @@
 # TOP 56
 
 + [Summary ranges](#summary-ranges)
++ [Valid Parentheses](#valid-parentheses)
 + [Two Sum](#two-sum)
 
 
@@ -23,6 +24,31 @@ class Solution {
             }
         }
         return ans;
+    }
+}
+```
+
+## Valid Parentheses
+https://leetcode.com/problems/valid-parentheses
+```
+class Solution {
+    public boolean isValid(String s) {
+        if (s == null || s.length() == 0) return true;
+    Stack<Character> stack = new Stack<>();
+    for (Character ch : s.toCharArray()) {
+        if (ch == '(') {
+            stack.push(')');
+        } else if (ch == '[') {
+            stack.push(']');
+        } else if (ch == '{') {
+            stack.push('}');
+        } else {
+            if (stack.empty() || stack.pop() != ch) {
+                return false;
+            }
+        }
+    }
+    return stack.isEmpty();
     }
 }
 ```
