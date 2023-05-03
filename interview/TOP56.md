@@ -4,6 +4,7 @@
 + [Valid Palindrome](#valid-palindrome)
 + [Valid Parentheses](#valid-parentheses)
 + [Two Sum](#two-sum)
++ [Find substring (strStr())](#find-the-index-of-the-first-occurrence-in-a-string)
 
 
 ## Summary ranges
@@ -95,3 +96,27 @@ class Solution {
     }
 }
 ```
+
+## Find substring
+https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
+```
+class Solution {
+    public int strStr(String haystack, String needle) {
+        if (haystack.length()<needle.length()) return -1;
+        int i=0;
+        while(i<haystack.length()) {
+            int j=0;
+            while (j<needle.length()) {
+                int index = j+i;
+                if (index >= haystack.length()) break;
+                if (haystack.charAt(index)!=needle.charAt(j)) break;
+                if (j==needle.length()-1) return i;
+                j++;
+            }
+            i++;
+        }
+        return -1;
+    }
+}
+```
+
