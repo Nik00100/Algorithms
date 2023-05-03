@@ -4,7 +4,7 @@
 + [Valid Palindrome](#valid-palindrome)
 + [Valid Parentheses](#valid-parentheses)
 + [Two Sum](#two-sum)
-+ [Find substring (strStr())](#find-the-index-of-the-first-occurrence-in-a-string)
++ [Is substring? (strStr())](#find-the-index-of-the-first-occurrence-in-a-string)
 
 
 ## Summary ranges
@@ -97,7 +97,7 @@ class Solution {
 }
 ```
 
-## Find substring
+## Is substring? (strStr())
 https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string
 ```
 class Solution {
