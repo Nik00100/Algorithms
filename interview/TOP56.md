@@ -2,6 +2,7 @@
 
 + [Summary ranges](#summary-ranges)
 + [Reverse Linked List](#reverse-linked-list)
++ [Move Zeroes](#move-zeroes)
 + [Valid Palindrome](#valid-palindrome)
 + [Valid Parentheses](#valid-parentheses)
 + [Two Sum](#two-sum)
@@ -56,6 +57,21 @@ class Solution {
             temp = t;
         }
         return head;
+    }
+}
+```
+
+## Move Zeroes
+https://leetcode.com/problems/move-zeroes
+```
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int i = 0;
+        for (final int num : nums)
+          if (num != 0)
+            nums[i++] = num;
+        while (i < nums.length)
+          nums[i++] = 0;
     }
 }
 ```
