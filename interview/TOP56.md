@@ -6,6 +6,7 @@
 + [Valid Palindrome](#valid-palindrome)
 + [Valid Parentheses](#valid-parentheses)
 + [Two Sum](#two-sum)
++ [Squares of sorted array](#squares-of-sorted-array)
 + [Is substring strStr()](#is-substring-strStr())
 
 
@@ -139,6 +140,34 @@ class Solution {
             }
         }
         return new int[] {};
+    }
+}
+```
+
+## Squares of sorted array
+https://leetcode.com/problems/squares-of-a-sorted-array
+```
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        int left = 0;
+        int right = nums.length -1;
+        int index = nums.length- 1;
+        int result[] = new int [nums.length];
+        while(left<=right)
+        {
+            if(Math.abs(nums[left])>Math.abs(nums[right]))
+            {
+                result[index] = nums[left] * nums[left];
+                left++;
+            }
+            else
+            {
+                result[index] = nums[right] * nums[right];
+                right--;
+            }
+            index--;
+        }
+        return result;
     }
 }
 ```
