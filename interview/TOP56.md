@@ -1,14 +1,59 @@
 # TOP 56
 
-+ [Summary ranges](#summary-ranges)
-+ [Reverse Linked List](#reverse-linked-list)
-+ [Move Zeroes](#move-zeroes)
-+ [Valid Palindrome](#valid-palindrome)
+1. [Line Reflection](#line-reflection)
+2. [Summary ranges (RLE)](#summary-ranges)
+3. [Zigzag Iterator](#zigzag-iterator)
+4. [String Compression](#string-compression)
+5. [Reverse Linked List](#reverse-linked-list)
+6. [Generate Parentheses](#generate-parentheses)
+7. [LRU Cache](#lru-cache)
+8. [Move Zeroes To End](#move-zeroes)
+9. [Valid Palindrome](#valid-palindrome)
 + [Valid Parentheses](#valid-parentheses)
 + [Two Sum](#two-sum)
++ [Number of Recent Calls](#number-of-recent-calls)
++ [Implement Queue using Stacks](#implement-queue-using-stacks)
++ [Merge Two Sorted Lists](#merge-two-sorted-lists)
++ [Merge Sorted Array](#merge-sorted-array)
++ [Symmetric Tree](#symmetric-tree)
++ [Missing Number](#missing-number)
++ [Is Subsequence](#is-subsequence)
 + [Squares of sorted array](#squares-of-sorted-array)
-+ [Is substring strStr()](#is-substring-strStr())
++ [Intersection of Two Arrays II](#intersection-of-two-arrays-ii)
++ [Is substring strStr()](#is-substring-strstr)
++ [Palindrome Linked List](#palindrome-linked-list)
 
+## Line Reflection
+Given n points on a 2D plane, find if there is such a line parallel to y-axis that reflect the given points.
+https://leetcode.ca/all/356.html
+```
+class Solution {
+    public boolean isReflected(int[][] points) {
+        int minX = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE;
+        Set<String> seen = new HashSet<>();
+
+        for (int[] p : points) {
+            final int x = p[0];
+            final int y = p[1];
+            minX = Math.min(minX, x);
+            maxX = Math.max(maxX, x);
+            seen.add(x + "," + y);
+        }
+
+        final int sum = minX + maxX;
+        // (leftX + rightX) / 2 = (minX + maxX) / 2
+        //  leftX = minX + maxX - rightX
+        // RightX = minX + maxX - leftX
+
+        for (int[] p : points)
+            if (!seen.contains(sum - p[0] + "," + p[1]))
+                return false;
+
+        return true;
+    }
+}
+```
 
 ## Summary ranges
 https://leetcode.com/problems/summary-ranges/
@@ -27,6 +72,61 @@ class Solution {
             } else {
                 ans.add(""+begin+"->"+end);
             }
+        }
+        return ans;
+    }
+}
+```
+
+## Zigzag Iterator
+Given two 1d vectors, implement an iterator to return their elements alternately.
+https://leetcode.ca/all/281.html
+```
+public class ZigzagIterator {
+    public ZigzagIterator(List<Integer> v1, List<Integer> v2) {
+        if (!v1.isEmpty())
+            q.offer(v1.iterator());
+        if (!v2.isEmpty())
+            q.offer(v2.iterator());
+    }
+
+    public int next() {
+        final Iterator it = q.poll();
+        final int next = (int) it.next();
+        if (it.hasNext())
+            q.offer(it);
+        return next;
+    }
+
+    public boolean hasNext() {
+        return !q.isEmpty();
+    }
+
+    private Queue<Iterator> q = new ArrayDeque<>();
+}
+
+```
+
+## String Compression
+https://leetcode.com/problems/string-compression
+```
+class Solution {
+    public int compress(char[] chars) {
+        int ans = 0;
+        int i = 0;
+        while (i < chars.length) {
+            int start = i;
+            char current = chars[i];
+            while (i < chars.length && chars[i] == current) {
+                i++;
+            }
+            chars[ans++] = current;
+            int end = i;
+            if (start + 1 != end) {
+               for(char c : Integer.toString(end - start).toCharArray()) 
+                    chars[ans++] = c;
+            }
+
         }
         return ans;
     }
@@ -60,6 +160,147 @@ class Solution {
         return head;
     }
 }
+```
+
+## Generate Parentheses
+https://leetcode.com/problems/generate-parentheses
+```
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<String>();
+        recurse(res, 0, 0, "", n);
+        return res;
+    }
+    
+    public void recurse(List<String> res, int left, int right, String s, int n) {
+        if (s.length() == n * 2) {
+            res.add(s);
+            return;
+        }
+        
+        if (left < n) {
+            recurse(res, left + 1, right, s + "(", n);
+        }
+        
+        if (right < left) {
+            recurse(res, left, right + 1, s + ")", n);
+        }
+    }
+	/* For n = 2								   	
+                                    (0, 0, '')
+								 	    |	
+									(1, 0, '(')  
+								   /           \
+							(2, 0, '((')      (1, 1, '()')
+							   /                 \
+						(2, 1, '(()')           (2, 1, '()(')
+						   /                       \
+					(2, 2, '(())')                (2, 2, '()()')
+						      |	                             |
+					res.append('(())')             res.append('()()')
+   */
+
+}
+```
+
+## LRU Cache
+https://leetcode.com/problems/lru-cache
+```
+class Node {
+    int key;
+    int value;
+    Node prev;
+    Node next;
+ 
+    public Node(int key, int value){
+        this.key=key;
+        this.value=value;
+    }
+}
+
+class LRUCache {
+
+    Node head;
+    Node tail;
+    HashMap<Integer, Node> map = null;
+    int cap = 0;
+ 
+    public LRUCache(int capacity) {
+        this.cap = capacity;
+        this.map = new HashMap<>();
+    }
+ 
+    public int get(int key) {
+        if(map.get(key)==null){
+            return -1;
+        }
+ 
+        //move to tail
+        Node t = map.get(key);
+ 
+        removeNode(t);
+        offerNode(t);
+ 
+        return t.value;
+    }
+ 
+    public void put(int key, int value) {
+        if(map.containsKey(key)){
+            Node t = map.get(key);
+            t.value = value;
+ 
+            //move to tail
+            removeNode(t);
+            offerNode(t);
+        }else{
+            if(map.size()>=cap){
+                //delete head
+                map.remove(head.key);
+                removeNode(head);
+            }
+ 
+            //add to tail
+            Node node = new Node(key, value);
+            offerNode(node);
+            map.put(key, node);
+        }
+    }
+ 
+    private void removeNode(Node n){
+        if(n.prev!=null){
+            n.prev.next = n.next;
+        }else{
+            head = n.next;
+        }
+ 
+        if(n.next!=null){
+            n.next.prev = n.prev;
+        }else{
+            tail = n.prev;
+        }
+    }
+ 
+    private void offerNode(Node n){
+        if(tail!=null){
+            tail.next = n;
+        }
+ 
+        n.prev = tail;
+        n.next = null;
+        tail = n;
+ 
+        if(head == null){
+            head = tail;   
+        }
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
 ```
 
 ## Move Zeroes
@@ -144,6 +385,222 @@ class Solution {
 }
 ```
 
+## Number of Recent Calls
+https://leetcode.com/problems/number-of-recent-calls
+```
+class RecentCounter {
+        Queue<Integer> q;
+
+        public RecentCounter() {
+            q = new LinkedList<>();
+        }
+
+        public int ping(int t) {
+            q.add(t);
+            while (q.peek() < t - 3000) {
+                q.poll();
+            }
+            return q.size();
+        }
+    }
+
+/**
+ * Your RecentCounter object will be instantiated and called as such:
+ * RecentCounter obj = new RecentCounter();
+ * int param_1 = obj.ping(t);
+ */
+```
+
+## Implement Queue using Stacks
+https://leetcode.com/problems/implement-queue-using-stacks
+```
+class MyQueue {
+
+        private Stack<Integer> stack1 = new Stack<>();
+        private Stack<Integer> stack2 = new Stack<>();
+
+        /**
+         * Для операции push () очереди можно напрямую выполнить операцию push () стека на stack1
+         */
+        public void push(int x) {
+            stack1.push(x);
+        }
+
+        /**
+         * Операция pop () очереди фактически предназначена для получения нижнего элемента в стеке 1. 
+         * Как это получить? Сначала поместите указанные выше элементы один за другим в другой стек stack2.
+         * Когда stack1 пуст, верхний элемент stack2 - это элемент, который нужно получить, 
+         * который извлекается операцией pop () стека.
+         * Перед возвратом элемента верните элемент из stack2 в stack1, а затем верните элемент
+         */
+        public int pop() {
+            // если stack2 пуст
+            if (stack2.isEmpty()) {
+                // и stack1 не пуст
+                while (!stack1.isEmpty()) {
+                    // Элементы в stack1 непрерывно выталкиваются и помещаются в stack2 для временного хранения
+                    stack2.push(stack1.pop());
+                }
+            }
+            // Верхний элемент стека 2 на самом деле является нижним элементом стека 1, 
+            // а верхний элемент очереди pop, который мы хотим вытолкнуть, на самом деле является нижним элементом стека pop
+            return stack2.pop();
+        }
+
+        public int peek() {
+            if (stack2.isEmpty()) {
+                while (!stack1.isEmpty()) {
+                    stack2.push(stack1.pop());
+                }
+            }
+            return stack2.peek();
+        }
+
+        public boolean empty() {
+            return stack1.isEmpty() && stack2.isEmpty();
+        }
+    }
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue obj = new MyQueue();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.peek();
+ * boolean param_4 = obj.empty();
+ */
+```
+
+## Merge Two Sorted Lists
+https://leetcode.com/problems/merge-two-sorted-lists
+```
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummyHead = new ListNode();
+        ListNode tail = dummyHead;
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                tail.next = list1;
+                list1 = list1.next;
+                tail = tail.next;
+            } else {
+                tail.next = list2;
+                list2 = list2.next;
+                tail = tail.next;
+            }
+        }
+        tail.next = (list1 != null) ? list1 : list2;
+        return dummyHead.next;
+    }
+}
+```
+
+## Merge Sorted Array
+https://leetcode.com/problems/merge-sorted-array
+```
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        //variables to work as pointers
+        int i=m-1; // will point at m-1 index of nums1 array
+        int j=n-1; // will point at n-1 index of nums2 array
+        int k=nums1.length-1; //will point at the last position of the nums1 array
+
+        // Now traversing the nums2 array
+        while (j >= 0) {
+            // If element at i index of nums1 > element at j index of nums2
+            // then it is largest among two arrays and will be stored at k position of nums1
+            // using i >= 0 to make sure we have elements to compare in nums1 array
+            if (i >= 0 && nums1[i] > nums2[j]) {
+                nums1[k] = nums1[i];
+                k--; 
+                i--; //updating pointer for further comparisons
+            } else{
+                // element at j index of nums2 array is greater than the element at i index of nums1 array 
+                // or there is no element left to compare with the nums1 array 
+                // and we just have to push the elements of nums2 array in the nums1 array.
+                nums1[k] = nums2[j];
+                k--; 
+                j--; //updating pointer for further comparisons
+            }
+        }
+    }
+}
+```
+
+## Symmetric Tree
+https://leetcode.com/problems/symmetric-tree
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        return isSymmetric(root, root);
+      }
+
+      private boolean isSymmetric(TreeNode p, TreeNode q) {
+        if (p == null || q == null)
+          return p == q;
+
+        return p.val == q.val && isSymmetric(p.left, q.right) && isSymmetric(p.right, q.left);
+      }
+}
+```
+
+## Missing Number
+https://leetcode.com/problems/missing-number
+```
+class Solution {
+    public int missingNumber(int[] nums) {
+            int sum = 0;
+	        int length = nums.length;
+	        for(int i = 0; i < length; i++){
+		        sum += nums[i];
+            }
+            return length * (length + 1) / 2 - sum;
+    }
+}
+```
+
+## Is Subsequence
+https://leetcode.com/problems/is-subsequence
+```
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        int i = 0, j = 0;
+        while(i < s.length() && j < t.length()){
+            if(s.charAt(i) == t.charAt(j)) i++;
+            j++;
+        }
+        return i == s.length();
+    }
+}
+```
+
 ## Squares of sorted array
 https://leetcode.com/problems/squares-of-a-sorted-array
 ```
@@ -172,6 +629,41 @@ class Solution {
 }
 ```
 
+## Intersection of Two Arrays II
+https://leetcode.com/problems/intersection-of-two-arrays-ii
+```
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        int top = 0;
+        int bottom = 0;
+        List<Integer> h = new ArrayList<>();
+
+        while (true) {
+            if (top >= nums1.length || bottom >= nums2.length) {
+                break;
+            }
+            if (nums1[top] == nums2[bottom]) {
+                h.add(nums1[top]);
+                top++;
+                bottom++;
+            } else if (nums1[top] < nums2[bottom]) {
+                top++;
+            } else if (nums1[top] > nums2[bottom]) {
+                bottom++;
+            }
+        }
+
+        int[] g = new int[h.size()];
+        for (int i = 0; i < h.size(); i++) {
+            g[i] = h.get(i);
+        }
+        return g;
+    }
+}
+```
+
 ## Is substring strStr()
 https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string
 ```
@@ -195,3 +687,44 @@ class Solution {
 }
 ```
 
+## Palindrome Linked List
+https://leetcode.com/problems/palindrome-linked-list
+```
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+ 
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        List<Integer> vals = new ArrayList<>();
+
+        // Convert LinkedList into ArrayList.
+        ListNode currentNode = head;
+        while (currentNode != null) {
+            vals.add(currentNode.val);
+            currentNode = currentNode.next;
+        }
+
+        // Use two-pointer technique to check for palindrome.
+        int front = 0;
+        int back = vals.size() - 1;
+        while (front < back) {
+            // Note that we must use ! .equals instead of !=
+            // because we are comparing Integer, not int.
+            if (!vals.get(front).equals(vals.get(back))) {
+                return false;
+            }
+            front++;
+            back--;
+        }
+        return true;
+    }
+}
+```
