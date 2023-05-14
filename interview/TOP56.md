@@ -11,11 +11,19 @@
 9. [Valid Palindrome](#valid-palindrome)
 10. [Group Anagrams](#group-anagrams)
 11. [Max Consecutive Ones II](#max-consecutive-ones-ii)
-
-+ [Valid Parentheses](#valid-parentheses)
-+ [Two Sum](#two-sum)
-+ [Number of Recent Calls](#number-of-recent-calls)
-+ [Implement Queue using Stacks](#implement-queue-using-stacks)
+12. [One Edit Distance](#one-edit-distance)
+13. [Longest Subarray of 1's After Deleting One Element](#longest-subarray-of-1s-after-deleting-one-element)
+14. [Valid Parentheses](#valid-parentheses)
+15. [Subarray Sum Equals K](#subarray-sum-equals-k)
+16. [Insert Delete GetRandom O(1)](#insert-delete-getrandom-o1)
+17. [Two Sum](#two-sum)
+18. [Merge k Sorted Lists](#merge-k-sorted-lists)
+19. [Permutation in String](#permutation-in-string)
+20. [Meeting Rooms II](#meeting-rooms-ii)
+21. [Merge Intervals](#merge-intervals)
+22. [Number of Recent Calls](#number-of-recent-calls)
+23. [Validate Binary Search Tree](#validate-binary-search-tree)
+24. [Implement Queue using Stacks](#implement-queue-using-stacks)
 + [Merge Two Sorted Lists](#merge-two-sorted-lists)
 + [Merge Sorted Array](#merge-sorted-array)
 + [Symmetric Tree](#symmetric-tree)
@@ -387,6 +395,60 @@ class Solution {
 }
 ```
 
+## One Edit Distance
+Given two strings s and t, determine if they are both one edit distance apart.
+There are 3 possiblities to satisify one edit distance apart:
+1. Insert a character into s to get t
+2. Delete a character from s to get t
+3. Replace a character of s to get t
+
+```
+public class Solution {
+    public boolean isOneEditDistance(String s, String t) {
+        if (s.length() < t.length()) {
+            String temp = s;
+            s = t;
+            t = temp;
+        }
+        int m = s.length(), n = t.length(), diff = m - n;
+        if (diff >= 2) return false;
+        else if (diff == 1) {
+            for (int i = 0; i < n; ++i) {
+                if (s.charAt(i) != t.charAt(i)) {
+                    return s.substring(i + 1).equals(t.substring(i));
+                }
+            }
+            return true;
+        } else {
+            int cnt = 0;
+            for (int i = 0; i < m; ++i) {
+                if (s.charAt(i) != t.charAt(i)) ++cnt;
+            }
+            return cnt == 1;
+        }
+    }
+}
+```
+
+## Longest Subarray of 1's After Deleting One Element
+https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/
+```
+public int longestSubarray(int[] nums) {
+	int longest = 0;
+	int prev = 0, curr = 0;
+	for (int bit : nums) {
+		if (bit == 0) {
+			prev = curr;
+			curr = 0;
+		} else {
+			curr++;
+            longest = Math.max(longest, prev + curr);
+		}
+	}
+	return longest == nums.length ? longest - 1 : longest;
+}
+```
+
 ## Valid Parentheses
 https://leetcode.com/problems/valid-parentheses
 ```
@@ -412,6 +474,90 @@ class Solution {
 }
 ```
 
+## Subarray Sum Equals K
+https://leetcode.com/problems/subarray-sum-equals-k
+```
+class Solution {    
+    public int subarraySum(int[] nums, int k) {
+        int count = 0, sum = 0;
+        HashMap <Integer, Integer> map = new HashMap <>();
+        map.put(0, 1);
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            if (map.containsKey(sum - k))
+                count += map.get(sum - k);
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+        }
+        return count;
+    }
+}
+```
+
+## Insert Delete GetRandom O(1)
+https://leetcode.com/problems/insert-delete-getrandom-o1
+```
+/**
+ * Using ArrayList & HashMap
+ *
+ * Time Complexity: All function have average O(1)
+ *
+ * Space Complexity: O(N)
+ *
+ * N = Number of values currently stored in the data structure.
+ */
+class RandomizedSet {
+
+    List<Integer> nums;
+    Map<Integer, Integer> idxMap;
+    Random random;
+
+    public RandomizedSet() {
+        nums = new ArrayList<>();
+        idxMap = new HashMap<>();
+        random = new Random();
+    }
+
+    public boolean insert(int val) {
+        if (idxMap.containsKey(val)) {
+            return false;
+        }
+
+        idxMap.put(val, nums.size());
+        nums.add(val);
+        return true;
+    }
+
+    public boolean remove(int val) {
+        if (!idxMap.containsKey(val)) {
+            return false;
+        }
+
+        int idx = idxMap.get(val);
+        int lastIdx = nums.size() - 1;
+        if (idx != lastIdx) {
+            int lastVal = nums.get(lastIdx);
+            nums.set(idx, lastVal);
+            idxMap.put(lastVal, idx);
+        }
+        nums.remove(lastIdx);
+        idxMap.remove(val);
+        return true;
+    }
+
+    public int getRandom() {
+        return nums.get(random.nextInt(nums.size()));
+    }
+}
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet obj = new RandomizedSet();
+ * boolean param_1 = obj.insert(val);
+ * boolean param_2 = obj.remove(val);
+ * int param_3 = obj.getRandom();
+ */
+```
+
 ## Two Sum
 https://leetcode.com/problems/two-sum
 ```
@@ -431,24 +577,134 @@ class Solution {
 }
 ```
 
+## Merge k Sorted Lists
+https://leetcode.com/problems/merge-k-sorted-lists
+```
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+        Queue<ListNode> minHeap = new PriorityQueue<>((a, b) -> a.val - b.val);
+
+        for (final ListNode list : lists)
+            if (list != null)
+                minHeap.offer(list);
+
+        while (!minHeap.isEmpty()) {
+            ListNode minNode = minHeap.poll();
+            if (minNode.next != null)
+                minHeap.offer(minNode.next);
+            curr.next = minNode;
+            curr = curr.next;
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+## Permutation in String
+https://leetcode.com/problems/permutation-in-string
+```
+class Solution {
+     public boolean checkInclusion(String s1, String s2) {
+        if (s1.length() > s2.length())
+            return false;
+        int[] s1map = new int[26];
+        for (int i = 0; i < s1.length(); i++)
+            s1map[s1.charAt(i) - 'a']++;
+        for (int i = 0; i <= s2.length() - s1.length(); i++) {
+            int[] s2map = new int[26];
+            for (int j = 0; j < s1.length(); j++) {
+                s2map[s2.charAt(i + j) - 'a']++;
+            }
+            if (matches(s1map, s2map))
+                return true;
+        }
+        return false;
+    }
+    
+    public boolean matches(int[] s1map, int[] s2map) {
+        for (int i = 0; i < 26; i++) {
+            if (s1map[i] != s2map[i])
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+## Meeting Rooms II
+Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
+https://leetcode.ca/all/253.html
+```
+class Solution {
+    public int minMeetingRooms(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> (a[0] - b[0]));
+
+        // Store end times of each room.
+        Queue<Integer> minHeap = new PriorityQueue<>();
+
+        for (int[] interval : intervals) {
+            // No overlap, we can reuse the same room.
+            if (!minHeap.isEmpty() && interval[0] >= minHeap.peek())
+                minHeap.poll();
+            minHeap.offer(interval[1]);
+        }
+
+        return minHeap.size();
+    }
+}
+```
+
+## Merge Intervals
+https://leetcode.com/problems/merge-intervals
+```
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        List<int[]> ans = new ArrayList<>();
+
+        Arrays.sort(intervals, (a, b) -> (a[0] - b[0]));
+
+        for (int[] interval : intervals)
+          if (ans.isEmpty() || ans.get(ans.size() - 1)[1] < interval[0])
+            ans.add(interval);
+          else
+            ans.get(ans.size() - 1)[1] = Math.max(ans.get(ans.size() - 1)[1], interval[1]);
+
+        return ans.toArray(new int[ans.size()][]);
+    }
+}
+```
+
 ## Number of Recent Calls
 https://leetcode.com/problems/number-of-recent-calls
 ```
 class RecentCounter {
-        Queue<Integer> q;
+    Queue<Integer> q;
 
-        public RecentCounter() {
-            q = new LinkedList<>();
-        }
-
-        public int ping(int t) {
-            q.add(t);
-            while (q.peek() < t - 3000) {
-                q.poll();
-            }
-            return q.size();
-        }
+    public RecentCounter() {
+        q = new LinkedList<>();
     }
+
+    public int ping(int t) {
+        q.add(t);
+        while (q.peek() < t - 3000) {
+            q.poll();
+        }
+        return q.size();
+    }
+}
 
 /**
  * Your RecentCounter object will be instantiated and called as such:
@@ -457,55 +713,90 @@ class RecentCounter {
  */
 ```
 
+## Validate Binary Search Tree
+https://leetcode.com/problems/validate-binary-search-tree
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return isValidBST(root, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);    
+    }
+ 
+    public boolean isValidBST(TreeNode p, double min, double max){
+        if(p==null) 
+            return true;
+
+        if(p.val <= min || p.val >= max)
+            return false;
+
+        return isValidBST(p.left, min, p.val) && isValidBST(p.right, p.val, max);
+    }
+}
+```
+
 ## Implement Queue using Stacks
 https://leetcode.com/problems/implement-queue-using-stacks
 ```
 class MyQueue {
 
-        private Stack<Integer> stack1 = new Stack<>();
-        private Stack<Integer> stack2 = new Stack<>();
+    private Stack<Integer> stack1 = new Stack<>();
+    private Stack<Integer> stack2 = new Stack<>();
 
-        /**
-         * Для операции push () очереди можно напрямую выполнить операцию push () стека на stack1
-         */
-        public void push(int x) {
-            stack1.push(x);
-        }
-
-        /**
-         * Операция pop () очереди фактически предназначена для получения нижнего элемента в стеке 1. 
-         * Как это получить? Сначала поместите указанные выше элементы один за другим в другой стек stack2.
-         * Когда stack1 пуст, верхний элемент stack2 - это элемент, который нужно получить, 
-         * который извлекается операцией pop () стека.
-         * Перед возвратом элемента верните элемент из stack2 в stack1, а затем верните элемент
-         */
-        public int pop() {
-            // если stack2 пуст
-            if (stack2.isEmpty()) {
-                // и stack1 не пуст
-                while (!stack1.isEmpty()) {
-                    // Элементы в stack1 непрерывно выталкиваются и помещаются в stack2 для временного хранения
-                    stack2.push(stack1.pop());
-                }
-            }
-            // Верхний элемент стека 2 на самом деле является нижним элементом стека 1, 
-            // а верхний элемент очереди pop, который мы хотим вытолкнуть, на самом деле является нижним элементом стека pop
-            return stack2.pop();
-        }
-
-        public int peek() {
-            if (stack2.isEmpty()) {
-                while (!stack1.isEmpty()) {
-                    stack2.push(stack1.pop());
-                }
-            }
-            return stack2.peek();
-        }
-
-        public boolean empty() {
-            return stack1.isEmpty() && stack2.isEmpty();
-        }
+    /**
+     * Для операции push () очереди можно напрямую выполнить операцию push () стека на stack1
+     */
+    public void push(int x) {
+        stack1.push(x);
     }
+
+    /**
+     * Операция pop () очереди фактически предназначена для получения нижнего элемента в стеке 1. 
+     * Как это получить? Сначала поместите указанные выше элементы один за другим в другой стек stack2.
+     * Когда stack1 пуст, верхний элемент stack2 - это элемент, который нужно получить, 
+     * который извлекается операцией pop () стека.
+     * Перед возвратом элемента верните элемент из stack2 в stack1, а затем верните элемент
+     */
+    public int pop() {
+        // если stack2 пуст
+        if (stack2.isEmpty()) {
+            // и stack1 не пуст
+            while (!stack1.isEmpty()) {
+                // Элементы в stack1 непрерывно выталкиваются и помещаются в stack2 для временного хранения
+                stack2.push(stack1.pop());
+            }
+        }
+        // Верхний элемент стека 2 на самом деле является нижним элементом стека 1, 
+        // а верхний элемент очереди pop, который мы хотим вытолкнуть, на самом деле является нижним элементом стека pop
+        return stack2.pop();
+    }
+
+    public int peek() {
+        if (stack2.isEmpty()) {
+            while (!stack1.isEmpty()) {
+                stack2.push(stack1.pop());
+            }
+        }
+        return stack2.peek();
+    }
+
+    public boolean empty() {
+        return stack1.isEmpty() && stack2.isEmpty();
+    }
+}
 
 /**
  * Your MyQueue object will be instantiated and called as such:
