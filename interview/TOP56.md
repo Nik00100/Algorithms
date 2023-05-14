@@ -10,6 +10,8 @@
 8. [Move Zeroes To End](#move-zeroes)
 9. [Valid Palindrome](#valid-palindrome)
 10. [Group Anagrams](#group-anagrams)
+11. [Max Consecutive Ones II](#max-consecutive-ones-ii)
+
 + [Valid Parentheses](#valid-parentheses)
 + [Two Sum](#two-sum)
 + [Number of Recent Calls](#number-of-recent-calls)
@@ -360,6 +362,13 @@ class Solution {
         return new ArrayList<>(keyToAnagrams.values());
     }
 }
+```
+
+## Max Consecutive Ones II
+Given a binary array, find the maximum number of consecutive 1s in this array if you can flip at most one 0.
+https://leetcode.ca/all/487.html
+```
+
 ```
 
 ## Valid Parentheses
