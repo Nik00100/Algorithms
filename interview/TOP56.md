@@ -9,6 +9,7 @@
 7. [LRU Cache](#lru-cache)
 8. [Move Zeroes To End](#move-zeroes)
 9. [Valid Palindrome](#valid-palindrome)
+10. [Group Anagrams](#group-anagrams)
 + [Valid Parentheses](#valid-parentheses)
 + [Two Sum](#two-sum)
 + [Number of Recent Calls](#number-of-recent-calls)
@@ -337,6 +338,26 @@ class Solution {
           --r;
         }
         return true;
+    }
+}
+```
+## Group Anagrams
+https://leetcode.com/problems/group-anagrams
+```
+import java.util.*;
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> keyToAnagrams = new HashMap<>();
+
+        for (final String str : strs) {
+            char[] chars = str.toCharArray();
+            Arrays.sort(chars);
+            String key = String.valueOf(chars);
+            keyToAnagrams.computeIfAbsent(key, k -> new ArrayList<>()).add(str);
+        }
+
+        return new ArrayList<>(keyToAnagrams.values());
     }
 }
 ```
