@@ -1,42 +1,51 @@
 # TOP 56
 
-1. [Line Reflection](#line-reflection)
-2. [Summary ranges (RLE)](#summary-ranges)
-3. [Zigzag Iterator](#zigzag-iterator)
-4. [String Compression](#string-compression)
-5. [Reverse Linked List](#reverse-linked-list)
-6. [Generate Parentheses](#generate-parentheses)
-7. [LRU Cache](#lru-cache)
-8. [Move Zeroes To End](#move-zeroes)
-9. [Valid Palindrome](#valid-palindrome)
-10. [Group Anagrams](#group-anagrams)
-11. [Max Consecutive Ones II](#max-consecutive-ones-ii)
-12. [One Edit Distance](#one-edit-distance)
-13. [Longest Subarray of 1's After Deleting One Element](#longest-subarray-of-1s-after-deleting-one-element)
-14. [Valid Parentheses](#valid-parentheses)
-15. [Subarray Sum Equals K](#subarray-sum-equals-k)
-16. [Insert Delete GetRandom O(1)](#insert-delete-getrandom-o1)
-17. [Two Sum](#two-sum)
-18. [Merge k Sorted Lists](#merge-k-sorted-lists)
-19. [Permutation in String](#permutation-in-string)
-20. [Meeting Rooms II](#meeting-rooms-ii)
-21. [Merge Intervals](#merge-intervals)
-22. [Number of Recent Calls](#number-of-recent-calls)
-23. [Validate Binary Search Tree](#validate-binary-search-tree)
-24. [Implement Queue using Stacks](#implement-queue-using-stacks)
-25. [Spiral Matrix II](#spiral-matrix-ii)
-
-+ [Merge Two Sorted Lists](#merge-two-sorted-lists)
-+ [Merge Sorted Array](#merge-sorted-array)
-+ [Symmetric Tree](#symmetric-tree)
-+ [Missing Number](#missing-number)
-+ [Is Subsequence](#is-subsequence)
+1. [Line Reflection {356}](#line-reflection-356)
+2. [Summary ranges (RLE) {228}](#summary-ranges-228)
+3. [Zigzag Iterator {281}](#zigzag-iterator-281)
+4. [String Compression {443}](#string-compression-443)
+5. [Reverse Linked List {206}](#reverse-linked-list-206)
+6. [Generate Parentheses {22}](#generate-parentheses-22)
+7. [LRU Cache {146}](#lru-cache-146)
+8. [Move Zeroes To End {283}](#move-zeroes-283)
+9. [Valid Palindrome {125}](#valid-palindrome-125)
+10. [Group Anagrams {49}](#group-anagrams-49)
+11. [Max Consecutive Ones II {487}](#max-consecutive-ones-ii-487)
+12. [One Edit Distance {161}](#one-edit-distance-161)
+13. [Longest Subarray of 1's After Deleting One Element {1493}](#longest-subarray-of-1s-after-deleting-one-element-1493)
+14. [Valid Parentheses {20}](#valid-parentheses-20)
+15. [Subarray Sum Equals K {560}](#subarray-sum-equals-k-560)
+16. [Insert Delete GetRandom O(1) {380}](#insert-delete-getrandom-o1-380)
+17. [Two Sum {1}](#two-sum-1)
+18. [Merge k Sorted Lists {23}](#merge-k-sorted-lists-23)
+19. [Permutation in String {567}](#permutation-in-string-567)
+20. [Meeting Rooms II {253}](#meeting-rooms-ii-253)
+21. [Merge Intervals {56}](#merge-intervals-56)
+22. [Number of Recent Calls {933}](#number-of-recent-calls-933)
+23. [Validate Binary Search Tree {98}](#validate-binary-search-tree-98)
+24. [Implement Queue using Stacks {232}](#implement-queue-using-stacks-232)
+25. [Spiral Matrix II {59}](#spiral-matrix-ii-59)
+26. [Max Consecutive Ones III {1004}](#max-consecutive-ones-iii-1004)
+27. [Trapping Rain Water {42}](#trapping-rain-water-42)
+28. [Longest Substring Without Repeating Characters {3}](#longest-substring-without-repeating-characters-3)
+29. [Add Two Numbers {2}](#add-two-numbers-2)
+30. [Merge Two Sorted Lists {21}](#merge-two-sorted-lists-21)
+31. [Merge Sorted Array {88}](#merge-sorted-array-88)
+32. [Symmetric Tree {101}](#symmetric-tree-101)
+33. [Missing Number {268}](#missing-number-268)
+34. [Design Hit Counter {362}](#design-hit-counter-362)
+35. [Rotate Image {48}](#rotate-image-48)
+36. [Longest Palindromic Substring {5}](#longest-palindromic-substring-5)
+37. [Reconstruct Itinerary {332}](#reconstruct-itinerary-332)
+38. [Find K Closest Elements {658}](#find-k-closest-elements-658)
+39. [Number of Islands {200}](#number-of-islands-200)
+40. [Is Subsequence {392}](#is-subsequence-392)
 + [Squares of sorted array](#squares-of-sorted-array)
 + [Intersection of Two Arrays II](#intersection-of-two-arrays-ii)
 + [Is substring strStr()](#is-substring-strstr)
 + [Palindrome Linked List](#palindrome-linked-list)
 
-## Line Reflection
+## Line Reflection {356}
 Given n points on a 2D plane, find if there is such a line parallel to y-axis that reflect the given points.
 https://leetcode.ca/all/356.html
 ```
@@ -68,7 +77,7 @@ class Solution {
 }
 ```
 
-## Summary ranges
+## Summary ranges {228}
 https://leetcode.com/problems/summary-ranges/
 ```
 class Solution {
@@ -91,7 +100,7 @@ class Solution {
 }
 ```
 
-## Zigzag Iterator
+## Zigzag Iterator {281}
 Given two 1d vectors, implement an iterator to return their elements alternately.
 https://leetcode.ca/all/281.html
 ```
@@ -120,7 +129,7 @@ public class ZigzagIterator {
 
 ```
 
-## String Compression
+## String Compression {443}
 https://leetcode.com/problems/string-compression
 ```
 class Solution {
@@ -146,7 +155,7 @@ class Solution {
 }
 ```
 
-## Reverse Linked List
+## Reverse Linked List {206}
 https://leetcode.com/problems/reverse-linked-list
 ```
 /**
@@ -175,7 +184,7 @@ class Solution {
 }
 ```
 
-## Generate Parentheses
+## Generate Parentheses {22}
 https://leetcode.com/problems/generate-parentheses
 ```
 class Solution {
@@ -216,7 +225,7 @@ class Solution {
 }
 ```
 
-## LRU Cache
+## LRU Cache {146}
 https://leetcode.com/problems/lru-cache
 ```
 class Node {
@@ -316,7 +325,7 @@ class LRUCache {
  */
 ```
 
-## Move Zeroes
+## Move Zeroes {283}
 https://leetcode.com/problems/move-zeroes
 ```
 class Solution {
@@ -331,7 +340,7 @@ class Solution {
 }
 ```
 
-## Valid Palindrome
+## Valid Palindrome {125}
 https://leetcode.com/problems/valid-palindrome
 ```
 class Solution {
@@ -353,7 +362,7 @@ class Solution {
     }
 }
 ```
-## Group Anagrams
+## Group Anagrams {49}
 https://leetcode.com/problems/group-anagrams
 ```
 import java.util.*;
@@ -374,7 +383,7 @@ class Solution {
 }
 ```
 
-## Max Consecutive Ones II
+## Max Consecutive Ones II {487}
 Given a binary array, find the maximum number of consecutive 1s in this array if you can flip at most one 0.
 https://leetcode.ca/all/487.html
 ```
@@ -397,7 +406,7 @@ class Solution {
 }
 ```
 
-## One Edit Distance
+## One Edit Distance {161}
 Given two strings s and t, determine if they are both one edit distance apart.
 There are 3 possiblities to satisify one edit distance apart:
 1. Insert a character into s to get t
@@ -432,7 +441,7 @@ public class Solution {
 }
 ```
 
-## Longest Subarray of 1's After Deleting One Element
+## Longest Subarray of 1's After Deleting One Element {1493}
 https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/
 ```
 public int longestSubarray(int[] nums) {
@@ -451,7 +460,7 @@ public int longestSubarray(int[] nums) {
 }
 ```
 
-## Valid Parentheses
+## Valid Parentheses {20}
 https://leetcode.com/problems/valid-parentheses
 ```
 class Solution {
@@ -476,7 +485,7 @@ class Solution {
 }
 ```
 
-## Subarray Sum Equals K
+## Subarray Sum Equals K {560}
 https://leetcode.com/problems/subarray-sum-equals-k
 ```
 class Solution {    
@@ -495,7 +504,7 @@ class Solution {
 }
 ```
 
-## Insert Delete GetRandom O(1)
+## Insert Delete GetRandom O(1) {380}
 https://leetcode.com/problems/insert-delete-getrandom-o1
 ```
 /**
@@ -560,7 +569,7 @@ class RandomizedSet {
  */
 ```
 
-## Two Sum
+## Two Sum {1}
 https://leetcode.com/problems/two-sum
 ```
 class Solution {
@@ -579,8 +588,18 @@ class Solution {
 }
 ```
 
-## Merge k Sorted Lists
+## Merge k Sorted Lists {23}
 https://leetcode.com/problems/merge-k-sorted-lists
+
+`k` sorted linked lists merges into one sorted linked list. It does this by using a min heap (implemented as a priority queue) to keep track of the smallest node from each list.
+
+Dummy node `dummy` and pointer `curr` keeps track of the current position in the merged list. Also create `minHeap` to store the smallest node from each list.
+
+Iterate over each list in `lists`. For each non-null list add first node to `minHeap`.
+
+Loop until `minHeap` is empty. In each iteration smallest node removed from `minHeap` and added it to merged list by updating the `next` pointer of `curr`. If removed node has next node, it adds to `minHeap`.
+
+After all nodes have been processed and added to the merged list, it returns the `next` node of the dummy node as the head of the merged list.
 ```
 /**
  * Definition for singly-linked list.
@@ -615,39 +634,52 @@ class Solution {
 }
 ```
 
-## Permutation in String
+## Permutation in String {567}
 https://leetcode.com/problems/permutation-in-string
+
+Arrays `data` and `test` of size 26 represent the frequency of characters in s1 and a sliding window of size s1.length() in s2, respectively.
+
+Then populates `data` with frequency of characters in s1 and the first window of characters in s2.
+
+Then iterates over each window of characters in s2. For each window, it checks if the frequency of characters in the window matches the frequency of characters in s1 by calling the helper method `equalsString`. If they match, it means that a permutation of s1 exists as a substring of s2, and the code returns `true`.
+
+After checking each window, the code updates the frequency of characters in the next window by incrementing the count of the next character and decrementing the count of the first character in the current window.
+
+If no permutation is found after checking all windows, the code returns `false`.
 ```
-class Solution {
-     public boolean checkInclusion(String s1, String s2) {
-        if (s1.length() > s2.length())
-            return false;
-        int[] s1map = new int[26];
+import java.util.*;
+
+public class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        if (s1.length() > s2.length()) return false;
+        int[] data = new int[26];
+        int[] test = new int[26];
+
+        for (char c : s1.toCharArray()) data[c - 'a']++;
+
         for (int i = 0; i < s1.length(); i++)
-            s1map[s1.charAt(i) - 'a']++;
-        for (int i = 0; i <= s2.length() - s1.length(); i++) {
-            int[] s2map = new int[26];
-            for (int j = 0; j < s1.length(); j++) {
-                s2map[s2.charAt(i + j) - 'a']++;
-            }
-            if (matches(s1map, s2map))
-                return true;
+            test[s2.charAt(i) - 'a']++;
+        int n = s1.length();
+
+        for (int i = 0; i < s2.length() - n; i++) {
+            if (equalsString(test, data)) return true;
+            test[s2.charAt(i + n) - 'a']++;
+            test[s2.charAt(i) - 'a']--;
         }
-        return false;
+        return equalsString(test, data);
     }
-    
-    public boolean matches(int[] s1map, int[] s2map) {
-        for (int i = 0; i < 26; i++) {
-            if (s1map[i] != s2map[i])
-                return false;
-        }
+
+    private boolean equalsString(int[] s1, int[] s2) {
+        for (int i = 0; i < 26; i++)
+            if (s1[i] != s2[i]) return false;
         return true;
     }
 }
 ```
 
-## Meeting Rooms II
+## Meeting Rooms II {253}
 Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
+
 https://leetcode.ca/all/253.html
 ```
 class Solution {
@@ -669,8 +701,10 @@ class Solution {
 }
 ```
 
-## Merge Intervals
+## Merge Intervals {56}
 https://leetcode.com/problems/merge-intervals
+
+
 ```
 class Solution {
     public int[][] merge(int[][] intervals) {
@@ -689,7 +723,7 @@ class Solution {
 }
 ```
 
-## Number of Recent Calls
+## Number of Recent Calls {933}
 https://leetcode.com/problems/number-of-recent-calls
 ```
 class RecentCounter {
@@ -715,7 +749,7 @@ class RecentCounter {
  */
 ```
 
-## Validate Binary Search Tree
+## Validate Binary Search Tree {98}
 https://leetcode.com/problems/validate-binary-search-tree
 ```
 /**
@@ -750,7 +784,7 @@ class Solution {
 }
 ```
 
-## Implement Queue using Stacks
+## Implement Queue using Stacks {232}
 https://leetcode.com/problems/implement-queue-using-stacks
 ```
 class MyQueue {
@@ -810,8 +844,12 @@ class MyQueue {
  */
 ```
 
-## Spiral Matrix II
+## Spiral Matrix II {59}
 https://leetcode.com/problems/spiral-matrix-ii
+
+It loops until all elements in the matrix have been filled. In each iteration, it fills in the top row from left to right, the right column from top to bottom, the bottom row from right to left, and the left column from bottom to top. After filling in each row or column, it updates the corresponding starting or ending row or column variable to move inward.
+
+After all elements have been filled, the code returns the generated matrix.
 ```
 class Solution {
     public int[][] generateMatrix(int n) {
@@ -865,7 +903,181 @@ class Solution {
 }
 ```
 
-## Merge Two Sorted Lists
+## Max Consecutive Ones III {1004}
+https://leetcode.com/problems/max-consecutive-ones-iii
+
+One-Pass Optimized Sliding Window
+
+If A[start] ~ A[end] has zeros <= K, we continue to increment end.
+(Reason: The window is still valid and window size can be increased.)
+
+If A[start] ~ A[end] has zeros > K, we increment both start & end.
+(Reason: The window contains extra zeros thus it is not valid any more, and we will increment both start & end to keep the window size same.)
+
+Time Complexity: O(N); 
+Space Complexity: O(1);
+N = Length of the input array
+```
+class Solution {
+    public int longestOnes(int[] nums, int k) {
+        if (nums == null) {
+            throw new IllegalArgumentException("Input array is null");
+        }
+
+        int start = 0;
+        int end = 0;
+        int zeros = 0;
+
+        while (end < nums.length) {
+            if (nums[end] == 0) {
+                zeros++;
+            }
+            end++;
+            if (zeros > k) {
+                if (nums[start] == 0) {
+                    zeros--;
+                }
+                start++;
+            }
+        }
+
+        return end - start;
+    }
+}
+```
+
+## Trapping Rain Water {42}
+https://leetcode.com/problems/trapping-rain-water
+
+**Intuition**
+
+We need to figure out the total water we can trap, A difference of heights, maybe a smaller and a greater one would do the trick but a smaller bar can be smaller than multiple bars or a single tall bar can be taller than multiple smaller bars. So we can calculate total water trapped by each bar by tracking the smaller bars in a stack which contains bars in monotonically decreasing order.
+
+**Approach**
+
+Pop the elements out of stack if current bar's height is more than the minimum height bar in stack and calculate the water stored in that area and add it to answer.
+
+**Complexity**
+
+Time complexity: O(n);
+Space complexity: O(n)
+```
+class Solution {
+    public int trap(int[] height) {
+        Stack<Integer> stack = new Stack<>();
+        int ans = 0;
+        for(int i = 0; i < height.length; i++) {
+            while(!stack.isEmpty() && height[stack.peek()] < height[i]) {
+                int top = height[stack.peek()];
+                stack.pop();
+                // Last bar as base cannot store any water.
+                if(stack.isEmpty()) break; 
+                int width = i - stack.peek() - 1;
+                int length = Math.min(height[i], height[stack.peek()]) - top;
+                ans += length * width;
+                
+            }
+            stack.push(i);
+        }
+        return ans;
+    }
+}
+```
+
+## Longest Substring Without Repeating Characters {3}
+https://leetcode.com/problems/longest-substring-without-repeating-characters
+
+**Approach**
+
+- Use sliding window with hashset, use left and right pointers to move the window .
+- If the set doesn't contains character then first add into the set and calculate the maxLength hand-in-hand...
+- If character already present in the set that means you have to move your sliding window by 1 , before that you have to remove all the characters that are infront of the character that is present already in window before.
+- Now you have to remove that character also and move the left pointer and also add the new character into the set.
+
+**Complexity**
+
+Time complexity: O(n);
+Space complexity: O(k), where k is the number of distinctive characters prsent in the hashset.
+```
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        Set<Character>set = new HashSet<>();
+        int maxLength = 0;
+        int left = 0;
+        for (int right = 0; right < s.length(); right++) {           
+            if (!set.contains(s.charAt(right))) {
+                set.add(s.charAt(right));
+                maxLength=Math.max(maxLength,right-left+1);                
+            } else {
+                while(s.charAt(left) != s.charAt(right)) {
+                    set.remove(s.charAt(left));
+                    left++;
+                }
+                set.remove(s.charAt(left));
+                left++;
+                set.add(s.charAt(right));
+            }            
+        }
+        return maxLength;
+    }
+}
+```
+
+## Add Two Numbers {2}
+https://leetcode.com/problems/add-two-numbers
+```
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ * int val;
+ * ListNode next;
+ * ListNode() {}
+ * ListNode(int val) { this.val = val; }
+ * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        // Creating an dummy list
+        ListNode dummy = new ListNode(0);
+        // Intialising an pointer
+        ListNode curr = dummy;
+        // Intialising our carry with 0 intiall
+        int carry = 0;
+        // While loop will run, until l1 OR l2 not reaches null OR if they both reaches null.
+        // But our carry has some value in it.
+        // We will add that as well into our list
+        while (l1 != null || l2 != null || carry == 1) {
+            // Intialising our sum
+            int sum = 0;
+            // Adding l1 to our sum & moving l1
+            if (l1 != null) {
+                sum += l1.val;
+                l1 = l1.next;
+            }
+            // Adding l2 to our sum & moving l2
+            if (l2 != null) {
+                sum += l2.val;
+                l2 = l2.next;
+            }
+            // if we have carry then add it into our sum
+            sum += carry;
+            // if we get carry, then divide it by 10 to get the carry
+            carry = sum / 10;
+            // the value we'll get by it, will become as new node so. add it to our list
+            ListNode node = new ListNode(sum % 10);
+            // curr will point to that new node if we get
+            curr.next = node;
+            // update the current every time
+            curr = curr.next; 
+        }
+        // return dummy.next, we don't want the value we have consider in it intially!!
+        return dummy.next; 
+    }
+}
+```
+
+## Merge Two Sorted Lists {21}
 https://leetcode.com/problems/merge-two-sorted-lists
 ```
 /**
@@ -900,7 +1112,7 @@ class Solution {
 }
 ```
 
-## Merge Sorted Array
+## Merge Sorted Array {88}
 https://leetcode.com/problems/merge-sorted-array
 ```
 class Solution {
@@ -932,7 +1144,7 @@ class Solution {
 }
 ```
 
-## Symmetric Tree
+## Symmetric Tree {101}
 https://leetcode.com/problems/symmetric-tree
 ```
 /**
@@ -965,7 +1177,7 @@ class Solution {
 }
 ```
 
-## Missing Number
+## Missing Number {268}
 https://leetcode.com/problems/missing-number
 ```
 class Solution {
@@ -980,7 +1192,305 @@ class Solution {
 }
 ```
 
-## Is Subsequence
+## Design Hit Counter {362}
+Design a hit counter which counts the number of hits received in the past 5 minutes.
+
+Each function accepts a timestamp parameter (in seconds granularity) and you may assume that calls are being made to the system in chronological order (ie, the timestamp is monotonically increasing). You may assume that the earliest timestamp starts at 1.
+
+It is possible that several hits arrive roughly at the same time.
+
+https://leetcode.ca/all/362.html
+
+```
+class HitCounter {
+    public void hit(int timestamp) {
+        final int i = timestamp % 300;
+
+        if (timestamps[i] == timestamp) {
+            ++hits[i];
+        } else {
+            timestamps[i] = timestamp;
+            hits[i] = 1; // Reset hit count to 1
+        }
+    }
+
+    public int getHits(int timestamp) {
+        int countHits = 0;
+
+        for (int i = 0; i < 300; ++i)
+            if (timestamp - timestamps[i] < 300)
+                countHits += hits[i];
+
+        return countHits;
+    }
+
+    private int[] timestamps = new int[300];
+    private int[] hits = new int[300];
+}
+
+```
+
+## Rotate Image {48}
+https://leetcode.com/problems/rotate-image
+
+Step 1: Transpose the matrix. (transposing means changing columns to rows and rows to columns)
+
+Step 2: Reverse each row of the matrix.
+```
+class Solution {
+    /* Clockwise Rotate */
+    public void rotate(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return;
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        for (int first = 0, last = rows - 1; first < last; first++, last--) {
+            int[] tmp = matrix[first];
+            matrix[first] = matrix[last];
+            matrix[last] = tmp;
+        }
+        for (int i = 0; i < rows; i++) {
+            for (int j = i + 1; j < cols; j++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = tmp;
+            }
+        }
+    }
+
+    /* Counter-clockwise Rotate */
+    public void antiRotate(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return;
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        for (int first = 0, last = cols - 1; first < last; first++, last--) {
+            for (int i = 0; i < matrix.length; i++) {
+                int tmp = matrix[i][first];
+                matrix[i][first] = matrix[i][last];
+                matrix[i][last] = tmp;
+            }
+        }
+        for (int i = 0; i < rows; i++) {
+            for (int j = i + 1; j < cols; j++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = tmp;
+            }
+        }
+    }
+}
+```
+
+## Longest Palindromic Substring {5}
+https://leetcode.com/problems/longest-palindromic-substring
+
+**Approach:**
+- Initialize variables minstart and maxlen as 0 to keep track of the longest palindrome found so far.
+- Iterate over each character in the string using a variable i.
+- Check if the remaining length from i to the end of the string is less than half of the maxlen. If it is, there is no possibility of finding a longer palindrome, so we break out of the loop.
+- Set l and r as i, representing the left and right pointers of the potential palindrome.
+- While r is within the string bounds and the character at r is equal to the next character, increment r.
+- Update i to be r + 1 since all the characters from l to r have been accounted for.
+- While l is greater than 0 and r is within the string bounds, and the characters at l-1 and r+1 are equal, decrement l and increment r.
+- Calculate the length of the potential palindrome using newlen = r - l + 1.
+- If newlen is greater than maxlen, update maxlen with newlen and minstart with l.
+- After the loop finishes, return the substring of s starting from minstart with length maxlen, which represents the longest palindrome found in the string.
+
+**Complexity:**
+- Time Complexity: The code uses a two-pointer approach to expand around each center, resulting in a linear time complexity of O(n), where n is the length of the string.
+- Space Complexity: The code uses a constant amount of extra space, resulting in a space complexity of O(1).
+```
+class Solution {
+    public String longestPalindrome(String s) {
+        int n = s.length();
+        if (n == 0)
+            return "";
+        if (n == 1)
+            return s;
+        
+        int minstart = 0, maxlen = 0;
+        
+        for (int i = 0; i < n; ) {
+            if (n - i < maxlen / 2)
+                break;
+            
+            int l = i, r = i;
+            
+            // Find the center of the palindrome
+            while (r < n - 1 && s.charAt(r) == s.charAt(r + 1))
+                r++;
+            
+            // Update the next starting point
+            i = r + 1;
+            
+            // Expand around the center to find the longest palindrome
+            while (l > 0 && r < n - 1 && s.charAt(l - 1) == s.charAt(r + 1)) {
+                l--;
+                r++;
+            }
+            
+            int newlen = r - l + 1;
+            if (newlen > maxlen) {
+                maxlen = newlen;
+                minstart = l;
+            }
+        }
+        
+        return s.substring(minstart, minstart + maxlen);
+    }
+}
+```
+
+## Reconstruct Itinerary {332}
+https://leetcode.com/problems/reconstruct-itinerary
+
+All the airports are vertices and tickets are directed edges. Then all these tickets form a directed graph.
+
+The graph must be Eulerian since we know that a Eulerian path exists.
+
+Thus, start from "JFK", we can apply the Hierholzer's algorithm to find a Eulerian path in the graph which is a valid reconstruction.
+
+Since the problem asks for lexical order smallest solution, we can put the neighbors in a min-heap. In this way, we always visit the smallest possible neighbor first in our trip.
+```
+import java.util.*;
+
+public class Solution {
+
+    Map<String, PriorityQueue<String>> flights;
+    LinkedList<String> path;
+
+    public List<String> findItinerary(List<List<String>> tickets) {
+        flights = new HashMap<>();
+        path = new LinkedList<>();
+        for (List<String> ticket : tickets) {
+            flights.putIfAbsent(ticket.get(0), new PriorityQueue<>());
+            flights.get(ticket.get(0)).add(ticket.get(1));
+        }
+        dfs("JFK");
+        return path;
+    }
+
+    public void dfs(String departure) {
+        PriorityQueue<String> arrivals = flights.get(departure);
+        while (arrivals != null && !arrivals.isEmpty())
+            dfs(arrivals.poll());
+        path.addFirst(departure);
+    }
+}
+```
+
+Iterative version:
+```
+import java.util.*;
+
+class Solution {
+    public List<String> findItinerary(List<List<String>> tickets) {
+        Map<String, PriorityQueue<String>> targets = new HashMap<>();
+        for (List<String> ticket : tickets)
+            targets.computeIfAbsent(ticket.get(0), k -> new PriorityQueue()).add(ticket.get(1));
+        List<String> route = new LinkedList();
+        Stack<String> stack = new Stack<>();
+        stack.push("JFK");
+        while (!stack.empty()) {
+            while (targets.containsKey(stack.peek()) && !targets.get(stack.peek()).isEmpty())
+                stack.push(targets.get(stack.peek()).poll());
+            route.add(0, stack.pop());
+        }
+        return route;
+    }
+}
+```
+
+## Find K Closest Elements {658}
+https://leetcode.com/problems/find-k-closest-elements
+
+**Intuition**
+
+The array is sorted. If we want find the one number closest to x,
+we don't have to check one by one. it's straightforward to use binary search. Now we want the k closest, the logic should be similar.
+
+**Explanation**
+
+Assume we are taking A[i] ~ A[i + k -1]. We can binary search i.
+We compare the distance between x - A[mid] and A[mid + k] - x
+
+See following cases:
+Assume A[mid] ~ A[mid + k] is sliding window
+
+case 1: x - A[mid] < A[mid + k] - x, need to move window go left
+-------x----A[mid]-----------------A[mid + k]----------
+
+case 2: x - A[mid] < A[mid + k] - x, need to move window go left again
+-------A[mid]----x-----------------A[mid + k]----------
+
+case 3: x - A[mid] > A[mid + k] - x, need to move window go right
+-------A[mid]------------------x---A[mid + k]----------
+
+case 4: x - A[mid] > A[mid + k] - x, need to move window go right
+-------A[mid]---------------------A[mid + k]----x------
+
+If x - A[mid] > A[mid + k] - x, it means A[mid + 1] ~ A[mid + k] is better than A[mid] ~ A[mid + k - 1], and we have mid smaller than the right i.
+So assign left = mid + 1.
+
+**Important**
+
+Note that, you SHOULD NOT compare the absolute value of abs(x - A[mid]) and abs(A[mid + k] - x).
+It fails at cases like A = [1,1,2,2,2,2,2,3,3], x = 3, k = 3
+
+**Complexity**
+
+Time O(log(N - K)) to binary research and find result.
+Space O(K) to create the returned list.
+```
+import java.util.*;
+
+class Solution {
+    public List<Integer> findClosestElements(int[] A, int k, int x) {
+        int left = 0, right = A.length - k;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (x - A[mid] > A[mid + k] - x)
+                left = mid + 1;
+            else
+                right = mid;
+        }
+        return Arrays.stream(A, left, left + k).boxed().collect(Collectors.toList());
+    }
+}
+```
+
+## Number of Islands {200}
+https://leetcode.com/problems/number-of-islands
+
+Use DFS
+```
+class Solution {
+    public static int numIslands(char[][] grid) {
+        int result = 0;
+        int n = grid.length;
+        int m = grid[0].length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == '1') {
+                   clearDFS(grid,i,j);
+                   result++;
+                }
+            }
+        }
+        return result;
+    }
+
+    public static void clearDFS (char[][] grid, int i, int j) {
+        if (i < 0 || j < 0 || i > grid.length - 1 || j > grid[0].length - 1 || grid[i][j] != '1') return;
+        grid[i][j] = '0';
+        clearDFS(grid,i+1,j);
+        clearDFS(grid,i-1,j);
+        clearDFS(grid,i,j+1);
+        clearDFS(grid,i,j-1);
+    }
+}
+```
+
+## Is Subsequence {392}
 https://leetcode.com/problems/is-subsequence
 ```
 class Solution {
