@@ -24,6 +24,8 @@
 22. [Number of Recent Calls](#number-of-recent-calls)
 23. [Validate Binary Search Tree](#validate-binary-search-tree)
 24. [Implement Queue using Stacks](#implement-queue-using-stacks)
+25. [Spiral Matrix II](#spiral-matrix-ii)
+
 + [Merge Two Sorted Lists](#merge-two-sorted-lists)
 + [Merge Sorted Array](#merge-sorted-array)
 + [Symmetric Tree](#symmetric-tree)
@@ -806,6 +808,34 @@ class MyQueue {
  * int param_3 = obj.peek();
  * boolean param_4 = obj.empty();
  */
+```
+
+## Spiral Matrix II
+https://leetcode.com/problems/spiral-matrix-ii
+```
+class Solution {
+  public int[][] generateMatrix(int n) {
+    int[][] ans = new int[n][n];
+    int count = 1;
+
+    for (int min = 0; min < n / 2; ++min) {
+      final int max = n - min - 1;
+      for (int i = min; i < max; ++i)
+        ans[min][i] = count++;
+      for (int i = min; i < max; ++i)
+        ans[i][max] = count++;
+      for (int i = max; i > min; --i)
+        ans[max][i] = count++;
+      for (int i = max; i > min; --i)
+        ans[i][min] = count++;
+    }
+
+    if (n % 2 == 1)
+      ans[n / 2][n / 2] = count;
+
+    return ans;
+  }
+}
 ```
 
 ## Merge Two Sorted Lists
