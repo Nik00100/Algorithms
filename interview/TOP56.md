@@ -814,27 +814,54 @@ class MyQueue {
 https://leetcode.com/problems/spiral-matrix-ii
 ```
 class Solution {
-  public int[][] generateMatrix(int n) {
-    int[][] ans = new int[n][n];
-    int count = 1;
-
-    for (int min = 0; min < n / 2; ++min) {
-      final int max = n - min - 1;
-      for (int i = min; i < max; ++i)
-        ans[min][i] = count++;
-      for (int i = min; i < max; ++i)
-        ans[i][max] = count++;
-      for (int i = max; i > min; --i)
-        ans[max][i] = count++;
-      for (int i = max; i > min; --i)
-        ans[i][min] = count++;
+    public int[][] generateMatrix(int n) {
+        
+        // creating a matrix of n x n
+        
+        int[][] ans = new int[n][n];
+        
+        int count = 1;
+        int total = n * n;
+        
+        // initialize variables for keeping track of starting and ending rows and columns
+        int startingRow = 0;
+        int endingRow = n - 1;
+        int startingCol = 0;
+        int endingCol = n - 1;
+        
+        while (count <= total) {
+            
+            // fill in the top row from left to right
+            for (int i = startingCol; i <= endingCol; i++) {
+                ans[startingRow][i] = count;
+                count++;
+            }
+            startingRow++;
+            
+            // fill in the right column from top to bottom
+            for (int i = startingRow; i <= endingRow; i++) {
+                ans[i][endingCol] = count;
+                count++;
+            }
+            endingCol--;
+            
+            // fill in the bottom row from right to left
+            for (int i = endingCol; i >= startingCol; i--) {
+                ans[endingRow][i] = count;
+                count++;
+            }
+            endingRow--;
+            
+            // fill in the left column from bottom to top
+            for (int i = endingRow; i >= startingRow; i--) {
+                ans[i][startingCol] = count;
+                count++;
+            }
+            startingCol++;
+        }
+        
+        return ans;
     }
-
-    if (n % 2 == 1)
-      ans[n / 2][n / 2] = count;
-
-    return ans;
-  }
 }
 ```
 
