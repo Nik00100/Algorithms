@@ -40,10 +40,22 @@
 38. [Find K Closest Elements {658}](#find-k-closest-elements-658)
 39. [Number of Islands {200}](#number-of-islands-200)
 40. [Is Subsequence {392}](#is-subsequence-392)
-+ [Squares of sorted array](#squares-of-sorted-array)
-+ [Intersection of Two Arrays II](#intersection-of-two-arrays-ii)
-+ [Is substring strStr()](#is-substring-strstr)
-+ [Palindrome Linked List](#palindrome-linked-list)
+41. [Maximize Distance to Closest Person {849}](#maximize-distance-to-closest-person-849)
+42. [Median of Two Sorted Arrays {4}](#median-of-two-sorted-arrays-4)
+43. [Subarray Sums Divisible by K {974}](#subarray-sums-divisible-by-k-974)
+44. [Search in Rotated Sorted Array {33}](#search-in-rotated-sorted-array-33)
+45. [Serialize and Deserialize BST {449}](#serialize-and-deserialize-bst-449)
+46. [Squares of sorted array {977}](#squares-of-sorted-array-977)
+47. [Intersection of Two Arrays II {350}](#intersection-of-two-arrays-ii-350)
+48. [Remove Nth Node From End of List {19}](#remove-nth-node-from-end-of-list-19)
+49. [Maximal Rectangle {85}](#maximal-rectangle-85)
+50. [Find First and Last Position of Element in Sorted Array {34}](#find-first-and-last-position-of-element-in-sorted-array-34)
+51. [Evaluate Reverse Polish Notation {150}](#evaluate-reverse-polish-notation-150)
+52. [Perfect Squares {279}](#perfect-squares-279)
+53. [Is substring strStr() {28}](#is-substring-strstr-28)
+54. [Product of Array Except Self {238}](#product-of-array-except-self-238)
+55. [Simplify Path {71}](#simplify-path-71)
+56. [Palindrome Linked List {234}](#palindrome-linked-list-234)
 
 ## Line Reflection {356}
 Given n points on a 2D plane, find if there is such a line parallel to y-axis that reflect the given points.
@@ -1505,7 +1517,251 @@ class Solution {
 }
 ```
 
-## Squares of sorted array
+## Maximize Distance to Closest Person {849}
+https://leetcode.com/problems/maximize-distance-to-closest-person
+
+**Explanation**
+
+- `last` is the index of last seated seat.
+- Loop on all seats, when we met a people, we count the distance from the last.
+- The final result = max(distance at the beginning, distance in the middle / 2, distance at the end).
+
+**Complexity**
+
+Time O(N) Space O(1)
+```
+public class Solution {
+    public int maxDistToClosest(int[] seats) {
+        int res = 0, n = seats.length, last = -1;
+        for (int i = 0; i < n; ++i) {
+            if (seats[i] == 1) {
+                res = last < 0 ? i : Math.max(res, (i - last) / 2);
+                last = i;
+            }
+        }
+        res = Math.max(res, n - last - 1);
+        return res;
+    }
+}
+```
+
+## Median of Two Sorted Arrays {4}
+https://leetcode.com/problems/median-of-two-sorted-arrays
+```
+class Solution {
+    public double findMedianSortedArrays(int A[], int B[]) {
+        int n = A.length;
+        int m = B.length;
+        // the following call is to make sure len(A) <= len(B).
+        // yes, it calls itself, but at most once, shouldn't be
+        // consider a recursive solution
+        if (n > m)
+            return findMedianSortedArrays(B, A);
+
+        // now, do binary search
+        int k = (n + m - 1) / 2;
+        int l = 0, r = Math.min(k, n); // r is n, NOT n-1, this is important!!
+        while (l < r) {
+            int midA = (l + r) / 2;
+            int midB = k - midA;
+            if (A[midA] < B[midB])
+                l = midA + 1;
+            else
+                r = midA;
+        }
+
+        // after binary search, we almost get the median because it must be between
+        // these 4 numbers: A[l-1], A[l], B[k-l], and B[k-l+1]
+
+        // if (n+m) is odd, the median is the larger one between A[l-1] and B[k-l].
+        // and there are some corner cases we need to take care of.
+        int a = Math.max(l > 0 ? A[l - 1] : Integer.MIN_VALUE, k - l >= 0 ? B[k - l] : Integer.MIN_VALUE);
+        if (((n + m) & 1) == 1)
+            return (double) a;
+
+        // if (n+m) is even, the median can be calculated by
+        // median = (max(A[l-1], B[k-l]) + min(A[l], B[k-l+1]) / 2.0
+        // also, there are some corner cases to take care of.
+        int b = Math.min(l < n ? A[l] : Integer.MAX_VALUE, k - l + 1 < m ? B[k - l + 1] : Integer.MAX_VALUE);
+        return (a + b) / 2.0;
+    }
+}
+```
+
+## Subarray Sums Divisible by K {974}
+https://leetcode.com/problems/subarray-sums-divisible-by-k
+
+**Approach**
+
+When it comes to Sum of Subarray, the use of Prefix Sum is especially important.
+
+Prefix Sum is the sum of the current integer with the previous integer in the array (Prefix).
+
+Example: nums = [1,2,3,4,5] has the prefix sum array of prefixSum = [1,3,6,10,15], where the nums[0] + 1 = 1, nums[1] + nums[0] = 2 + 1 = 3, nums[2] + nums[1] = 3 + 3 = 6, and so on.
+
+Using the example above, we can determine the subarray sum of any subarray using prefix sum.
+
+To get the subarray sum of nums[2] to nums[4] == 3 + 4 + 5 == 12, we can get from prefixSum[5] - prefixSum[1] == 15 - 3 == 12.
+
+With Prefix Sum, we can evaluate if any subarray sum is divisible by 'k', if two prefix sums have the same remainder of 'k'.
+
+For Example, nums = [4,2,3], k = 5, with two prefix sum, 4 [4] and 9 [4,2,3].
+
+Both remainders are 4, with the subarray between the prefix sum 9 [4,2,3] - 4 [4] == 5 [2,3], which is divisible by 5.
+
+**Complexity**
+
+Time Complexity: O(n),
+where 'n' is the length of 'nums'.
+In fact, in actual is '2n' as we traverse 'nums' once and the HashMap once, with the worst time complexity of the HashMap being 'n'.
+
+Space Complexity: O(n),
+where 'n' is the length of 'nums'.
+The worst case is when all the prefix sums in 'nums' have different remainders with 'k', resulting in the maximum size of the HashMap to be 'n'.
+```
+class Solution {
+public int subarraysDivByK(int[] nums, int k) {
+
+        // Use the HashMap to record the frequency of all the prefix sum remainders.
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0, remainder = 0; i < nums.length; i++) {
+            // Note that the integer in 'nums' can be negative.
+            // Thus, we need to adjust the negative remainder to positive remainder.
+            // Below accounts for both negative and positive remainders.
+            // We can also check if the remainder is negative, then add a 'k' to make the remainder positive.
+            // For Example, nums = [-2,3,2], k = 5,
+            // remainder for the prefix sum of [-2,1,3] are -2, 1 and 3 respectively.
+            // We know that [3,2] sum to 5, which is divisible by 5.
+            // After converting -2 to 3, by adding 5, it has the same remainder with prefix sum 3.
+            remainder = ((remainder + nums[i]) % k + k) % k;
+            map.put(remainder, map.getOrDefault(remainder, 0) + 1);
+        }
+        // The result contains all the prefix sum with remainder 0,
+        // as all the prefix sum with remainder of 0 is itself divisible by 'k'.
+        // However, do note that the prefix sum with remainder 0 also able to form subarray sums that is divisible by 'k'
+        // with one another, which will be calculated next.
+        // For Example: nums = [5,5,5,5], k = 5,
+        // The prefix sum of [5,10,15,20] are themselves divisible by 5, while also forming subarray sums divisible by 5
+        // with 10 [5,5] - 5 [5] == 5, 15 [5,5,5] - 5 [5] == 10, etc.
+        int result = map.getOrDefault(0, 0);
+
+        // The prefix sums with the same remainder can form subarray sums that is divisible by 'k' with each other.
+        // For each remainder, the number of subarray that is divisible by 'k' is the number of combinations from the frequency.
+        // Equation for the number of combinations of n items is n * "(n - 1) / 2".
+        for (int frequency : map.values())
+            result += frequency * (frequency - 1) / 2;
+
+        return result;
+    }
+}
+```
+
+## Search in Rotated Sorted Array {33}
+https://leetcode.com/problems/search-in-rotated-sorted-array
+
+The Binary search approach is based on the fact that a rotated sorted array can be divided into two sorted arrays.
+
+- The approach starts with finding the mid element and compares it with the target element.
+- If they are equal, it returns the mid index. If the left half of the array is sorted, then it checks if the target lies between the start and the mid, and updates the end pointer accordingly.
+- Otherwise, it checks if the target lies between mid and end, and updates the start pointer accordingly.
+- If the right half of the array is sorted, then it checks if the target lies between mid and end, and updates the start pointer accordingly.
+- Otherwise, it checks if the target lies between start and mid, and updates the end pointer accordingly.
+- This process continues until the target element is found, or the start pointer becomes greater than the end pointer, in which case it returns -1.
+- This approach has a time complexity of O(log n).
+```
+class Solution {
+    public int search(int[] nums, int target) {
+        int start = 0, end = nums.length - 1;
+        int mid = (start + end) / 2;
+        while (start <= end) {
+            mid = (start + end) / 2;
+            if (target == nums[mid]) {
+                return mid;
+            }
+            if (nums[start] <= nums[mid]) {
+                if (nums[start] <= target && nums[mid] >= target) {
+                    end = mid - 1;
+                } else {
+                    start = mid + 1;
+                }
+            } else {
+                if (nums[end] >= target && nums[mid] <= target) {
+                    start = mid + 1;
+                } else {
+                    end = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
+}
+```
+
+## Serialize and Deserialize BST {449}
+https://leetcode.com/problems/serialize-and-deserialize-bst
+
+Pre order traversal of BST will output root node first, then left children, then right.
+
+`root left1 left2 leftX right1 rightX`
+
+Pre-order traversal is BST's serialized string. I am doing it iteratively.
+To deserialized it, use a queue to recursively get root node, left subtree and right subtree.
+
+Time complexity is O(N*N).
+```
+class Codec {
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode(int x) { val = x; }
+     * }
+     */
+    
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        dfs(root, sb);
+        return sb.toString();
+    }
+
+    private void dfs(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            return;
+        }
+        sb.append(root.val + ",");
+        dfs(root.left, sb);
+        dfs(root.right, sb);
+        return;
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        String[] arr = data.split(",");
+        TreeNode root = null;
+        for (String s : arr) {
+            if (s.length() > 0) {
+                root = buildBST(root, Integer.parseInt(s));
+            }
+        }
+        return root;
+    }
+
+    public TreeNode buildBST(TreeNode root, int v) {
+        if (root == null) return new TreeNode(v);
+        if (v < root.val) {
+            root.left = buildBST(root.left, v);
+        } else {
+            root.right = buildBST(root.right, v);
+        }
+        return root;
+    }
+}
+```
+
+## Squares of sorted array {977}
 https://leetcode.com/problems/squares-of-a-sorted-array
 ```
 class Solution {
@@ -1533,7 +1789,7 @@ class Solution {
 }
 ```
 
-## Intersection of Two Arrays II
+## Intersection of Two Arrays II {350}
 https://leetcode.com/problems/intersection-of-two-arrays-ii
 ```
 class Solution {
@@ -1568,7 +1824,198 @@ class Solution {
 }
 ```
 
-## Is substring strStr()
+## Remove Nth Node From End of List {19}
+https://leetcode.com/problems/remove-nth-node-from-end-of-list
+```
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        // Two pointers - fast and slow
+        ListNode slow = head;
+        ListNode fast = head;
+        // Move fast pointer n steps ahead
+        for (int i = 0; i < n; i++) {
+            if (fast.next == null) {
+                // If n is equal to the number of nodes, delete the head node
+                if (i == n - 1) {
+                    head = head.next;
+                }
+                return head;
+            }
+            fast = fast.next;
+        }
+        // Loop until we reach to the end.
+        // Now we will move both fast and slow pointers
+        while (fast.next != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        // Delink the nth node from last
+        if (slow.next != null) {
+            slow.next = slow.next.next;
+        }
+        return head;
+    }
+}
+```
+
+## Maximal Rectangle {85}
+https://leetcode.com/problems/maximal-rectangle/
+
+Solutions to other similar question on LeetCode: 84. Largest Rectangle in Histogram
+```
+/**
+ * This solution is converting the input matrix row by row (OR column by column)
+ * to Largest Rectangle in a Histogram.
+ *
+ * For each row (OR column) cumulative height is calculated. Then use stack to
+ * save the increasing height index.
+ *
+ * Time Complexity: O(R * C). Each element is added to stack once and popped
+ * from stack once.
+ *
+ * Space Complexity: O(min(R,C)). We will either store a row or a column
+ *
+ * R = Number of rows in the matrix. C = Number of columns in the matrix.
+ */
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        if (matrix == null) {
+            throw new IllegalArgumentException("Input matrix is null");
+        }
+        if (matrix.length == 0 || matrix[0].length == 0) {
+            return 0;
+        }
+
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        if (cols < rows) {
+            return maximalRectangleHelper(matrix, rows, cols, true);
+        } else {
+            return maximalRectangleHelper(matrix, cols, rows, false);
+        }
+    }
+
+    private int maximalRectangleHelper(char[][] matrix, int big, int small, boolean isColsSmall) {
+        int[] heights = new int[small];
+        int largestRectangle = 0;
+        for (int i = 0; i < big; i++) {
+            Deque<Integer> stack = new ArrayDeque<>();
+            for (int j = 0; j <= small; j++) {
+                if (j < small) {
+                    if (isColsSmall) {
+                        heights[j] = matrix[i][j] == '0' ? 0 : heights[j] + 1;
+                    } else {
+                        heights[j] = matrix[j][i] == '0' ? 0 : heights[j] + 1;
+                    }
+
+                }
+                while (!stack.isEmpty() && (j == small || heights[stack.peek()] >= heights[j])) {
+                    int h = heights[stack.pop()];
+                    int left = stack.isEmpty() ? -1 : stack.peek();
+                    largestRectangle = Math.max(largestRectangle, (j - 1 - left) * h);
+                }
+                stack.push(j);
+            }
+        }
+        return largestRectangle;
+    }
+}
+```
+
+## Find First and Last Position of Element in Sorted Array {34}
+https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array
+
+```
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] ans = {-1,-1};
+        int s = search(nums,target,true);
+        int e = search(nums,target,false);
+        ans[0] = s;
+        ans[1] = e;
+        return ans;
+
+    }
+    public int search(int[] nums , int target , boolean FindFirst){
+        int s = 0;
+        int e = nums.length-1;
+        int ans = -1;
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            if(nums[mid] < target) s = mid +1;
+            else if(nums[mid] > target) e = mid - 1;
+            else {
+                ans = mid;
+                if(FindFirst==true) e = mid -1;
+                else s = mid+1;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+## Evaluate Reverse Polish Notation {150}
+https://leetcode.com/problems/evaluate-reverse-polish-notation
+```
+class Solution {
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> stack = new Stack<>();
+    for (String s : tokens) {
+        if (s.equals("+")) {
+            stack.push(stack.pop() + stack.pop());
+        } else if (s.equals("-")) {
+            int b = stack.pop();
+            int a = stack.pop();
+            stack.push(a - b);
+        } else if (s.equals("*")) {
+            stack.push(stack.pop() * stack.pop());
+        } else if (s.equals("/")) {
+            int b = stack.pop();
+            int a = stack.pop();
+            stack.push(a / b);
+        } else {
+            stack.push(Integer.parseInt(s));
+        }
+    }
+    return stack.pop();  
+    }
+}
+```
+
+## Perfect Squares {279}
+https://leetcode.com/problems/perfect-squares
+```
+class Solution {
+    public int numSquares(int n) {
+        int dp[]=new int [n+1];
+        dp[0]=0;
+        dp[1]=1;
+        
+        for(int i=2;i<dp.length;i++){
+            int min=Integer.MAX_VALUE;
+            for(int j=1;j*j<=i;j++){
+                min=Math.min(min,dp[i-j*j]);
+            }
+            dp[i]=min+1;
+        }
+        return dp[n];
+    }
+}
+```
+
+## Is substring strStr() {28}
 https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string
 ```
 class Solution {
@@ -1591,7 +2038,75 @@ class Solution {
 }
 ```
 
-## Palindrome Linked List
+## Product of Array Except Self {238}
+https://leetcode.com/problems/product-of-array-except-self
+
+Time complexity: O(n)
+```
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        //Approach: Using prefix and postfix
+        //Idea: Just find prefix and postfix product and keep them in the ans array
+
+        int ans[] = new int[nums.length];
+        int pre = 1, post = 1;
+        
+        //find pre product
+        for(int i=0;i<nums.length;i++){
+            ans[i] = pre;
+            pre*=nums[i];
+        }
+
+        //find post product
+        for(int i=nums.length-1;i>=0;i--){
+            ans[i]*=post;
+            post*=nums[i];
+        }
+
+        return ans;
+    }
+}
+```
+
+## Simplify Path {71}
+https://leetcode.com/problems/simplify-path/
+
+So, basically what are we doing: `Pushing and Popping` directory names based on rules
+
+And what are the rules :
+- /.. come out from the directory
+- /nameOfDirectory going into directory
+
+We Generically used in Stack 
+
+Alright, back to the problem - So, what we can do is by looking at the rules, split the directrory by the slash/ given and that will give us in the form of array e.g :- [a, ., b, .., .., c]
+
+But remeber when returning we have to go in the form of reverse order. Because Stack use LIFO order and the highest one will comes out. But we need the lowest once first. So, we need to append in the carefull manner.
+```
+class Solution {
+    public String simplifyPath(String path) {
+        Stack<String> s = new Stack<>();
+        StringBuilder res = new StringBuilder();
+        String[] p =path.split("/");
+        
+        for(int i=0;i<p.length;i++){
+            if(!s.isEmpty()  && p[i].equals("..")) s.pop();
+            else if(!p[i].equals("") && !p[i].equals(".") && !p[i].equals(".."))
+                s.push(p[i]);
+        }
+        
+        
+        if(s.isEmpty()) return "/";
+        while(!s.isEmpty()){
+            res.insert(0,s.pop()).insert(0,"/");
+        }
+        
+        return res.toString();
+    }
+}
+```
+
+## Palindrome Linked List {234}
 https://leetcode.com/problems/palindrome-linked-list
 ```
 /**
