@@ -519,6 +519,12 @@ public class Solution {
 
 ## Longest Subarray of 1's After Deleting One Element {1493}
 https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/
+
+Считаем max сумму счетчиков prev и curr
+prev: счетчик единиц "до появления 0 в массиве"
+curr: счетчик единиц "после появления 0"
+
+Временная сложность-> 0(N), простраственная: O(1) 
 ```
 public int longestSubarray(int[] nums) {
 	int longest = 0;
