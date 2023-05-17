@@ -473,12 +473,22 @@ class Solution {
 ```
 
 ## One Edit Distance {161}
-Given two strings s and t, determine if they are both one edit distance apart.
-There are 3 possiblities to satisify one edit distance apart:
-1. Insert a character into s to get t
-2. Delete a character from s to get t
-3. Replace a character of s to get t
+Даны две строки s и t, определить является ли их редакционное расстояние 1.
+Возможны 3 варианта для данного случая:
+1. Вставка символа в s для получения t
+2. Удаление символа в s для получения t
+3. Замена символа в s для получения t
 
+https://leetcode.ca/all/161.html
+
+При определении является ли их редакционное расстояние 1 возможны три случая:
+
+- Разница длин строк больше 1, возвращаем False.
+- Разница длин строк равна 1. В большей строке удаляется один символ, а остальное остается как в меньшей строке.
+- Разница длин строк равна 0, а символы на соответствующих позициях в двух строках могут различаться только в одном месте.
+
+Временная сложность-> 0(N), простраственная: O(1) 
+(N = min(lengthS, lengthT)
 ```
 public class Solution {
     public boolean isOneEditDistance(String s, String t) {
