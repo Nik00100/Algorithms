@@ -58,39 +58,47 @@
 56. [Palindrome Linked List {234}](#palindrome-linked-list-234)
 
 ## Line Reflection {356}
-Given n points on a 2D plane, find if there is such a line parallel to y-axis that reflect the given points.
+Дано n точек на 2D плоскости, найти существует ли линия, параллельная y-оси отображающая данные точки.
 https://leetcode.ca/all/356.html
+
+- Сначала найти max и min значения абсцисс Х всех точек, таким образом среднее из этих двух является абсциссой искомой линиии.
+- Затем в цикле перебрать каждую точку и если находим нессиметричную точку возвращаем false
+
+Временная сложность->: O(N), простраственная: O(N)
 ```
 class Solution {
     public boolean isReflected(int[][] points) {
-        int minX = Integer.MAX_VALUE;
-        int maxX = Integer.MIN_VALUE;
-        Set<String> seen = new HashSet<>();
-
-        for (int[] p : points) {
-            final int x = p[0];
-            final int y = p[1];
-            minX = Math.min(minX, x);
-            maxX = Math.max(maxX, x);
-            seen.add(x + "," + y);
+        int minX = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE;
+        Set<String> pointSet = new HashSet<>();
+        for (int[] point : points) {
+            minX = Math.min(minX, point[0]);
+            maxX = Math.max(maxX, point[0]);
+            pointSet.add(point[0] + "." + point[1]);
         }
-
-        final int sum = minX + maxX;
-        // (leftX + rightX) / 2 = (minX + maxX) / 2
-        //  leftX = minX + maxX - rightX
-        // RightX = minX + maxX - leftX
-
-        for (int[] p : points)
-            if (!seen.contains(sum - p[0] + "," + p[1]))
+        long s = minX + maxX;
+        for (int[] point : points) {
+            if (!pointSet.contains((s - point[0]) + "." + point[1])) {
                 return false;
-
+            }
+        }
         return true;
     }
 }
 ```
 
 ## Summary ranges {228}
+В отсортированном массиве вернуть список диапазонов. К примеру: Input: nums = [0,1,2,4,5,7]; Output: ["0->2","4->5","7"]
 https://leetcode.com/problems/summary-ranges/
+
+В цикле пройтись по всем индексам массива:
+1. Переменной `begin` присваивается `i-ый` элемент.
+2. В цикле проверяется не достиг ли индекс `i` конца массива и `i-ый` элемент плюс 1 дает следующий элемент. 
+Если да, продолжаем инкрементировать индекс `i` до того, как условие нарушится.
+2. Переменной  `end` присваивается `i-ый` элемент
+3. Выполняем проверку `begin == end`, если равны, то добавляем в результат `begin` (диапазон состоит из одного числа).
+4. Иначе добавляем `begin+"->"+end`.
+
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 class Solution {
     public List<String> summaryRanges(int[] nums) {
@@ -113,30 +121,44 @@ class Solution {
 ```
 
 ## Zigzag Iterator {281}
-Given two 1d vectors, implement an iterator to return their elements alternately.
+Даны два списка целочисленных элементов. Реализовать итератор, возвращающий элементы поочередно. К примеру: v1 = [1, 2]; v2 = [3, 4, 5, 6]; output = [1, 3, 2, 4, 5, 6]
 https://leetcode.ca/all/281.html
+
+- Базовое решение проблемы - использовать очередь для загрузки всех итераторов. 
+- При этом метод next() выбирает из очереди соответствующий итератор и выполняет метод iterator.next()
+- Если `iterator.hasNext() == true` (итератор содержит элемент), возвращает итератор обратно в очередь.
+
+Основной момент - итератор должен содержаться в очереди, если `hasNext() == true`.
+
+Временная сложность->: O(N), простраственная: O(N)
 ```
 public class ZigzagIterator {
+    Queue<Iterator<Integer>> q;
+    
     public ZigzagIterator(List<Integer> v1, List<Integer> v2) {
-        if (!v1.isEmpty())
-            q.offer(v1.iterator());
-        if (!v2.isEmpty())
-            q.offer(v2.iterator());
+        q = new LinkedList<Iterator<Integer>>();
+        Iterator<Integer> it1 = v1.iterator();
+        Iterator<Integer> it2 = v2.iterator();
+        
+        // Ensure that the Iterator in the Queue hasNext().
+        if (it1.hasNext())
+            q.add(it1);
+        if (it2.hasNext())
+            q.add(it2);
     }
-
+ 
     public int next() {
-        final Iterator it = q.poll();
-        final int next = (int) it.next();
-        if (it.hasNext())
-            q.offer(it);
-        return next;
+        Iterator<Integer> it = q.remove();
+        int res = it.next();
+        if (it.hasNext()) {
+            q.add(it);
+        }
+        return res;
     }
-
+ 
     public boolean hasNext() {
         return !q.isEmpty();
     }
-
-    private Queue<Iterator> q = new ArrayDeque<>();
 }
 
 ```
