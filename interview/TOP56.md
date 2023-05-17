@@ -165,6 +165,14 @@ public class ZigzagIterator {
 
 ## String Compression {443}
 https://leetcode.com/problems/string-compression
+
+- Используем два указателя, один `i` для итерации по индексам символов входного массива и второй `ans` для отслеживания индекса в сжатом массиве.
+- Переменные `start` и `end` для подсчета идущих подряд символов. 
+- Переменной `current` присваиваем `i-ый` символ массива.
+- В цикле проходим по элементам массива пока не найдем отличающийся символ либо достигнем конца массива.
+- На каждой итерации инкрементируем индекс `i`.
+
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 class Solution {
     public int compress(char[] chars) {
@@ -191,6 +199,12 @@ class Solution {
 
 ## Reverse Linked List {206}
 https://leetcode.com/problems/reverse-linked-list
+
+- Используем три указателя prevHead, head, recordNext. 
+- В каждой итерации присваиваем `head.next = prevHead` и сдвигаем указатели на один шаг. 
+- При выходе из цикла while, `head` будет равен null, а `prevHead` указывает на конечный узел оригинального списка, поэтому возаращаем `prevHead`.
+
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 /**
  * Definition for singly-linked list.
@@ -205,21 +219,25 @@ https://leetcode.com/problems/reverse-linked-list
 class Solution {
     public ListNode reverseList(ListNode head) {
         if(head==null) return head;
-        ListNode temp = head.next;
-        head.next = null;
-        while(temp!=null){
-            ListNode t = temp.next;
-            temp.next = head;
-            head = temp;
-            temp = t;
+        ListNode prevHead = null;
+        while(head != null){
+            ListNode recordNext = head.next;
+            head.next = prevHead;
+            prevHead = head;
+            head = recordNext;
         }
-        return head;
+        return prevHead;
     }
 }
 ```
 
 ## Generate Parentheses {22}
 https://leetcode.com/problems/generate-parentheses
+
+Используем вспомогательный рекурсивный метод для генерации скобок.
+Два указателя `left` и `right` нужны для контроля за количеством левых и правых скобок.
+
+Временная сложность-> 0(2^N), простраственная: O(N)
 ```
 class Solution {
     public List<String> generateParenthesis(int n) {
@@ -242,7 +260,7 @@ class Solution {
             recurse(res, left, right + 1, s + ")", n);
         }
     }
-	/* For n = 2								   	
+	/* Для n = 2								   	
                                     (0, 0, '')
 								 	    |	
 									(1, 0, '(')  
@@ -261,106 +279,93 @@ class Solution {
 
 ## LRU Cache {146}
 https://leetcode.com/problems/lru-cache
+
+Временная сложность-> 0(1), простраственная: O(N)
 ```
 class Node {
     int key;
-    int value;
+    int val;
     Node prev;
     Node next;
- 
-    public Node(int key, int value){
-        this.key=key;
-        this.value=value;
+
+    public Node(int key, int val) {
+        this.key = key;
+        this.val = val;
     }
 }
 
 class LRUCache {
 
+    Map<Integer, Node> map;
     Node head;
     Node tail;
-    HashMap<Integer, Node> map = null;
-    int cap = 0;
- 
+    int capacity;
+
+    // capacity - это размер структуры; два узла head и tail указывают друг на друга
     public LRUCache(int capacity) {
-        this.cap = capacity;
-        this.map = new HashMap<>();
+        map = new HashMap<>();
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
+        head.next = tail;
+        tail.prev = head;
+        this.capacity = capacity;
     }
- 
+
+    // узел current становится head, O(1)
+    public void moveToHead(Node curr) {
+        curr.next = head.next;
+        curr.prev = head;
+        head.next = curr;
+        curr.next.prev = curr;
+    }
+
+    // удаление узла, O(1)
+    public void delete(Node curr) {
+        curr.prev.next = curr.next;
+        curr.next.prev = curr.prev;
+    }
+
+    // при операции get нужно удалить и переместить узел в head, т.к. использовался недавно O(1)
     public int get(int key) {
-        if(map.get(key)==null){
-            return -1;
+        if(map.containsKey(key)) {
+            Node curr = map.get(key);
+            delete(curr);
+            moveToHead(curr);
+            return curr.val;
         }
- 
-        //move to tail
-        Node t = map.get(key);
- 
-        removeNode(t);
-        offerNode(t);
- 
-        return t.value;
+        return -1;
     }
- 
+
+    // при операции put узел становится head
+    // если емкость превышена, tail удаляется (наименее используемый) O(1)
     public void put(int key, int value) {
-        if(map.containsKey(key)){
-            Node t = map.get(key);
-            t.value = value;
- 
-            //move to tail
-            removeNode(t);
-            offerNode(t);
-        }else{
-            if(map.size()>=cap){
-                //delete head
-                map.remove(head.key);
-                removeNode(head);
-            }
- 
-            //add to tail
-            Node node = new Node(key, value);
-            offerNode(node);
-            map.put(key, node);
+        if(map.containsKey(key)) {
+            Node curr = map.get(key);
+            curr.val = value;
+            delete(curr);
+            moveToHead(curr);
         }
-    }
- 
-    private void removeNode(Node n){
-        if(n.prev!=null){
-            n.prev.next = n.next;
-        }else{
-            head = n.next;
+        else if(map.size()<capacity) {
+            map.put(key, new Node(key, value));
+            moveToHead(map.get(key));
         }
- 
-        if(n.next!=null){
-            n.next.prev = n.prev;
-        }else{
-            tail = n.prev;
-        }
-    }
- 
-    private void offerNode(Node n){
-        if(tail!=null){
-            tail.next = n;
-        }
- 
-        n.prev = tail;
-        n.next = null;
-        tail = n;
- 
-        if(head == null){
-            head = tail;   
+        else {
+            map.put(key, new Node(key, value));
+            map.remove(tail.prev.key);
+            delete(tail.prev);
+            moveToHead(map.get(key));
         }
     }
 }
-
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache obj = new LRUCache(capacity);
- * int param_1 = obj.get(key);
- * obj.put(key,value);
- */
 ```
 
 ## Move Zeroes {283}
 https://leetcode.com/problems/move-zeroes
+
+- Заполняем ненулевыми элементами ячейки массива, начиная сначала
+- Оставшиеся ячейки заполняем нулями
+
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 class Solution {
     public void moveZeroes(int[] nums) {
@@ -376,6 +381,10 @@ class Solution {
 
 ## Valid Palindrome {125}
 https://leetcode.com/problems/valid-palindrome
+
+Используем два указателя.
+
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 class Solution {
     public boolean isPalindrome(String s) {
@@ -398,6 +407,13 @@ class Solution {
 ```
 ## Group Anagrams {49}
 https://leetcode.com/problems/group-anagrams
+
+Перебираем все слова
+- Каждое слово сортируем в лексикографическом порядке. 
+- Отсортированное слово является ключом мапы.
+- В значение мапы по этому ключу добавляем исходное слово.
+
+Временная сложность -> O(N*MlogM) M - максимальная длина слова
 ```
 import java.util.*;
 
@@ -418,14 +434,17 @@ class Solution {
 ```
 
 ## Max Consecutive Ones II {487}
-Given a binary array, find the maximum number of consecutive 1s in this array if you can flip at most one 0.
+Дан бинарный массив, найти максимальное количество последовательно идущих 1 в массиве, если есть возможность изменить один 0.
 https://leetcode.ca/all/487.html
+
+Временная сложность-> 0(N), простраственная: O(N) - 1 вариант; простраственная: O(1) - 2 вариант
 ```
 class Solution {
+    // первый вариант использовать очередь для хранения индексов нулей
     public int findMaxConsecutiveOnes(int[] nums) {
         final int maxZeros = 1;
         int ans = 0;
-        // Store indices of zero
+        
         Queue<Integer> q = new ArrayDeque<>();
 
         for (int l = 0, r = 0; r < nums.length; ++r) {
@@ -436,6 +455,19 @@ class Solution {
             ans = Math.max(ans, r - l + 1);
         }
         return ans;
+    }
+
+    // второй вариант (k - это максимальное количество нулей, которое можно изменить) использовать скользящее окно с индексами [j, i] и разница i - j ответ.
+    // Если число равно нулю, уменьшаем k. Если k становится меньше нуля, увеличиваем j и обновляем k
+    static int longestOnes(int[] nums, int k) {
+        int i = 0, j = 0;
+        while (i < nums.length) {
+            k -= nums[i++] == 1 ? 0 : 1;
+            if (k < 0)
+                k += nums[j++] == 1 ? 0 : 1;
+            //System.out.println(i+" "+j);
+        }
+        return i - j;
     }
 }
 ```
