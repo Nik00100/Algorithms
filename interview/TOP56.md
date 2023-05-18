@@ -681,15 +681,15 @@ class Solution {
 ## Merge k Sorted Lists {23}
 https://leetcode.com/problems/merge-k-sorted-lists
 
-`k` sorted linked lists merges into one sorted linked list. It does this by using a min heap (implemented as a priority queue) to keep track of the smallest node from each list.
+- Узел `dummy` и указатель `curr` отслеживают текущую позицию в объединенном списке.
+- Куча `minHeap` хранит наименьший узел из каждого списка.
+- Перебираются все списки в lists. Для каждого непустого списка добавляется первый узел в `minHeap`.
+- Цикл выполняется до тех пор, пока `minHeap` не станет пустым. 
+- На каждой итерации наименьший узел удаляется из `minHeap` и добавляется в объединенный список путем обновления указателя `next` узла `curr`. 
+- Если удаленный узел имеет следующий узел, он добавляется в `minHeap`.
+- После обработки и добавления всех узлов в объединенный список возвращается узел `next` узла `dummy`.
 
-Dummy node `dummy` and pointer `curr` keeps track of the current position in the merged list. Also create `minHeap` to store the smallest node from each list.
-
-Iterate over each list in `lists`. For each non-null list add first node to `minHeap`.
-
-Loop until `minHeap` is empty. In each iteration smallest node removed from `minHeap` and added it to merged list by updating the `next` pointer of `curr`. If removed node has next node, it adds to `minHeap`.
-
-After all nodes have been processed and added to the merged list, it returns the `next` node of the dummy node as the head of the merged list.
+Временная сложность-> 0(NlogN), простраственная: O(N)
 ```
 /**
  * Definition for singly-linked list.
@@ -727,15 +727,15 @@ class Solution {
 ## Permutation in String {567}
 https://leetcode.com/problems/permutation-in-string
 
-Arrays `data` and `test` of size 26 represent the frequency of characters in s1 and a sliding window of size s1.length() in s2, respectively.
+- Массивы `data` и `test` размером 26 содержат частоту символов строки `s1` и скользящего окна размером `s1.length()` строки `s2`, соответственно.
+- Заполняется массив `data` частотой символов в `s1` и первым окном символов в `s2`.
+- Затем выполняется итерация по каждому окну символов в `s2`. 
+- Для каждого окна проверяется, совпадает ли частота символов в окне с частотой символов в `s1`, вызывая вспомогательный метод `equalsString`. 
+- Если они совпадают, это означает, что перестановка `s1` существует в виде подстроки `s2`, и возвращается `true`.
+- После проверки каждого окна код обновляет частоту символов в следующем окне, увеличивая счетчик следующего символа и уменьшая счетчик первого символа в текущем окне.
+- Если после проверки всех окон не найдено ни одной перестановки, код возвращает `false`.
 
-Then populates `data` with frequency of characters in s1 and the first window of characters in s2.
-
-Then iterates over each window of characters in s2. For each window, it checks if the frequency of characters in the window matches the frequency of characters in s1 by calling the helper method `equalsString`. If they match, it means that a permutation of s1 exists as a substring of s2, and the code returns `true`.
-
-After checking each window, the code updates the frequency of characters in the next window by incrementing the count of the next character and decrementing the count of the first character in the current window.
-
-If no permutation is found after checking all windows, the code returns `false`.
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 import java.util.*;
 
@@ -768,19 +768,22 @@ public class Solution {
 ```
 
 ## Meeting Rooms II {253}
-Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
+Дан массив интервалов времени встреч, состоящий из времен начала и окончания [[s1, e1], [s2, e2], ...] (si < ei). Необходимо найти минимальное количество комнат для проведения всех встреч.
 
 https://leetcode.ca/all/253.html
+
+Временная сложность-> 0(NlogN), простраственная: O(N)
 ```
 class Solution {
     public int minMeetingRooms(int[][] intervals) {
+        // сортируем массив по времени начала встреч
         Arrays.sort(intervals, (a, b) -> (a[0] - b[0]));
 
-        // Store end times of each room.
+        // хранение времени окончания встреч 
         Queue<Integer> minHeap = new PriorityQueue<>();
 
         for (int[] interval : intervals) {
-            // No overlap, we can reuse the same room.
+            // нет перекрытий, мы можем использовать одну и ту же комнату повторно
             if (!minHeap.isEmpty() && interval[0] >= minHeap.peek())
                 minHeap.poll();
             minHeap.offer(interval[1]);
@@ -794,7 +797,12 @@ class Solution {
 ## Merge Intervals {56}
 https://leetcode.com/problems/merge-intervals
 
+- Идея заключается в сортировке интервалов по их начальным точкам. 
+- Затем берем первый интервал и сравниваем его конец с началами следующих интервалов. 
+- Пока они перекрываются, мы обновляем конец, чтобы он был максимальным из перекрывающихся интервалов. 
+- Как только нашли неперекрывающийся интервал, добавляем предыдущий "расширенный" интервал и начинаем сначала.
 
+Временная сложность-> 0(NlogN), простраственная: O(N)
 ```
 class Solution {
     public int[][] merge(int[][] intervals) {
@@ -815,7 +823,25 @@ class Solution {
 
 ## Number of Recent Calls {933}
 https://leetcode.com/problems/number-of-recent-calls
+
+Класс RecentCounter подсчитывает количество запросов в определенном временном интервале.
 ```
+// TreeMap Time: O(logN), space: O(N)
+class RecentCounter {
+    TreeMap<Integer, Integer> tm;
+
+    public RecentCounter() {
+        tm = new TreeMap<>();
+    }
+    
+    public int ping(int t) {
+        tm.put(t, 1 + tm.size());
+        return tm.tailMap(t - 3000).size();
+    }
+}
+```
+```
+// Queue Time & space: O(Math.min(N, 3000))
 class RecentCounter {
     Queue<Integer> q;
 
@@ -831,51 +857,94 @@ class RecentCounter {
         return q.size();
     }
 }
-
-/**
- * Your RecentCounter object will be instantiated and called as such:
- * RecentCounter obj = new RecentCounter();
- * int param_1 = obj.ping(t);
- */
 ```
 
 ## Validate Binary Search Tree {98}
 https://leetcode.com/problems/validate-binary-search-tree
+
+Применяем итеративный обход в порядке "inorder" с использованием стека. Рещаем три задачи однотипных.
+
+Временная сложность-> 0(N), простраственная: O(N)
 ```
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
+// Определение узла
+public class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode() {}
+    TreeNode(int val) { this.val = val; }
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+```
+1. Решение Validate Binary Search Tree
+```
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        return isValidBST(root, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);    
+        if (root == null) return true;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode pre = null;
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if(pre != null && root.val <= pre.val) return false;
+            pre = root;
+            root = root.right;
+        }
+        return true;
     }
- 
-    public boolean isValidBST(TreeNode p, double min, double max){
-        if(p==null) 
-            return true;
+}
+```
+2. Решение Binary Tree Inorder Traversal
+```
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        if(root == null) return list;
+        Stack<TreeNode> stack = new Stack<>();
+        while(root != null || !stack.empty()){
+            while(root != null){
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            list.add(root.val);
+            root = root.right;
 
-        if(p.val <= min || p.val >= max)
-            return false;
-
-        return isValidBST(p.left, min, p.val) && isValidBST(p.right, p.val, max);
+        }
+        return list;
+    }
+}
+```
+3. Решение Kth Smallest Element in a BST
+```
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        Stack<TreeNode> stack = new Stack<>();
+        while(root != null || !stack.isEmpty()) {
+            while(root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if(--k == 0) break;
+            root = root.right;
+        }
+        return root.val;
     }
 }
 ```
 
 ## Implement Queue using Stacks {232}
 https://leetcode.com/problems/implement-queue-using-stacks
+
+Временная сложность-> 0(1)
 ```
 class MyQueue {
 
@@ -923,23 +992,17 @@ class MyQueue {
         return stack1.isEmpty() && stack2.isEmpty();
     }
 }
-
-/**
- * Your MyQueue object will be instantiated and called as such:
- * MyQueue obj = new MyQueue();
- * obj.push(x);
- * int param_2 = obj.pop();
- * int param_3 = obj.peek();
- * boolean param_4 = obj.empty();
- */
 ```
 
 ## Spiral Matrix II {59}
 https://leetcode.com/problems/spiral-matrix-ii
 
-It loops until all elements in the matrix have been filled. In each iteration, it fills in the top row from left to right, the right column from top to bottom, the bottom row from right to left, and the left column from bottom to top. After filling in each row or column, it updates the corresponding starting or ending row or column variable to move inward.
+- Цикл выполняется до тех пор, пока все элементы в матрице не будут заполнены. 
+- На каждой итерации заполняем верхнюю строку слева направо, правый столбец сверху вниз, нижнюю строку справа налево и левый столбец снизу вверх. 
+- После заполнения каждой строки или столбца обновляем соответствующую переменную, отвечающую за начальную/конечную строку или столбец, чтобы двигаться внутрь матрицы.
+- После заполнения всех элементов возвращаем полученную матрицу.
 
-After all elements have been filled, the code returns the generated matrix.
+Временная сложность-> 0(N*N)
 ```
 class Solution {
     public int[][] generateMatrix(int n) {
@@ -951,7 +1014,7 @@ class Solution {
         int count = 1;
         int total = n * n;
         
-        // initialize variables for keeping track of starting and ending rows and columns
+        // инициализируем переменные для отслеживания начальной и конечной позиций строк и колонок
         int startingRow = 0;
         int endingRow = n - 1;
         int startingCol = 0;
@@ -959,28 +1022,28 @@ class Solution {
         
         while (count <= total) {
             
-            // fill in the top row from left to right
+            // заполним верхнюю строку слева направо
             for (int i = startingCol; i <= endingCol; i++) {
                 ans[startingRow][i] = count;
                 count++;
             }
             startingRow++;
             
-            // fill in the right column from top to bottom
+            // заполним правый столбец сверху вниз
             for (int i = startingRow; i <= endingRow; i++) {
                 ans[i][endingCol] = count;
                 count++;
             }
             endingCol--;
             
-            // fill in the bottom row from right to left
+            // заполним нижнюю строку справа налево
             for (int i = endingCol; i >= startingCol; i--) {
                 ans[endingRow][i] = count;
                 count++;
             }
             endingRow--;
             
-            // fill in the left column from bottom to top
+            // заполним левый столбец снизу вверх
             for (int i = endingRow; i >= startingRow; i--) {
                 ans[i][startingCol] = count;
                 count++;
@@ -996,17 +1059,14 @@ class Solution {
 ## Max Consecutive Ones III {1004}
 https://leetcode.com/problems/max-consecutive-ones-iii
 
-One-Pass Optimized Sliding Window
+Оптимизированный подход с использованием скользящего окна за один проход:
 
-If A[start] ~ A[end] has zeros <= K, we continue to increment end.
-(Reason: The window is still valid and window size can be increased.)
+- Если в диапазоне A[start] ~ A[end] количество нулей меньше или равно K, мы продолжаем увеличивать end.
+(Пояснение: Окно все еще допустимо и размер окна может быть увеличен.)
+- Если в диапазоне A[start] ~ A[end] количество нулей больше K, мы увеличиваем и start, и end.
+(Пояснение: Окно содержит лишние нули, поэтому оно больше не допустимо, и мы увеличиваем и start, и end, чтобы сохранить размер окна неизменным.)
 
-If A[start] ~ A[end] has zeros > K, we increment both start & end.
-(Reason: The window contains extra zeros thus it is not valid any more, and we will increment both start & end to keep the window size same.)
-
-Time Complexity: O(N); 
-Space Complexity: O(1);
-N = Length of the input array
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 class Solution {
     public int longestOnes(int[] nums, int k) {
@@ -1039,18 +1099,15 @@ class Solution {
 ## Trapping Rain Water {42}
 https://leetcode.com/problems/trapping-rain-water
 
-**Intuition**
+**Подход**
 
-We need to figure out the total water we can trap, A difference of heights, maybe a smaller and a greater one would do the trick but a smaller bar can be smaller than multiple bars or a single tall bar can be taller than multiple smaller bars. So we can calculate total water trapped by each bar by tracking the smaller bars in a stack which contains bars in monotonically decreasing order.
+Необходимо определить общий объем воды, который можно задержать. Разница в высотах между меньшей и большей планкой решает задачу, но меньшая планка может быть меньше, чем несколько планок, или одна высокая планка может быть выше нескольких меньших планок. Поэтому мы можем вычислить общий объем воды, задержанной каждой планкой, отслеживая меньшие планки в стеке, который содержит планки в монотонно убывающем порядке.
 
-**Approach**
+**Алгоритм**
 
-Pop the elements out of stack if current bar's height is more than the minimum height bar in stack and calculate the water stored in that area and add it to answer.
+Извлекаем элементы из стека, если высота текущей планки больше, чем минимальная высота планки в стеке, и вычисляем объем воды, задержанной в этой области, и добавляем его к ответу.
 
-**Complexity**
-
-Time complexity: O(n);
-Space complexity: O(n)
+Временная сложность-> 0(N), простраственная: O(N)
 ```
 class Solution {
     public int trap(int[] height) {
@@ -1060,7 +1117,7 @@ class Solution {
             while(!stack.isEmpty() && height[stack.peek()] < height[i]) {
                 int top = height[stack.peek()];
                 stack.pop();
-                // Last bar as base cannot store any water.
+                // Последняя планка не может задерживать воду.
                 if(stack.isEmpty()) break; 
                 int width = i - stack.peek() - 1;
                 int length = Math.min(height[i], height[stack.peek()]) - top;
@@ -1077,17 +1134,14 @@ class Solution {
 ## Longest Substring Without Repeating Characters {3}
 https://leetcode.com/problems/longest-substring-without-repeating-characters
 
-**Approach**
+**Алгоритм**
 
-- Use sliding window with hashset, use left and right pointers to move the window .
-- If the set doesn't contains character then first add into the set and calculate the maxLength hand-in-hand...
-- If character already present in the set that means you have to move your sliding window by 1 , before that you have to remove all the characters that are infront of the character that is present already in window before.
-- Now you have to remove that character also and move the left pointer and also add the new character into the set.
+- Используем скользящее окно с указателями для перемещения окна и hashset.
+- Если набор не содержит символ, то сначала добавим в набор и одновременно вычислим maxLength.
+- Если символ присутствует в наборе, нужно сдвинуть скользящее окно на 1, прежде чем удалить все символы, находящиеся перед символом, который уже присутствует в окне.
+- Теперь нужно удалить этот символ, переместить указатель слева и также добавить новый символ в набор.
 
-**Complexity**
-
-Time complexity: O(n);
-Space complexity: O(k), where k is the number of distinctive characters prsent in the hashset.
+Временная сложность-> 0(N), простраственная: O(k), где k - кол-во различных символов в hashset.
 ```
 class Solution {
     public int lengthOfLongestSubstring(String s) {
@@ -1115,6 +1169,20 @@ class Solution {
 
 ## Add Two Numbers {2}
 https://leetcode.com/problems/add-two-numbers
+
+Может возникнуть ситуация:
+```
+l1     1     3                              1     
++      +     +                              +
+l2     1     9                              1 
+-----------------------------------------------------------------------------------
+cur    2    12(должна быть 2)        2 + carry(carry переносится с 12)
+            12 %10 = 2
+		    carry = 12//10 =1	   
+```
+Переменная carry позволяет справиться с этой ситуацией: выравниваем слагаемые по вертикали и складываем столбцы, начиная с самого левого столбца. Если сумма столбца превышает девять, "переносим" дополнительную цифру в следующий столбец.
+
+Временная сложность-> 0(N), простраственная: O(k)
 ```
 /**
  * Definition for singly-linked list.
@@ -1128,40 +1196,38 @@ https://leetcode.com/problems/add-two-numbers
  */
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        // Creating an dummy list
+        // dummy list
         ListNode dummy = new ListNode(0);
-        // Intialising an pointer
+        // указатель
         ListNode curr = dummy;
-        // Intialising our carry with 0 intiall
+        // Инициализируем переменную carry значением 0
         int carry = 0;
-        // While loop will run, until l1 OR l2 not reaches null OR if they both reaches null.
-        // But our carry has some value in it.
-        // We will add that as well into our list
+        // Цикл будет выполняться, пока l1 ИЛИ l2 не достигнут значения null, ИЛИ если они оба достигли значения null.
+        // Значение переменной carry также добавим в список.
         while (l1 != null || l2 != null || carry == 1) {
-            // Intialising our sum
+            // Инициализируем sum
             int sum = 0;
-            // Adding l1 to our sum & moving l1
+            // Добавляем значение l1 к sum и передвигаем l1
             if (l1 != null) {
                 sum += l1.val;
                 l1 = l1.next;
             }
-            // Adding l2 to our sum & moving l2
+            // Добавляем значение l2 к sum и передвигаем l2
             if (l2 != null) {
                 sum += l2.val;
                 l2 = l2.next;
             }
-            // if we have carry then add it into our sum
+            // добавляем carry к sum
             sum += carry;
-            // if we get carry, then divide it by 10 to get the carry
+            // значение переноса
             carry = sum / 10;
-            // the value we'll get by it, will become as new node so. add it to our list
+            // значение добавляем в нлвый узел
             ListNode node = new ListNode(sum % 10);
-            // curr will point to that new node if we get
+            // curr указывает на новый узел
             curr.next = node;
-            // update the current every time
+            // обновляем
             curr = curr.next; 
         }
-        // return dummy.next, we don't want the value we have consider in it intially!!
         return dummy.next; 
     }
 }
@@ -1169,6 +1235,10 @@ class Solution {
 
 ## Merge Two Sorted Lists {21}
 https://leetcode.com/problems/merge-two-sorted-lists
+
+Создаем фиктивный узел, к которому присоединяем узлы из списков. Мы проходим по спискам с помощью двух указателей и постепенно строим результирующий список так, чтобы значения были монотонно возрастающими.
+
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 /**
  * Definition for singly-linked list.
@@ -1204,30 +1274,41 @@ class Solution {
 
 ## Merge Sorted Array {88}
 https://leetcode.com/problems/merge-sorted-array
+
+Используем три указателя:
+- i указывает на индекс (m-1) nums1 и хранит наибольший элемент nums1.
+- j указывает на индекс (n-1) nums2 и хранит наибольший элемент nums2.
+- k последняя позиция nums1, сюда вставляется наибольший элемент после сравнения обоих массивов.
+
+В цикле по массиву nums2 проверяем условие:
+- Если индекс i больше 0 и элемент по индексу i массива nums1 больше элемента по индексу j массива nums2.
+Если это условие верно, значит элемент по индексу i массива nums1 является наибольшим из обоих массивов и будет помещен в последнюю позицию массива nums1. Затем мы уменьшим значение i, так как нам нужно сравнить другой элемент массива nums1 с элементом массива nums2.
+Мы также уменьшим значение k, так как последняя позиция заполнена, и нам нужна новая позиция.
+- Если условие не выполняется, это означает, что либо элемент по индексу j массива nums2 больше элемента по индексу i массива nums1, либо нет элементов для сравнения с массивом nums1, и нам просто нужно поместить элементы массива nums2 в массив nums1 (это оставшиеся наименьшие элементы).
+Мы уменьшим значение j для других сравнений и также значение k для сохранения других элементов.
+
+Временная сложность-> 0(M + N), простраственная: O(1)
 ```
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
-        //variables to work as pointers
-        int i=m-1; // will point at m-1 index of nums1 array
-        int j=n-1; // will point at n-1 index of nums2 array
-        int k=nums1.length-1; //will point at the last position of the nums1 array
+        // указатели 
+        int i=m-1; 
+        int j=n-1; 
+        int k=nums1.length-1; 
 
-        // Now traversing the nums2 array
+        // Цикл по nums2 
         while (j >= 0) {
-            // If element at i index of nums1 > element at j index of nums2
-            // then it is largest among two arrays and will be stored at k position of nums1
-            // using i >= 0 to make sure we have elements to compare in nums1 array
+            // Если nums1[i] > nums2[j], то будет сохранен в nums1[k]
+            // также проверяем i >= 0 (наличие элементов в nums1)
             if (i >= 0 && nums1[i] > nums2[j]) {
                 nums1[k] = nums1[i];
                 k--; 
-                i--; //updating pointer for further comparisons
+                i--; //обновляем указатель
             } else{
-                // element at j index of nums2 array is greater than the element at i index of nums1 array 
-                // or there is no element left to compare with the nums1 array 
-                // and we just have to push the elements of nums2 array in the nums1 array.
+                // иначе nums2[j] будет сохранен в nums1[k]
                 nums1[k] = nums2[j];
                 k--; 
-                j--; //updating pointer for further comparisons
+                j--; //обновляем указатель
             }
         }
     }
