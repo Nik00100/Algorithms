@@ -577,6 +577,14 @@ class Solution {
 
 ## Subarray Sum Equals K {560}
 https://leetcode.com/problems/subarray-sum-equals-k
+
+- Переменная `sum` отслеживает накопительную сумму элементов в массиве
+- Переменная `count` отслеживает количество подмассивов, сумма которых равна k. 
+- Запись в `map` с ключом 0 и значением 1 представляет накопительную сумму пустого подмассива, равную 0.
+- Итерируем по каждому элементу в массиве, добавляя текущий элемент к накопительной сумме и проверяя, есть ли ключ `sum - k` в `map`. 
+- Если да, то увеличиваем `count` на значение этого ключа в `map`. Это значение представляет количество раз, когда данная накопительная сумма была встречена до этого момента, и, следовательно, количество подмассивов, оканчивающихся на текущем элементе и сумма которых равна k.
+
+Временная сложность-> 0(N), простраственная: O(N) 
 ```
 class Solution {    
     public int subarraySum(int[] nums, int k) {
@@ -596,16 +604,11 @@ class Solution {
 
 ## Insert Delete GetRandom O(1) {380}
 https://leetcode.com/problems/insert-delete-getrandom-o1
+
+Используем ArrayList & HashMap
+
+Временная сложность-> 0(1) в среднем, простраственная: O(N)
 ```
-/**
- * Using ArrayList & HashMap
- *
- * Time Complexity: All function have average O(1)
- *
- * Space Complexity: O(N)
- *
- * N = Number of values currently stored in the data structure.
- */
 class RandomizedSet {
 
     List<Integer> nums;
@@ -649,18 +652,15 @@ class RandomizedSet {
         return nums.get(random.nextInt(nums.size()));
     }
 }
-
-/**
- * Your RandomizedSet object will be instantiated and called as such:
- * RandomizedSet obj = new RandomizedSet();
- * boolean param_1 = obj.insert(val);
- * boolean param_2 = obj.remove(val);
- * int param_3 = obj.getRandom();
- */
 ```
 
 ## Two Sum {1}
 https://leetcode.com/problems/two-sum
+
+
+Используем HashMap для хранения числа и индекса
+
+Временная сложность-> 0(N), простраственная: O(N)
 ```
 class Solution {
     public int[] twoSum(int[] nums, int target) {
