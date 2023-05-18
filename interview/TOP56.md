@@ -1317,6 +1317,8 @@ class Solution {
 
 ## Symmetric Tree {101}
 https://leetcode.com/problems/symmetric-tree
+
+Временная сложность-> 0(N), простраственная: O(H)
 ```
 /**
  * Definition for a binary tree node.
@@ -1350,6 +1352,8 @@ class Solution {
 
 ## Missing Number {268}
 https://leetcode.com/problems/missing-number
+
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 class Solution {
     public int missingNumber(int[] nums) {
@@ -1364,14 +1368,15 @@ class Solution {
 ```
 
 ## Design Hit Counter {362}
-Design a hit counter which counts the number of hits received in the past 5 minutes.
+Разработать счетчик ударов, который подсчитывает количество полученных ударов за последние 5 минут.
 
-Each function accepts a timestamp parameter (in seconds granularity) and you may assume that calls are being made to the system in chronological order (ie, the timestamp is monotonically increasing). You may assume that the earliest timestamp starts at 1.
+Функции принимают параметр timestamp (с точностью до секунды) и можно предположить, что вызовы к системе делаются в хронологическом порядке (то есть значение timestamp монотонно возрастает). Можно предположить, что самый ранний timestamp начинается с 1.
 
-It is possible that several hits arrive roughly at the same time.
+Возможно, что несколько ударов приходят примерно в одно и то же время.
 
 https://leetcode.ca/all/362.html
 
+Временная сложность-> 0(1), простраственная: O(1)
 ```
 class HitCounter {
     public void hit(int timestamp) {
@@ -1404,12 +1409,14 @@ class HitCounter {
 ## Rotate Image {48}
 https://leetcode.com/problems/rotate-image
 
-Step 1: Transpose the matrix. (transposing means changing columns to rows and rows to columns)
+Шаг 1: Транспонирование матрицы (транспонирование означает замену столбцов на строки и строк на столбцы).
 
-Step 2: Reverse each row of the matrix.
+Шаг 2: Обращение каждой строки матрицы.
+
+Временная сложность-> 0(N*N), простраственная: O(1)
 ```
 class Solution {
-    /* Clockwise Rotate */
+    /* По часовой стрелке */
     public void rotate(int[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return;
         int rows = matrix.length;
@@ -1428,7 +1435,7 @@ class Solution {
         }
     }
 
-    /* Counter-clockwise Rotate */
+    /* Против часовой стрелки */
     public void antiRotate(int[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return;
         int rows = matrix.length;
@@ -1454,21 +1461,19 @@ class Solution {
 ## Longest Palindromic Substring {5}
 https://leetcode.com/problems/longest-palindromic-substring
 
-**Approach:**
-- Initialize variables minstart and maxlen as 0 to keep track of the longest palindrome found so far.
-- Iterate over each character in the string using a variable i.
-- Check if the remaining length from i to the end of the string is less than half of the maxlen. If it is, there is no possibility of finding a longer palindrome, so we break out of the loop.
-- Set l and r as i, representing the left and right pointers of the potential palindrome.
-- While r is within the string bounds and the character at r is equal to the next character, increment r.
-- Update i to be r + 1 since all the characters from l to r have been accounted for.
-- While l is greater than 0 and r is within the string bounds, and the characters at l-1 and r+1 are equal, decrement l and increment r.
-- Calculate the length of the potential palindrome using newlen = r - l + 1.
-- If newlen is greater than maxlen, update maxlen with newlen and minstart with l.
-- After the loop finishes, return the substring of s starting from minstart with length maxlen, which represents the longest palindrome found in the string.
+**Алгоритм:**
+- Инициализируем переменные minstart и maxlen со значением 0 для отслеживания самого длинного найденного палиндрома.
+- Проходим по каждому символу в строке с помощью переменной i.
+- Проверяем, если оставшаяся длина от i до конца строки меньше половины maxlen. Если это так, то нет возможности найти более длинный палиндром, выходим из цикла.
+- Установим l и r равными i, представляющими левый и правый указатели потенциального палиндрома.
+- Пока r находится в границах строки и символ в позиции r равен следующему символу, увеличиваем r.
+- Обновиляем i как r + 1, так как все символы от l до r уже учтены.
+- Пока l больше 0, r находится в границах строки и символы в позициях l-1 и r+1 равны, уменьшаем l и увеличиваем r.
+- Вычисляем длину потенциального палиндрома, используя newlen = r - l + 1.
+- Если newlen больше maxlen, обновляем maxlen значением newlen и minstart значением l.
+- После завершения цикла, возвращаем подстроку s, начиная с minstart и длиной maxlen, которая представляет самый длинный палиндром, найденный в строке.
 
-**Complexity:**
-- Time Complexity: The code uses a two-pointer approach to expand around each center, resulting in a linear time complexity of O(n), where n is the length of the string.
-- Space Complexity: The code uses a constant amount of extra space, resulting in a space complexity of O(1).
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 class Solution {
     public String longestPalindrome(String s) {
@@ -1486,14 +1491,14 @@ class Solution {
             
             int l = i, r = i;
             
-            // Find the center of the palindrome
+            // Центр палиндрома ищем
             while (r < n - 1 && s.charAt(r) == s.charAt(r + 1))
                 r++;
             
-            // Update the next starting point
+            // Обновляем стартовый указатель
             i = r + 1;
             
-            // Expand around the center to find the longest palindrome
+            // Ищем палиндром от центра
             while (l > 0 && r < n - 1 && s.charAt(l - 1) == s.charAt(r + 1)) {
                 l--;
                 r++;
@@ -1514,13 +1519,15 @@ class Solution {
 ## Reconstruct Itinerary {332}
 https://leetcode.com/problems/reconstruct-itinerary
 
-All the airports are vertices and tickets are directed edges. Then all these tickets form a directed graph.
+Все аэропорты являются вершинами, а билеты - направленными ребрами. Таким образом, все эти билеты образуют ориентированный граф.
 
-The graph must be Eulerian since we know that a Eulerian path exists.
+Граф должен быть Эйлеровым, так как мы знаем, что существует Эйлеров путь.
 
-Thus, start from "JFK", we can apply the Hierholzer's algorithm to find a Eulerian path in the graph which is a valid reconstruction.
+Таким образом, начиная с "JFK", мы можем применить алгоритм Хирхольцера для поиска Эйлерова пути в графе, который является допустимой реконструкцией.
 
-Since the problem asks for lexical order smallest solution, we can put the neighbors in a min-heap. In this way, we always visit the smallest possible neighbor first in our trip.
+Поскольку задача требует нахождения решения с наименьшим лексикографическим порядком, мы можем поместить соседей в мин-кучу (min-heap). Таким образом, мы всегда посещаем соседа с наименьшим возможным значением в нашем путешествии.
+
+Временная сложность-> 0(NlogN), простраственная: O(N)
 ```
 import java.util.*;
 
@@ -1549,7 +1556,7 @@ public class Solution {
 }
 ```
 
-Iterative version:
+Итеративная версия:
 ```
 import java.util.*;
 
@@ -1574,43 +1581,38 @@ class Solution {
 ## Find K Closest Elements {658}
 https://leetcode.com/problems/find-k-closest-elements
 
-**Intuition**
+**Подход**
 
-The array is sorted. If we want find the one number closest to x,
-we don't have to check one by one. it's straightforward to use binary search. Now we want the k closest, the logic should be similar.
+Если массив отсортирован и нам нужно найти число, ближайшее к x, то нет необходимости проверять каждый элемент по очереди. В этом случае наиболее простым способом является использование бинарного поиска. Теперь, если мы хотим найти k ближайших чисел, логика должна быть аналогичной.
 
-**Explanation**
+**Алгоритм**
 
-Assume we are taking A[i] ~ A[i + k -1]. We can binary search i.
-We compare the distance between x - A[mid] and A[mid + k] - x
+Предположим, что мы рассматриваем подмассив A[i] ~ A[i + k - 1]. Мы можем использовать бинарный поиск для поиска значения i. Сравниваем расстояние между x - A[mid] и A[mid + k] - x.
 
-See following cases:
-Assume A[mid] ~ A[mid + k] is sliding window
+Рассмотрим следующие случаи:
+Предположим, что A[mid] ~ A[mid + k] представляет собой скользящее окно.
 
-case 1: x - A[mid] < A[mid + k] - x, need to move window go left
+case 1: x - A[mid] < A[mid + k] - x, нужно двигать влево
 -------x----A[mid]-----------------A[mid + k]----------
 
-case 2: x - A[mid] < A[mid + k] - x, need to move window go left again
+case 2: x - A[mid] < A[mid + k] - x, нужно двигать влево
 -------A[mid]----x-----------------A[mid + k]----------
 
-case 3: x - A[mid] > A[mid + k] - x, need to move window go right
+case 3: x - A[mid] > A[mid + k] - x, нужно двигать вправо
 -------A[mid]------------------x---A[mid + k]----------
 
-case 4: x - A[mid] > A[mid + k] - x, need to move window go right
+case 4: x - A[mid] > A[mid + k] - x, нужно двигать вправо
 -------A[mid]---------------------A[mid + k]----x------
 
-If x - A[mid] > A[mid + k] - x, it means A[mid + 1] ~ A[mid + k] is better than A[mid] ~ A[mid + k - 1], and we have mid smaller than the right i.
-So assign left = mid + 1.
+Если x - A[mid] > A[mid + k] - x, это означает, что A[mid + 1] ~ A[mid + k] лучше, чем A[mid] ~ A[mid + k - 1], и мы знаем, что mid меньше правой границы i.
+Поэтому присваиваем left = mid + 1.
 
-**Important**
+**Важно**
 
-Note that, you SHOULD NOT compare the absolute value of abs(x - A[mid]) and abs(A[mid + k] - x).
-It fails at cases like A = [1,1,2,2,2,2,2,3,3], x = 3, k = 3
+Заметьте, что НЕ СЛЕДУЕТ сравнивать абсолютные значения abs(x - A[mid]) и abs(A[mid + k] - x).
+Это приводит к неправильным результатам в случаях, например, когда A = [1,1,2,2,2,2,2,3,3], x = 3, k = 3.
 
-**Complexity**
-
-Time O(log(N - K)) to binary research and find result.
-Space O(K) to create the returned list.
+Временная сложность-> 0(log(N-K)), простраственная: O(K)
 ```
 import java.util.*;
 
@@ -1632,7 +1634,9 @@ class Solution {
 ## Number of Islands {200}
 https://leetcode.com/problems/number-of-islands
 
-Use DFS
+Используем DFS
+
+Временная сложность-> 0(N*М), простраственная: O(1)
 ```
 class Solution {
     public static int numIslands(char[][] grid) {
@@ -1663,6 +1667,8 @@ class Solution {
 
 ## Is Subsequence {392}
 https://leetcode.com/problems/is-subsequence
+
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 class Solution {
     public boolean isSubsequence(String s, String t) {
@@ -1679,15 +1685,13 @@ class Solution {
 ## Maximize Distance to Closest Person {849}
 https://leetcode.com/problems/maximize-distance-to-closest-person
 
-**Explanation**
+**Алгоритм**
 
-- `last` is the index of last seated seat.
-- Loop on all seats, when we met a people, we count the distance from the last.
-- The final result = max(distance at the beginning, distance in the middle / 2, distance at the end).
+- `last` - индекс последнего занятого места.
+- Проходимся по всем местам, когда встречаем человека, мы вычисляем расстояние от последнего занятого места.
+- Итоговый результат = максимум (расстояние в начале, расстояние в середине / 2, расстояние в конце).
 
-**Complexity**
-
-Time O(N) Space O(1)
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 public class Solution {
     public int maxDistToClosest(int[] seats) {
@@ -1706,20 +1710,23 @@ public class Solution {
 
 ## Median of Two Sorted Arrays {4}
 https://leetcode.com/problems/median-of-two-sorted-arrays
+
+Используем бинарный поиск 
+
+Временная сложность-> 0(logN), простраственная: O(1)
 ```
 class Solution {
     public double findMedianSortedArrays(int A[], int B[]) {
         int n = A.length;
         int m = B.length;
-        // the following call is to make sure len(A) <= len(B).
-        // yes, it calls itself, but at most once, shouldn't be
-        // consider a recursive solution
+        // убедиться, что len(A) <= len(B).
         if (n > m)
             return findMedianSortedArrays(B, A);
 
-        // now, do binary search
+        // binary search
         int k = (n + m - 1) / 2;
-        int l = 0, r = Math.min(k, n); // r is n, NOT n-1, this is important!!
+        // r = n, а не n-1, ВАЖНО!!
+        int l = 0, r = Math.min(k, n); 
         while (l < r) {
             int midA = (l + r) / 2;
             int midB = k - midA;
@@ -1729,18 +1736,16 @@ class Solution {
                 r = midA;
         }
 
-        // after binary search, we almost get the median because it must be between
-        // these 4 numbers: A[l-1], A[l], B[k-l], and B[k-l+1]
-
-        // if (n+m) is odd, the median is the larger one between A[l-1] and B[k-l].
-        // and there are some corner cases we need to take care of.
+        //медиана находится между 4 числами: A[l-1], A[l], B[k-l], B[k-l+1]
+        // если (n+m) нечетное, медиана - большее число из A[l-1] и B[k-l].
+        // есть крайние случаи, о которых нам нужно позаботиться.
         int a = Math.max(l > 0 ? A[l - 1] : Integer.MIN_VALUE, k - l >= 0 ? B[k - l] : Integer.MIN_VALUE);
         if (((n + m) & 1) == 1)
             return (double) a;
 
-        // if (n+m) is even, the median can be calculated by
-        // median = (max(A[l-1], B[k-l]) + min(A[l], B[k-l+1]) / 2.0
-        // also, there are some corner cases to take care of.
+        // если (n+m) четное, то медиану можно вычислить по формуле
+        // median = (max(A[l-1], B[k-l]) + min(A[l], B[k-l+1])) / 2.0
+        // есть крайние случаи, о которых нам нужно позаботиться.
         int b = Math.min(l < n ? A[l] : Integer.MAX_VALUE, k - l + 1 < m ? B[k - l + 1] : Integer.MAX_VALUE);
         return (a + b) / 2.0;
     }
@@ -1750,63 +1755,41 @@ class Solution {
 ## Subarray Sums Divisible by K {974}
 https://leetcode.com/problems/subarray-sums-divisible-by-k
 
-**Approach**
+**Алгоритм**
 
-When it comes to Sum of Subarray, the use of Prefix Sum is especially important.
+Префиксная сумма - это сумма текущего числа с предыдущим числом в массиве (префикс).
 
-Prefix Sum is the sum of the current integer with the previous integer in the array (Prefix).
+Пример: nums = [1,2,3,4,5] имеет массив префиксных сумм prefixSum = [1,3,6,10,15], где nums[0] + 1 = 1, nums[1] + nums[0] = 2 + 1 = 3, nums[2] + nums[1] = 3 + 3 = 6 и так далее.
 
-Example: nums = [1,2,3,4,5] has the prefix sum array of prefixSum = [1,3,6,10,15], where the nums[0] + 1 = 1, nums[1] + nums[0] = 2 + 1 = 3, nums[2] + nums[1] = 3 + 3 = 6, and so on.
+Используя приведенный выше пример, мы можем определить сумму подмассива любого подмассива, используя префиксную сумму.
 
-Using the example above, we can determine the subarray sum of any subarray using prefix sum.
+Чтобы получить сумму подмассива nums[2] до nums[4] == 3 + 4 + 5 == 12, мы можем вычислить разность prefixSum[5] - prefixSum[1] == 15 - 3 == 12.
 
-To get the subarray sum of nums[2] to nums[4] == 3 + 4 + 5 == 12, we can get from prefixSum[5] - prefixSum[1] == 15 - 3 == 12.
+С помощью префиксной суммы мы можем выяснить, делится ли сумма любого подмассива на 'k', если две префиксные суммы имеют одинаковый остаток от деления на 'k'.
 
-With Prefix Sum, we can evaluate if any subarray sum is divisible by 'k', if two prefix sums have the same remainder of 'k'.
+Например, nums = [4,2,3], k = 5, с двумя префиксными суммами, 4 [4] и 9 [4,2,3].
 
-For Example, nums = [4,2,3], k = 5, with two prefix sum, 4 [4] and 9 [4,2,3].
+Оба остатка равны 4, и подмассив между префиксной суммой 9 [4,2,3] и 4 [4] равен 5 [2,3], что делится на 5.
 
-Both remainders are 4, with the subarray between the prefix sum 9 [4,2,3] - 4 [4] == 5 [2,3], which is divisible by 5.
-
-**Complexity**
-
-Time Complexity: O(n),
-where 'n' is the length of 'nums'.
-In fact, in actual is '2n' as we traverse 'nums' once and the HashMap once, with the worst time complexity of the HashMap being 'n'.
-
-Space Complexity: O(n),
-where 'n' is the length of 'nums'.
-The worst case is when all the prefix sums in 'nums' have different remainders with 'k', resulting in the maximum size of the HashMap to be 'n'.
+Временная сложность-> 0(logN), простраственная: O(N)
 ```
 class Solution {
 public int subarraysDivByK(int[] nums, int k) {
 
-        // Use the HashMap to record the frequency of all the prefix sum remainders.
+        // HashMap для записи частот остатков префиксной суммы.
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0, remainder = 0; i < nums.length; i++) {
-            // Note that the integer in 'nums' can be negative.
-            // Thus, we need to adjust the negative remainder to positive remainder.
-            // Below accounts for both negative and positive remainders.
-            // We can also check if the remainder is negative, then add a 'k' to make the remainder positive.
-            // For Example, nums = [-2,3,2], k = 5,
-            // remainder for the prefix sum of [-2,1,3] are -2, 1 and 3 respectively.
-            // We know that [3,2] sum to 5, which is divisible by 5.
-            // After converting -2 to 3, by adding 5, it has the same remainder with prefix sum 3.
+            /*Обратите внимание, что целые числа в `nums` могут быть отрицательными. Поэтому нам нужно преобразовать отрицательные остатки в положительные остатки. В коде ниже учтены и отрицательные, и положительные остатки. Мы также проверяем, является ли остаток отрицательным, и если да, то добавляем 'k', чтобы сделать остаток положительным. Например, если `nums = [-2, 3, 2]` и `k = 5`, то остатки для префиксной суммы `[-2, 1, 3]` соответственно равны -2, 1 и 3. Мы знаем, что сумма [3, 2] равна 5, что делится на 5. После преобразования -2 в 3 путем добавления 5, он имеет тот же остаток с префиксной суммой 3. */
+
             remainder = ((remainder + nums[i]) % k + k) % k;
             map.put(remainder, map.getOrDefault(remainder, 0) + 1);
         }
-        // The result contains all the prefix sum with remainder 0,
-        // as all the prefix sum with remainder of 0 is itself divisible by 'k'.
-        // However, do note that the prefix sum with remainder 0 also able to form subarray sums that is divisible by 'k'
-        // with one another, which will be calculated next.
-        // For Example: nums = [5,5,5,5], k = 5,
-        // The prefix sum of [5,10,15,20] are themselves divisible by 5, while also forming subarray sums divisible by 5
-        // with 10 [5,5] - 5 [5] == 5, 15 [5,5,5] - 5 [5] == 10, etc.
+        /* Результат содержит все префиксные суммы с остатком 0, поскольку все префиксные суммы с остатком 0 делятся на 'k'. Однако следует отметить, что префиксная сумма с остатком 0 также может образовывать суммы подмассивов, делящиеся на 'k' друг с другом, что будет рассчитано далее. Например, если `nums = [5, 5, 5, 5]` и `k = 5`, то префиксные суммы [5, 10, 15, 20] сами по себе делятся на 5, а также образуют суммы подмассивов, делящиеся на 5, такие как 10 [5, 5] - 5 [5] == 5, 15 [5, 5, 5] - 5 [5] == 10 и т. д.*/
+
         int result = map.getOrDefault(0, 0);
 
-        // The prefix sums with the same remainder can form subarray sums that is divisible by 'k' with each other.
-        // For each remainder, the number of subarray that is divisible by 'k' is the number of combinations from the frequency.
-        // Equation for the number of combinations of n items is n * "(n - 1) / 2".
+        /* Префиксные суммы с одинаковым остатком могут образовывать суммы подмассивов, делящиеся на 'k' друг с другом. Для каждого остатка количество подмассивов, делящихся на 'k', равно количеству комбинаций на основе частоты данного остатка. Формула для количества комбинаций из n элементов равна n * "(n - 1) / 2".*/
+
         for (int frequency : map.values())
             result += frequency * (frequency - 1) / 2;
 
@@ -1818,15 +1801,16 @@ public int subarraysDivByK(int[] nums, int k) {
 ## Search in Rotated Sorted Array {33}
 https://leetcode.com/problems/search-in-rotated-sorted-array
 
-The Binary search approach is based on the fact that a rotated sorted array can be divided into two sorted arrays.
+Используем бинарный поиск. Подход основан на том, что развернутый отсортированный массив может быть разделен на два отсортированных массива.
 
-- The approach starts with finding the mid element and compares it with the target element.
-- If they are equal, it returns the mid index. If the left half of the array is sorted, then it checks if the target lies between the start and the mid, and updates the end pointer accordingly.
-- Otherwise, it checks if the target lies between mid and end, and updates the start pointer accordingly.
-- If the right half of the array is sorted, then it checks if the target lies between mid and end, and updates the start pointer accordingly.
-- Otherwise, it checks if the target lies between start and mid, and updates the end pointer accordingly.
-- This process continues until the target element is found, or the start pointer becomes greater than the end pointer, in which case it returns -1.
-- This approach has a time complexity of O(log n).
+- Начинаем с поиска среднего элемента и сравниваем его с целевым элементом.
+- Если они равны, возвращаем индекс среднего элемента. Если левая половина массива отсортирована, то проверяем, находится ли целевой элемент между началом и средним элементом, и обновляем указатель конца.
+- В противном случае проверяем, находится ли целевой элемент между средним и концом, и обновляем указатель начала.
+- Если правая половина массива отсортирована, то проверяем, находится ли целевой элемент между средним и концом, и обновляем указатель начала.
+- В противном случае проверяем, находится ли целевой элемент между началом и средним элементом, и обновляем указатель конца.
+- Этот процесс продолжаем до тех пор, пока не будет найден целевой элемент, или пока указатель начала не станет больше указателя конца, в этом случае возвращается -1.
+
+Временная сложность-> 0(logN), простраственная: O(1)
 ```
 class Solution {
     public int search(int[] nums, int target) {
@@ -1859,18 +1843,17 @@ class Solution {
 ## Serialize and Deserialize BST {449}
 https://leetcode.com/problems/serialize-and-deserialize-bst
 
-Pre order traversal of BST will output root node first, then left children, then right.
+При обходе дерева в прямом порядке (pre-order traversal) корневой узел выводится первым, затем левые дочерние узлы, а затем правые.
 
 `root left1 left2 leftX right1 rightX`
 
-Pre-order traversal is BST's serialized string. I am doing it iteratively.
-To deserialized it, use a queue to recursively get root node, left subtree and right subtree.
+Преобразование в прямой порядок обхода является сериализованной строкой BST (двоичного дерева поиска). Я выполняю его итеративно.
+Для десериализации используется очередь для рекурсивного получения корневого узла, левого поддерева и правого поддерева.
 
-Time complexity is O(N*N).
+Временная сложность-> 0(N), простраственная: O(N)
 ```
 class Codec {
     /**
-     * Definition for a binary tree node.
      * public class TreeNode {
      *     int val;
      *     TreeNode left;
@@ -1879,7 +1862,7 @@ class Codec {
      * }
      */
     
-    // Encodes a tree to a single string.
+    // сериализация.
     public String serialize(TreeNode root) {
         StringBuilder sb = new StringBuilder();
         dfs(root, sb);
@@ -1896,7 +1879,7 @@ class Codec {
         return;
     }
 
-    // Decodes your encoded data to tree.
+    // десериализация.
     public TreeNode deserialize(String data) {
         String[] arr = data.split(",");
         TreeNode root = null;
@@ -1922,6 +1905,17 @@ class Codec {
 
 ## Squares of sorted array {977}
 https://leetcode.com/problems/squares-of-a-sorted-array
+
+Используя подход с двумя указателями. Берем один указатель в начале массива, а другой указатель в конце массива, и затем сравниваем эти значения.
+
+Пример:
+{7,-3,0,3,9,11}
+Math.abs(-7) < Math.abs(11)
+{ , , , ,121} 
+
+В результирующем массиве мы получим последний элемент последнего массива и можем сохранить это значение в результирующем массиве. Повторяем тот же метод, пока left ≤ right.
+
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 class Solution {
     public int[] sortedSquares(int[] nums) {
@@ -1950,6 +1944,16 @@ class Solution {
 
 ## Intersection of Two Arrays II {350}
 https://leetcode.com/problems/intersection-of-two-arrays-ii
+
+- Сортируем массивы nums1 и nums2 с использованием метода Arrays.sort. Это позволяет нам сравнивать элементы массивов по порядку.
+- Инициализируем указатели для прохода по массивам nums1 и nums2.
+- Запускаем цикл.
+- Если top достигает конца nums1 или bottom достигает конца nums2, то прерываем цикл.
+- Если nums1[top] равно nums2[bottom], то добавляем этот элемент в список h, увеличиваем значения top и bottom на 1.
+- Если nums1[top] меньше nums2[bottom], то увеличиваем значение top на 1, чтобы перейти к следующему элементу nums1.
+- Если nums1[top] больше nums2[bottom], то увеличиваем значение bottom на 1, чтобы перейти к следующему элементу nums2.
+
+Временная сложность-> 0(NlogN), простраственная: O(N)
 ```
 class Solution {
     public int[] intersect(int[] nums1, int[] nums2) {
@@ -1985,9 +1989,12 @@ class Solution {
 
 ## Remove Nth Node From End of List {19}
 https://leetcode.com/problems/remove-nth-node-from-end-of-list
+
+Два указателя
+
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 /**
- * Definition for singly-linked list.
  * public class ListNode {
  *     int val;
  *     ListNode next;
@@ -1998,13 +2005,13 @@ https://leetcode.com/problems/remove-nth-node-from-end-of-list
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        // Two pointers - fast and slow
+        // указатели - fast и slow
         ListNode slow = head;
         ListNode fast = head;
-        // Move fast pointer n steps ahead
+        // двигаем fast pointer n steps ahead
         for (int i = 0; i < n; i++) {
             if (fast.next == null) {
-                // If n is equal to the number of nodes, delete the head node
+                // Если n == кол-ву узлов, удаляем head
                 if (i == n - 1) {
                     head = head.next;
                 }
@@ -2012,13 +2019,13 @@ class Solution {
             }
             fast = fast.next;
         }
-        // Loop until we reach to the end.
-        // Now we will move both fast and slow pointers
+        // Цикл пока не достигнем end.
+        // Двигаем оба указателя fast и slow 
         while (fast.next != null) {
             slow = slow.next;
             fast = fast.next;
         }
-        // Delink the nth node from last
+        // Отсоединяем n-ый узел
         if (slow.next != null) {
             slow.next = slow.next.next;
         }
@@ -2030,22 +2037,18 @@ class Solution {
 ## Maximal Rectangle {85}
 https://leetcode.com/problems/maximal-rectangle/
 
-Solutions to other similar question on LeetCode: 84. Largest Rectangle in Histogram
+Похоже на LeetCode: 84. Largest Rectangle in Histogram
+- Это решение преобразует входную матрицу строка за строкой (ИЛИ столбец за столбцом)в наибольший прямоугольник в гистограмме.
+- Для каждой строки (ИЛИ столбца) вычисляется накопительная высота. Затем используется стек, чтобы сохранить индексы увеличивающейся высоты.
+
+Временная сложность: O(R * C). Каждый элемент добавляется в стек один раз и удаляется из стека один раз.
+
+Пространственная сложность: O(min(R,C)). Мы будем либо сохранять строку, либо столбец. 
+
+R = Количество строк в матрице. C = Количество столбцов в матрице.
+
+
 ```
-/**
- * This solution is converting the input matrix row by row (OR column by column)
- * to Largest Rectangle in a Histogram.
- *
- * For each row (OR column) cumulative height is calculated. Then use stack to
- * save the increasing height index.
- *
- * Time Complexity: O(R * C). Each element is added to stack once and popped
- * from stack once.
- *
- * Space Complexity: O(min(R,C)). We will either store a row or a column
- *
- * R = Number of rows in the matrix. C = Number of columns in the matrix.
- */
 class Solution {
     public int maximalRectangle(char[][] matrix) {
         if (matrix == null) {
@@ -2095,6 +2098,9 @@ class Solution {
 ## Find First and Last Position of Element in Sorted Array {34}
 https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array
 
+Используем бинарный поиск
+
+Временная сложность-> 0(logN), простраственная: O(1)
 ```
 class Solution {
     public int[] searchRange(int[] nums, int target) {
@@ -2127,6 +2133,13 @@ class Solution {
 
 ## Evaluate Reverse Polish Notation {150}
 https://leetcode.com/problems/evaluate-reverse-polish-notation
+
+- В цикле проходим по каждому токену в массиве tokens. 
+- Если токен является оператором (+, -, *, /), то извлекаются два операнда из стека, выполняется соответствующая операция, и результат помещается обратно в стек. 
+- Если токен является числом, оно преобразуется в целое число и помещается в стек.
+- В конце алгоритма в стеке остается только одно значение - результат вычислений.
+
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 class Solution {
     public int evalRPN(String[] tokens) {
@@ -2155,7 +2168,12 @@ class Solution {
 
 ## Perfect Squares {279}
 https://leetcode.com/problems/perfect-squares
+
+**DP**
 ```
+// Time complexity: O(N * sqrt(N))
+// Space complexity: O(N)
+
 class Solution {
     public int numSquares(int n) {
         int dp[]=new int [n+1];
@@ -2173,9 +2191,88 @@ class Solution {
     }
 }
 ```
+**Меморизиация**
+```
+// Time complexity: O(N * sqrt(N))
+// Space complexity: O(N)
+	
+class Solution {
+    public int numSquares(int n) {
+        int[] memo = new int[n + 1];
+        return helper(n, memo);
+    }
+    
+    public int helper(int n, int[] memo) {
+        if (n < 4)
+            return n;
+        
+        if (memo[n] != 0)
+            return memo[n];
+        
+        int ans = n;
+        
+        for (int i = 1; i * i <= n; i++) {
+            int square = i * i;
+            ans = Math.min(ans, 1 + helper(n - square, memo));
+        }
+        
+        return memo[n] = ans;
+    }
+}
+```
+**Теорема Лежандра о 3-квадрате**
+
+- Теорема о 4-квадрате: Каждое натуральное число можно представить в виде суммы 4 квадратов.
+- Теорема о 3-квадрате: Каждое натуральное число можно представить в виде суммы 3 квадратов, если оно не удовлетворяет условию 4^a (8b + 7) = N.
+Таким образом, наш ответ будет 1, 2, 3 или 4.
+
+Шаги:
+- Если число является точным квадратом, вернуть 1.
+- Если число удовлетворяет условию 4^a (8b + 7), вернуть 4.
+- Если число является суммой 2 точных квадратов, вернуть 2.
+- В противном случае вернуть 3.
+```
+// Time complexity: O(sqrt(N))
+// Space complexity: O(1)
+	
+public int numSquares(int n) {
+	int sqrt = (int) Math.sqrt(n);
+
+	if (sqrt * sqrt == n) // Perfect square
+		return 1;
+
+	while (n % 4 == 0) // 4^a (8b + 7)
+		n = n / 4;
+
+	if (n % 8 == 7)
+		return 4;
+
+	for (int i = 1; i * i <= n; i++) { // Sum of two perfect squares
+		int square = i * i;
+		int base = (int) Math.sqrt(n - square);
+
+		if (base * base == n - square)
+			return 2;
+	}
+
+	return 3;
+}
+```
+
 
 ## Is substring strStr() {28}
 https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string
+
+Алгоритм в данном коде реализует поиск подстроки (needle) в строке (haystack) с помощью метода "построчного" сравнения.
+
+- Внешний цикл выполняется для каждого символа в строке haystack.
+- Внутренний цикл выполняется для каждого символа в строке needle.
+- В каждой итерации внутреннего цикла проверяется соответствие символов haystack.charAt(index) и needle.charAt(j) на текущих позициях.
+- Если символы не совпадают, цикл прерывается, и переходим к следующему символу во внешнем цикле.
+- Если внутренний цикл достигает последнего символа в строке needle, это означает, что мы нашли точное соответствие подстроки needle в строке haystack, и возвращается индекс начала этой подстроки (i).
+- Если подстрока не найдена, возвращается -1.
+
+Временная сложность-> 0((N-M+1)*M), простраственная: O(1)
 ```
 class Solution {
     public int strStr(String haystack, String needle) {
@@ -2200,47 +2297,75 @@ class Solution {
 ## Product of Array Except Self {238}
 https://leetcode.com/problems/product-of-array-except-self
 
-Time complexity: O(n)
+**Массивы префиксных и суффиксных произведений**
+
+Ищем массив префиксных произведений и массив суффиксных произведений для исходного массива, т.е. pre[i] = pre[i - 1] * a[i - 1] (да, мы умножаем на a[i - 1], а не на a[i] специально), и аналогично suff[i] = suff[i + 1] * a[i + 1].
+Теперь, на любом индексе i наш окончательный ответ ans[i] будет задан выражением ans[i] = pre[i] * suff[i]. Почему? Потому что pre[i] * suff[i] содержит произведение каждого элемента до i и каждого элемента после i, но не элемента с индексом i (и это причина, по которой мы исключили a[i] из наших префиксных и суффиксных произведений).
+
+Временная сложность будет O(n), но мы теперь используем дополнительную память объемом O(n)
 ```
 class Solution {
     public int[] productExceptSelf(int[] nums) {
-        //Approach: Using prefix and postfix
-        //Idea: Just find prefix and postfix product and keep them in the ans array
-
-        int ans[] = new int[nums.length];
-        int pre = 1, post = 1;
+        int n = nums.length;
+        int pre[] = new int[n];
+        int suff[] = new int[n];
+        pre[0] = 1;
+        suff[n - 1] = 1;
         
-        //find pre product
-        for(int i=0;i<nums.length;i++){
-            ans[i] = pre;
-            pre*=nums[i];
+        for(int i = 1; i < n; i++) {
+            pre[i] = pre[i - 1] * nums[i - 1];
         }
-
-        //find post product
-        for(int i=nums.length-1;i>=0;i--){
-            ans[i]*=post;
-            post*=nums[i];
+        for(int i = n - 2; i >= 0; i--) {
+            suff[i] = suff[i + 1] * nums[i + 1];
         }
+        
+        int ans[] = new int[n];
+        for(int i = 0; i < n; i++) {
+            ans[i] = pre[i] * suff[i];
+        }
+        return ans;
+    }
+}
+```
+**Сохраняем произведение префикса и суффикса в итоговый массив ответов**
 
+Фактически не нужен отдельный массив для хранения префиксных и суффиксных произведений. Мы можем выполнять все вычисления, написанные выше, непосредственно в нашем конечном массиве ответов.
+
+Временная сложность будет O(n), но теперь дополнительное пространство будет O(1)
+```
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int ans[] = new int[n];
+        Arrays.fill(ans, 1);
+        int curr = 1;
+        for(int i = 0; i < n; i++) {
+            ans[i] *= curr;
+            curr *= nums[i];
+        }
+        curr = 1;
+        for(int i = n - 1; i >= 0; i--) {
+            ans[i] *= curr;
+            curr *= nums[i];
+        }
         return ans;
     }
 }
 ```
 
+
 ## Simplify Path {71}
 https://leetcode.com/problems/simplify-path/
 
-So, basically what are we doing: `Pushing and Popping` directory names based on rules
+Используем стек по правилам:
+- /.. выходит из директории
+- /имяДиректории входит в директорию
 
-And what are the rules :
-- /.. come out from the directory
-- /nameOfDirectory going into directory
+Можем разделить путь на части, используя разделитель '/' и получим массив, например: [a, ., b, .., .., c].
 
-We Generically used in Stack 
+При возвращении результата идем в обратном порядке. Потому что стек работает по принципу LIFO, а нам нужны элементы в порядке от нижнего к верхнему. 
 
-Alright, back to the problem - So, what we can do is by looking at the rules, split the directrory by the slash/ given and that will give us in the form of array e.g :- [a, ., b, .., .., c]
-
-But remeber when returning we have to go in the form of reverse order. Because Stack use LIFO order and the highest one will comes out. But we need the lowest once first. So, we need to append in the carefull manner.
+Временная сложность-> 0(N), простраственная: O(N)
 ```
 class Solution {
     public String simplifyPath(String path) {
@@ -2267,9 +2392,12 @@ class Solution {
 
 ## Palindrome Linked List {234}
 https://leetcode.com/problems/palindrome-linked-list
+
+Используем два указателя
+
+Временная сложность-> 0(N), простраственная: O(1)
 ```
 /**
- * Definition for singly-linked list.
  * public class ListNode {
  *     int val;
  *     ListNode next;
@@ -2283,19 +2411,18 @@ class Solution {
     public boolean isPalindrome(ListNode head) {
         List<Integer> vals = new ArrayList<>();
 
-        // Convert LinkedList into ArrayList.
+        // LinkedList в ArrayList.
         ListNode currentNode = head;
         while (currentNode != null) {
             vals.add(currentNode.val);
             currentNode = currentNode.next;
         }
 
-        // Use two-pointer technique to check for palindrome.
+        // Ипользуем два указателя для проверки палиндрома.
         int front = 0;
         int back = vals.size() - 1;
         while (front < back) {
-            // Note that we must use ! .equals instead of !=
-            // because we are comparing Integer, not int.
+            // Используем !.equals вместо != , т.к. сравниваем Integer
             if (!vals.get(front).equals(vals.get(back))) {
                 return false;
             }
