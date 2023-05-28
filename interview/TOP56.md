@@ -603,6 +603,76 @@ class Solution {
     }
 }
 ```
+```
+// subarray priduct less then K
+public class Solution {
+  /**
+   * Given an array of integers `nums` and an integer `k`,
+   * return the number of contiguous subarrays where the product of all
+   * the elements in the subarray is strictly less than `k`.
+   *
+   * Constraints:
+   *   1 <= nums.length <= 3 * 104
+   *   1 <= nums[i] <= 1000
+   *   0 <= k <= 10**6
+   *
+   * @param nums An array of integers
+   * @param k Some integer
+   * @return How many contiguous subarrays' product are less than `k`
+   */
+  public int numSubarrayProductLessThanK(int[] nums, int k) {
+    // No num will be less than 1, so no `num` array can multiply to 0.
+    if (k == 0) return 0;
+
+    int count = 0;
+
+    int i = 0;
+    int j = 0;
+    int product = 1;
+
+    // https://leetcode.com/problems/subarray-product-less-than-k/discuss/108834/Java-Two-Pointers-O(n)-time-O(1)-space
+    while (j < nums.length) {
+      // Visit the number at `j`
+      product *= nums[j];
+
+      // While `product` exceeds `k`, advance the tail of our sliding window.
+      while (i <= j && product >= k) {
+        // Remove num[i] from our product.  Then advance `i`.
+        product /= nums[i++];
+      }
+
+      // If we're here, this is the first time we've visited this stretch,
+      // but it may contain unique subarrays that we won't visit.
+      //
+      // Curiously, the number of unique subarrays this stretch contains is just
+      // equal to its length.
+      //
+      // So, for [10, 5, 2, 6], if i=0 and j=0, the subarrays are:
+      // 10.  Total 1 subarray.
+      //
+      // For [10, 5, 2, 6], if i=0 and j=1, the subarrays are:
+      //    5 (we won't visit)
+      // 10 5 (we are visiting).  Total 2 subarrays.
+      //
+      // For [10, 5, 2, 6], if i=1 and j=2, the subarrays are:
+      //   2 (won't visit)
+      // 5 2 (currently visiting).  Total 2 subarrays.
+      //
+      // For [10, 5, 2, 6], if i=1 and j=3, the subarrays are:
+      //     6 (won't visit)
+      //   2 6 (won't visit)
+      // 5 2 6 (currently visiting).  Total 3 subarrays.
+      //
+      // Note that [5, 2, 6] contains other subarrays (e.g. [5], [2], [5,2]),
+      // but that we've _already counted them_
+      // when visiting previous, shorter stretches.
+      count += (j - i + 1);
+      j++;
+    }
+    return count;
+  }
+}
+```
 
 ## Insert Delete GetRandom O(1) {380}
 https://leetcode.com/problems/insert-delete-getrandom-o1
