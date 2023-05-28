@@ -578,6 +578,8 @@ class Solution {
 ## Subarray Sum Equals K {560}
 https://leetcode.com/problems/subarray-sum-equals-k
 
+Размышления https://leetcode.com/problems/subarray-sum-equals-k/solutions/803317/java-solution-with-detailed-explanation/
+
 - Переменная `sum` отслеживает накопительную сумму элементов в массиве
 - Переменная `count` отслеживает количество подмассивов, сумма которых равна k. 
 - Запись в `map` с ключом 0 и значением 1 представляет накопительную сумму пустого подмассива, равную 0.
