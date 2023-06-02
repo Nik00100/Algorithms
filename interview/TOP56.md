@@ -1533,7 +1533,7 @@ class Solution {
 ## Longest Palindromic Substring {5}
 https://leetcode.com/problems/longest-palindromic-substring
 
-**Алгоритм DP:*
+**Алгоритм DP:**
 
 dp(i, j) показывает, может ли s(i... j) образовывать палиндромную подстроку, dp(i, j) истинно, когда s(i) равно s(j) и s(i+1... j-1) является палиндромной подстрокой. Когда мы нашли палиндром, проверьте, самый ли он длинный. Временная сложность O(n^2).
 
