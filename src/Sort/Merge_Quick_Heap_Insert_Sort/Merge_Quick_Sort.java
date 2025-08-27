@@ -11,7 +11,8 @@ while the positions of other numbers are changed (for example, 1 and 5).
 Example 2:
 Input: nums = [5,1,1,2,0,0]
 Output: [0,0,1,1,2,5]
-Explanation: Note that the values of nums are not necessary unique.*/
+Explanation: 
+Note that the values of nums are not necessary unique.*/
 
 import java.util.Arrays;
 
