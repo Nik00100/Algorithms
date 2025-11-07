@@ -2044,47 +2044,30 @@ class Solution {
 
 ## Intersection of Two Arrays II {350}
 https://leetcode.com/problems/intersection-of-two-arrays-ii
-
-- Сортируем массивы nums1 и nums2 с использованием метода Arrays.sort. Это позволяет нам сравнивать элементы массивов по порядку.
-- Инициализируем указатели для прохода по массивам nums1 и nums2.
-- Запускаем цикл.
-- Если top достигает конца nums1 или bottom достигает конца nums2, то прерываем цикл.
-- Если nums1[top] равно nums2[bottom], то добавляем этот элемент в список h, увеличиваем значения top и bottom на 1.
-- Если nums1[top] меньше nums2[bottom], то увеличиваем значение top на 1, чтобы перейти к следующему элементу nums1.
-- Если nums1[top] больше nums2[bottom], то увеличиваем значение bottom на 1, чтобы перейти к следующему элементу nums2.
-
-Временная сложность-> 0(NlogN), простраственная: O(N)
+Использовать хэш-мапу для хранения частоты элементов в nums1.
+Пройти по nums2 и для каждого элемента проверить, существует ли он в хэш-мапе с ненулевым счетчиком. 
+Если да, добавить его в результат и уменьшить счетчик в хэш-карте.
+Вернуть результат.
 ```
 class Solution {
-    public int[] intersect(int[] nums1, int[] nums2) {
-        Arrays.sort(nums1);
-        Arrays.sort(nums2);
-        int top = 0;
-        int bottom = 0;
-        List<Integer> h = new ArrayList<>();
-
-        while (true) {
-            if (top >= nums1.length || bottom >= nums2.length) {
-                break;
-            }
-            if (nums1[top] == nums2[bottom]) {
-                h.add(nums1[top]);
-                top++;
-                bottom++;
-            } else if (nums1[top] < nums2[bottom]) {
-                top++;
-            } else if (nums1[top] > nums2[bottom]) {
-                bottom++;
+   public int[] intersect(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> counter = new HashMap<>();
+        for (int num : nums1) {
+            counter.put(num, counter.getOrDefault(num, 0) + 1);
+        }
+        List<Integer> t = new ArrayList<>();
+        for (int num : nums2) {
+            if (counter.getOrDefault(num, 0) > 0) {
+                t.add(num);
+                counter.put(num, counter.get(num) - 1);
             }
         }
-
-        int[] g = new int[h.size()];
-        for (int i = 0; i < h.size(); i++) {
-            g[i] = h.get(i);
+        int[] res = new int[t.size()];
+        for (int i = 0; i < res.length; ++i) {
+            res[i] = t.get(i);
         }
-        return g;
+        return res;
     }
-}
 ```
 
 ## Remove Nth Node From End of List {19}
