@@ -2088,30 +2088,18 @@ https://leetcode.com/problems/remove-nth-node-from-end-of-list
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        // указатели - fast и slow
-        ListNode slow = head;
-        ListNode fast = head;
-        // двигаем fast pointer n steps ahead
-        for (int i = 0; i < n; i++) {
-            if (fast.next == null) {
-                // Если n == кол-ву узлов, удаляем head
-                if (i == n - 1) {
-                    head = head.next;
-                }
-                return head;
-            }
-            fast = fast.next;
-        }
-        // Цикл пока не достигнем end.
-        // Двигаем оба указателя fast и slow 
+        public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode fast = head, slow = head;
+        for (int i = 0; i < n; i++) fast = fast.next;
+        if (fast == null) return head.next;
+        // fast двигаем до последнего узла
+        // slow указывает на узел, предшествующий тому, который нужно удалить
         while (fast.next != null) {
-            slow = slow.next;
             fast = fast.next;
+            slow = slow.next;
         }
-        // Отсоединяем n-ый узел
-        if (slow.next != null) {
-            slow.next = slow.next.next;
-        }
+        // пропускаем узел, который нужно удалить
+        slow.next = slow.next.next;
         return head;
     }
 }
