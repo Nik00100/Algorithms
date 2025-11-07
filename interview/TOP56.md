@@ -2240,6 +2240,10 @@ class Solution {
 ## Perfect Squares {279}
 https://leetcode.com/problems/perfect-squares
 
+Любое число i можно представить как:
+i = j² + (i - j²)
+где j² - это идеальный квадрат, а (i - j²) - оставшаяся часть.
+
 **DP**
 ```
 // Time complexity: O(N * sqrt(N))
