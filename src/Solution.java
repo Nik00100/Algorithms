@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 class Solution {
 
@@ -116,6 +118,28 @@ class Solution {
             return !q.isEmpty();
         }
 
+    }
+
+    private static int findFirstUniqueElement(int[] arr) {
+        Map<Integer, Integer> dict = new LinkedHashMap<>();
+        for(Integer num : arr) {
+            dict.put(num, dict.getOrDefault(num, 0) + 1);
+        }
+
+        // Вариант использовать Stream API, но цикл проще и быстрее
+        Map<Integer, Integer> frequencies = Arrays.stream(arr)
+                .boxed()
+                .collect(Collectors.groupingBy(
+                        Function.identity(),
+                        LinkedHashMap::new,
+                        Collectors.summingInt(e -> 1)   // или Collectors.counting(), но вернёт Long
+                ));
+
+        return dict.entrySet().stream()
+                .filter(entry -> entry.getValue() == 1)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Нет такого элемента"));
     }
 
     public static void main(String[] args) {
