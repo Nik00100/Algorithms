@@ -2044,47 +2044,30 @@ class Solution {
 
 ## Intersection of Two Arrays II {350}
 https://leetcode.com/problems/intersection-of-two-arrays-ii
-
-- Сортируем массивы nums1 и nums2 с использованием метода Arrays.sort. Это позволяет нам сравнивать элементы массивов по порядку.
-- Инициализируем указатели для прохода по массивам nums1 и nums2.
-- Запускаем цикл.
-- Если top достигает конца nums1 или bottom достигает конца nums2, то прерываем цикл.
-- Если nums1[top] равно nums2[bottom], то добавляем этот элемент в список h, увеличиваем значения top и bottom на 1.
-- Если nums1[top] меньше nums2[bottom], то увеличиваем значение top на 1, чтобы перейти к следующему элементу nums1.
-- Если nums1[top] больше nums2[bottom], то увеличиваем значение bottom на 1, чтобы перейти к следующему элементу nums2.
-
-Временная сложность-> 0(NlogN), простраственная: O(N)
+Использовать хэш-мапу для хранения частоты элементов в nums1.
+Пройти по nums2 и для каждого элемента проверить, существует ли он в хэш-мапе с ненулевым счетчиком. 
+Если да, добавить его в результат и уменьшить счетчик в хэш-карте.
+Вернуть результат.
 ```
 class Solution {
-    public int[] intersect(int[] nums1, int[] nums2) {
-        Arrays.sort(nums1);
-        Arrays.sort(nums2);
-        int top = 0;
-        int bottom = 0;
-        List<Integer> h = new ArrayList<>();
-
-        while (true) {
-            if (top >= nums1.length || bottom >= nums2.length) {
-                break;
-            }
-            if (nums1[top] == nums2[bottom]) {
-                h.add(nums1[top]);
-                top++;
-                bottom++;
-            } else if (nums1[top] < nums2[bottom]) {
-                top++;
-            } else if (nums1[top] > nums2[bottom]) {
-                bottom++;
+   public int[] intersect(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> counter = new HashMap<>();
+        for (int num : nums1) {
+            counter.put(num, counter.getOrDefault(num, 0) + 1);
+        }
+        List<Integer> t = new ArrayList<>();
+        for (int num : nums2) {
+            if (counter.getOrDefault(num, 0) > 0) {
+                t.add(num);
+                counter.put(num, counter.get(num) - 1);
             }
         }
-
-        int[] g = new int[h.size()];
-        for (int i = 0; i < h.size(); i++) {
-            g[i] = h.get(i);
+        int[] res = new int[t.size()];
+        for (int i = 0; i < res.length; ++i) {
+            res[i] = t.get(i);
         }
-        return g;
+        return res;
     }
-}
 ```
 
 ## Remove Nth Node From End of List {19}
@@ -2105,30 +2088,18 @@ https://leetcode.com/problems/remove-nth-node-from-end-of-list
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        // указатели - fast и slow
-        ListNode slow = head;
-        ListNode fast = head;
-        // двигаем fast pointer n steps ahead
-        for (int i = 0; i < n; i++) {
-            if (fast.next == null) {
-                // Если n == кол-ву узлов, удаляем head
-                if (i == n - 1) {
-                    head = head.next;
-                }
-                return head;
-            }
-            fast = fast.next;
-        }
-        // Цикл пока не достигнем end.
-        // Двигаем оба указателя fast и slow 
+        public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode fast = head, slow = head;
+        for (int i = 0; i < n; i++) fast = fast.next;
+        if (fast == null) return head.next;
+        // fast двигаем до последнего узла
+        // slow указывает на узел, предшествующий тому, который нужно удалить
         while (fast.next != null) {
-            slow = slow.next;
             fast = fast.next;
+            slow = slow.next;
         }
-        // Отсоединяем n-ый узел
-        if (slow.next != null) {
-            slow.next = slow.next.next;
-        }
+        // пропускаем узел, который нужно удалить
+        slow.next = slow.next.next;
         return head;
     }
 }
@@ -2268,6 +2239,10 @@ class Solution {
 
 ## Perfect Squares {279}
 https://leetcode.com/problems/perfect-squares
+
+Любое число i можно представить как:
+i = j² + (i - j²)
+где j² - это идеальный квадрат, а (i - j²) - оставшаяся часть.
 
 **DP**
 ```
